@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Calendar, Globe, Banknote, ArrowRight, Check } from "lucide-react";
-import { getDestination, getAllDestinations } from "@/app/lib/destinations";
+import { prisma } from "@/lib/db";
+import { MapPin, Calendar, Globe, Banknote, ArrowRight, Check, Compass } from "lucide-react";
 
 interface DestinationPageProps {
   params: Promise<{
@@ -11,15 +11,17 @@ interface DestinationPageProps {
 }
 
 export async function generateStaticParams() {
-  const destinations = getAllDestinations();
+  const destinations = await prisma.destination.findMany();
   return destinations.map((dest) => ({
-    slug: dest.id,
+    slug: dest.slug,
   }));
 }
 
 export async function generateMetadata({ params }: DestinationPageProps) {
   const { slug } = await params;
-  const destination = getDestination(slug);
+  const destination = await prisma.destination.findUnique({
+    where: { slug },
+  });
   
   if (!destination) {
     return {
@@ -33,31 +35,45 @@ export async function generateMetadata({ params }: DestinationPageProps) {
   };
 }
 
+async function getDestinationWithSafaris(slug: string) {
+  return prisma.destination.findUnique({
+    where: { slug },
+    include: {
+      safaris: {
+        where: { published: true },
+        orderBy: { price: 'asc' },
+      },
+      popularParks: true,
+      gallery: true,
+    },
+  });
+}
+
 export default async function DestinationPage({ params }: DestinationPageProps) {
   const { slug } = await params;
-  const destination = getDestination(slug);
+  const destination = await getDestinationWithSafaris(slug);
 
   if (!destination) {
     notFound();
   }
 
   return (
-    <main>
+    <main className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px]">
         <Image
-          src={destination.heroImage}
+          src={destination.heroImage || destination.image}
           alt={`${destination.name} Safari`}
           fill
           className="object-cover"
           priority
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20" />
         <div className="absolute inset-0 flex items-end">
           <div className="container mx-auto px-4 pb-16">
             <div className="max-w-3xl">
-              <span className="text-orange-400 font-medium mb-2 block">
+              <span className="text-orange-400 font-semibold mb-2 block uppercase tracking-wider">
                 Safari Destination
               </span>
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
@@ -66,13 +82,21 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
               <p className="text-xl text-white/90 mb-6">
                 {destination.tagline}
               </p>
-              <Link
-                href={`/safaris?destination=${destination.id}`}
-                className="inline-flex items-center gap-2 px-8 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
-              >
-                View {destination.name} Safaris
-                <ArrowRight size={20} />
-              </Link>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href={`/safaris?destination=${destination.slug}`}
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/25"
+                >
+                  View {destination.safaris.length} Safari{destination.safaris.length !== 1 ? 's' : ''}
+                  <ArrowRight size={20} />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-white/10 backdrop-blur text-white font-semibold rounded-lg hover:bg-white/20 transition-colors"
+                >
+                  Plan Custom Trip
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -87,63 +111,125 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
                 Discover {destination.name}
               </h2>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                {destination.description}
-              </p>
+              <div 
+                className="text-lg text-gray-600 mb-8 leading-relaxed prose prose-lg max-w-none"
+                dangerouslySetInnerHTML={{ __html: destination.description }}
+              />
 
               {/* Highlights */}
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Highlights
-              </h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                {destination.highlights.map((highlight) => (
-                  <li key={highlight} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-600">{highlight}</span>
-                  </li>
-                ))}
-              </ul>
+              {destination.highlights && destination.highlights.length > 0 && (
+                <>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    Highlights
+                  </h3>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    {destination.highlights.map((highlight) => (
+                      <li key={highlight} className="flex items-start gap-3">
+                        <Check className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-600">{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
 
               {/* Popular Parks */}
-              <h3 className="text-xl font-bold text-gray-900 mb-6">
-                Popular Parks & Reserves
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {destination.popularParks.map((park) => (
-                  <div
-                    key={park.name}
-                    className="bg-gray-50 rounded-xl overflow-hidden group"
-                  >
-                    <div className="relative h-48">
-                      <Image
-                        src={park.image}
-                        alt={park.name}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      />
-                    </div>
-                    <div className="p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">
-                        {park.name}
-                      </h4>
-                      <p className="text-sm text-gray-600 line-clamp-2">
-                        {park.description}
-                      </p>
-                    </div>
+              {destination.popularParks && destination.popularParks.length > 0 && (
+                <>
+                  <h3 className="text-xl font-bold text-gray-900 mb-6">
+                    Popular Parks & Reserves
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {destination.popularParks.map((park) => (
+                      <div
+                        key={park.id}
+                        className="bg-gray-50 rounded-xl overflow-hidden group hover:shadow-lg transition-shadow"
+                      >
+                        <div className="relative h-48">
+                          <Image
+                            src={park.image || '/images/placeholder-park.jpg'}
+                            alt={park.name}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                            sizes="(max-width: 640px) 100vw, 50vw"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <h4 className="font-semibold text-gray-900 mb-2">
+                            {park.name}
+                          </h4>
+                          <p className="text-sm text-gray-600 line-clamp-2">
+                            {park.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </>
+              )}
+
+              {/* Available Safaris */}
+              {destination.safaris.length > 0 && (
+                <div className="mt-12">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                    Available Safaris in {destination.name}
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {destination.safaris.slice(0, 4).map((safari) => (
+                      <Link
+                        key={safari.id}
+                        href={`/trips/${safari.slug}`}
+                        className="bg-white border border-gray-200 rounded-xl p-4 hover:border-orange-500 hover:shadow-md transition-all group"
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">
+                            {safari.title}
+                          </h4>
+                          <span className="text-orange-600 font-bold">
+                            {safari.currency} {safari.price.toLocaleString()}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+                          {safari.excerpt}
+                        </p>
+                        <div className="flex items-center gap-4 text-xs text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <Calendar size={12} />
+                            {safari.duration}
+                          </span>
+                          {safari.groupSize && (
+                            <span className="flex items-center gap-1">
+                              <Compass size={12} />
+                              {safari.groupSize}
+                            </span>
+                          )}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                  {destination.safaris.length > 4 && (
+                    <div className="mt-6 text-center">
+                      <Link
+                        href={`/safaris?destination=${destination.slug}`}
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-orange-50 text-orange-600 font-semibold rounded-lg hover:bg-orange-100 transition-colors"
+                      >
+                        View All {destination.safaris.length} Safaris
+                        <ArrowRight size={18} />
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              <div className="bg-gray-50 rounded-xl p-6 sticky top-24">
+              <div className="bg-gray-50 rounded-2xl p-6 sticky top-24">
                 <h3 className="text-lg font-bold text-gray-900 mb-6">
                   Quick Facts
                 </h3>
                 
-                <div className="space-y-4">
+                <div className="space-y-5">
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
                     <div>
@@ -151,7 +237,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                         Best Time to Visit
                       </span>
                       <span className="text-sm text-gray-600">
-                        {destination.bestTimeToVisit}
+                        {destination.bestTimeToVisit || 'Year round'}
                       </span>
                     </div>
                   </div>
@@ -163,7 +249,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                         Languages
                       </span>
                       <span className="text-sm text-gray-600">
-                        {destination.languages.join(", ")}
+                        {destination.languages?.join(", ") || 'English'}
                       </span>
                     </div>
                   </div>
@@ -175,7 +261,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                         Currency
                       </span>
                       <span className="text-sm text-gray-600">
-                        {destination.currency}
+                        {destination.currency || 'USD'}
                       </span>
                     </div>
                   </div>
@@ -184,22 +270,28 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                     <MapPin className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
                     <div>
                       <span className="font-medium text-gray-900 block">
-                        Popular Parks
+                        Safari Packages
                       </span>
                       <span className="text-sm text-gray-600">
-                        {destination.popularParks.length} major reserves
+                        {destination.safaris.length} available tours
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-gray-200">
+                <div className="mt-8 pt-6 border-t border-gray-200 space-y-3">
                   <Link
-                    href={`/safaris?destination=${destination.id}`}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+                    href={`/safaris?destination=${destination.slug}`}
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/25"
                   >
                     View All Safaris
                     <ArrowRight size={18} />
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-orange-500 hover:text-orange-500 transition-colors"
+                  >
+                    Customize Trip
                   </Link>
                 </div>
               </div>
@@ -209,51 +301,56 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
       </section>
 
       {/* Gallery Section */}
-      <section className="py-16 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-8 text-center">
-            {destination.name} Gallery
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {destination.gallery.map((image, index) => (
-              <div
-                key={index}
-                className="relative aspect-[4/3] rounded-xl overflow-hidden group"
-              >
-                <Image
-                  src={image}
-                  alt={`${destination.name} safari image ${index + 1}`}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-              </div>
-            ))}
+      {destination.gallery && destination.gallery.length > 0 && (
+        <section className="py-16 bg-gray-900">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-white mb-8 text-center">
+              {destination.name} Gallery
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {destination.gallery.map((image, index) => (
+                <div
+                  key={image.id}
+                  className={`relative aspect-square rounded-xl overflow-hidden group ${
+                    index === 0 ? 'col-span-2 row-span-2' : ''
+                  }`}
+                >
+                  <Image
+                    src={image.url}
+                    alt={image.alt || `${destination.name} safari image ${index + 1}`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    sizes={index === 0 ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 50vw, 25vw"}
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* CTA Section */}
-      <section className="py-16 bg-orange-500">
+      <section className="py-20 bg-orange-500">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to Explore {destination.name}?
           </h2>
           <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-            Let our safari experts help you plan the perfect {destination.name} adventure tailored to your preferences.
+            Let our safari experts help you plan the perfect {destination.name} adventure 
+            tailored to your preferences, budget, and schedule.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href={`/safaris?destination=${destination.id}`}
-              className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white text-orange-500 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
+              href={`/safaris?destination=${destination.slug}`}
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-orange-500 font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg"
             >
               Browse Safaris
               <ArrowRight size={20} />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-transparent text-white font-semibold rounded-lg border-2 border-white hover:bg-white/10 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent text-white font-semibold rounded-xl border-2 border-white hover:bg-white/10 transition-colors"
             >
               Contact Us
             </Link>
