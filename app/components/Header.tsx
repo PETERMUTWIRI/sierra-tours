@@ -92,6 +92,7 @@ const localPackages = {
 // Main Nav Items
 const mainNavItems = [
   { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
   { label: "Destinations", href: "/destinations" },
   { label: "Safaris", href: "/safaris" },
   { 
