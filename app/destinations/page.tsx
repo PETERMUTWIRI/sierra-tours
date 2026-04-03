@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { getDestinationCardImage, getDestinationHeroImage } from "@/lib/imageMapping";
 import { MapPin, ArrowRight, Compass, Globe, Shield } from "lucide-react";
 
 export const metadata = {
@@ -28,7 +29,7 @@ export default async function DestinationsPage() {
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px]">
         <Image
-          src="/images/hero/sierra-tours-and-travel-luxury-safaris.jpg"
+          src={getDestinationHeroImage({ slug: 'default', name: 'Destinations' })}
           alt="Safari Destinations"
           fill
           className="object-cover"
@@ -92,7 +93,9 @@ export default async function DestinationsPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {destinations.map((destination) => (
+            {destinations.map((destination) => {
+              const imageUrl = getDestinationCardImage(destination);
+              return (
               <Link
                 key={destination.id}
                 href={`/destinations/${destination.slug}`}
@@ -100,7 +103,7 @@ export default async function DestinationsPage() {
               >
                 {/* Background Image */}
                 <Image
-                  src={destination.image || '/images/placeholder-destination.jpg'}
+                  src={imageUrl}
                   alt={destination.name}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -140,7 +143,8 @@ export default async function DestinationsPage() {
                 {/* Hover Border Effect */}
                 <div className="absolute inset-0 border-4 border-transparent group-hover:border-orange-500/50 rounded-2xl transition-colors duration-300" />
               </Link>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

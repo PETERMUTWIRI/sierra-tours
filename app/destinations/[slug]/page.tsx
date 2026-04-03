@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { getDestinationHeroImage, getSafariImage } from "@/lib/imageMapping";
 import { MapPin, Calendar, Globe, Banknote, ArrowRight, Check, Compass } from "lucide-react";
 
 interface DestinationPageProps {
@@ -57,12 +58,15 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
     notFound();
   }
 
+  // Get mapped hero image
+  const heroImageUrl = getDestinationHeroImage(destination);
+
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px]">
         <Image
-          src={destination.heroImage || destination.image}
+          src={heroImageUrl}
           alt={`${destination.name} Safari`}
           fill
           className="object-cover"
@@ -175,12 +179,23 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                     Available Safaris in {destination.name}
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {destination.safaris.slice(0, 4).map((safari) => (
+                    {destination.safaris.slice(0, 4).map((safari) => {
+                      const safariImage = getSafariImage({ ...safari, destination });
+                      return (
                       <Link
                         key={safari.id}
                         href={`/trips/${safari.slug}`}
                         className="bg-white border border-gray-200 rounded-xl p-4 hover:border-orange-500 hover:shadow-md transition-all group"
                       >
+                        <div className="relative h-32 rounded-lg overflow-hidden mb-3">
+                          <Image
+                            src={safariImage}
+                            alt={safari.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                          />
+                        </div>
                         <div className="flex justify-between items-start mb-2">
                           <h4 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">
                             {safari.title}
@@ -205,7 +220,8 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                           )}
                         </div>
                       </Link>
-                    ))}
+                      );
+                    })}
                   </div>
                   {destination.safaris.length > 4 && (
                     <div className="mt-6 text-center">

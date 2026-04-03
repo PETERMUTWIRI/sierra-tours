@@ -4,59 +4,24 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, ArrowRight } from "lucide-react";
+import { getDestinationCardImage } from "@/lib/imageMapping";
 
-const destinations = [
-  {
-    id: "kenya",
-    name: "Kenya",
-    description: "Experience the iconic Masai Mara and witness the Great Migration.",
-    image: "/images/safaris/other/sierra-tours-and-safaris-kenya-safaris-image01.jpg",
-    tripCount: 15,
-    href: "/destinations/kenya",
-  },
-  {
-    id: "tanzania",
-    name: "Tanzania",
-    description: "Explore Serengeti, Ngorongoro Crater, and Mount Kilimanjaro.",
-    image: "/images/safaris/other/sierra-tours-and-safaris-tanzania-safaris-image01.jpg",
-    tripCount: 12,
-    href: "/destinations/tanzania",
-  },
-  {
-    id: "botswana",
-    name: "Botswana",
-    description: "Discover the pristine Okavango Delta and Chobe National Park.",
-    image: "/images/safaris/botswana/sierra-tours-and-safaris-botswana-safaris-image01.jpeg",
-    tripCount: 8,
-    href: "/destinations/botswana",
-  },
-  {
-    id: "zambia",
-    name: "Zambia",
-    description: "Walking safaris and the majestic Victoria Falls await.",
-    image: "/images/safaris/zambia/sierra-tours-and-travel-9-NIGHTS-THE-SECRET-OF-ZAMBIA-SAFARI-image-02-rbamxap3bb5iida8l1lkt1voc60nzqtcg8dv6obj4w.jpg",
-    tripCount: 6,
-    href: "/destinations/zambia",
-  },
-  {
-    id: "rwanda",
-    name: "Rwanda",
-    description: "Gorilla trekking in the misty mountains of Volcanoes National Park.",
-    image: "/images/safaris/rwanda/sierra-tours-and-safaris-rwanda-safaris-image01.jpg",
-    tripCount: 5,
-    href: "/destinations/rwanda",
-  },
-  {
-    id: "egypt",
-    name: "Egypt",
-    description: "Ancient wonders and Nile cruises through history.",
-    image: "/images/safaris/egypt/sierra-tours-and-safaris-egypt-safaris-image01.jpg",
-    tripCount: 4,
-    href: "/destinations/egypt",
-  },
-];
+interface Destination {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  tagline?: string;
+  image: string;
+  safaris?: { id: string }[];
+  _count?: { safaris: number };
+}
 
-export default function Destinations() {
+interface DestinationsProps {
+  destinations?: Destination[];
+}
+
+export default function Destinations({ destinations = [] }: DestinationsProps) {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -73,6 +38,9 @@ export default function Destinations() {
       transition: { duration: 0.6, ease: "easeOut" as const },
     },
   };
+
+  // Use provided destinations or show empty state
+  const displayDestinations = destinations.slice(0, 4);
 
   return (
     <section className="py-16 md:py-24 bg-white">
@@ -94,58 +62,70 @@ export default function Destinations() {
         </motion.div>
 
         {/* Destinations Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {destinations.map((destination) => (
-            <motion.div
-              key={destination.id}
-              variants={itemVariants}
-              className="group relative h-80 rounded-xl overflow-hidden cursor-pointer"
-            >
-              {/* Background Image */}
-              <Image
-                src={destination.image}
-                alt={destination.name}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
+        {displayDestinations.length > 0 ? (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {displayDestinations.map((destination) => {
+              // Get mapped image (handles both local files and imgbb URLs)
+              const imageUrl = getDestinationCardImage(destination);
+              const safariCount = destination._count?.safaris || destination.safaris?.length || 0;
               
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity group-hover:from-black/90" />
-              
-              {/* Content */}
-              <div className="absolute inset-0 flex flex-col justify-end p-6">
-                <div className="transform transition-transform duration-300 group-hover:-translate-y-2">
-                  <div className="flex items-center gap-2 text-orange-400 mb-2">
-                    <MapPin size={18} />
-                    <span className="text-sm font-medium">
-                      {destination.tripCount} Safaris
-                    </span>
+              return (
+                <motion.div
+                  key={destination.id}
+                  variants={itemVariants}
+                  className="group relative h-80 rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-shadow"
+                >
+                  {/* Background Image */}
+                  <Image
+                    src={imageUrl}
+                    alt={destination.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  />
+                  
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity group-hover:from-black/90" />
+                  
+                  {/* Content */}
+                  <div className="absolute inset-0 flex flex-col justify-end p-6">
+                    <div className="transform transition-transform duration-300 group-hover:-translate-y-2">
+                      <div className="flex items-center gap-2 text-orange-400 mb-2">
+                        <MapPin size={18} />
+                        <span className="text-sm font-medium">
+                          {safariCount} Safari{safariCount !== 1 ? 's' : ''}
+                        </span>
+                      </div>
+                      <h3 className="text-2xl font-bold text-white mb-2">
+                        {destination.name}
+                      </h3>
+                      <p className="text-white/80 text-sm mb-4 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {destination.tagline || destination.description}
+                      </p>
+                      <Link
+                        href={`/destinations/${destination.slug}`}
+                        className="inline-flex items-center gap-2 text-white font-medium hover:text-orange-400 transition-colors"
+                      >
+                        Explore
+                        <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+                      </Link>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">
-                    {destination.name}
-                  </h3>
-                  <p className="text-white/80 text-sm mb-4 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {destination.description}
-                  </p>
-                  <Link
-                    href={destination.href}
-                    className="inline-flex items-center gap-2 text-white font-medium hover:text-orange-400 transition-colors"
-                  >
-                    Explore
-                    <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No destinations available at the moment.</p>
+          </div>
+        )}
 
         {/* View All Button */}
         <motion.div

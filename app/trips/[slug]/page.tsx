@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { getSafariImage, getDestinationHeroImage } from "@/lib/imageMapping";
 import { 
   Clock, 
   MapPin, 
@@ -72,6 +73,9 @@ export default async function TripPage({ params }: TripPageProps) {
     notFound();
   }
 
+  // Get mapped image
+  const safariImage = getSafariImage(safari);
+
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
@@ -94,7 +98,7 @@ export default async function TripPage({ params }: TripPageProps) {
       {/* Hero Section */}
       <section className="relative h-[70vh] min-h-[600px]">
         <Image
-          src={safari.image || '/images/placeholder-safari.jpg'}
+          src={safariImage}
           alt={safari.title}
           fill
           className="object-cover"
@@ -225,32 +229,53 @@ export default async function TripPage({ params }: TripPageProps) {
               </div>
 
               {/* Gallery */}
-              {safari.gallery && safari.gallery.length > 0 && (
-                <div className="mb-12">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
-                    Photo Gallery
-                  </h3>
-                  <div className="grid grid-cols-3 gap-4">
-                    {safari.gallery.slice(0, 6).map((image, index) => (
-                      <div
-                        key={image.id}
-                        className={`relative aspect-[4/3] rounded-xl overflow-hidden group ${
-                          index === 0 ? 'col-span-2 row-span-2' : ''
-                        }`}
-                      >
-                        <Image
-                          src={image.url}
-                          alt={image.alt || `${safari.title} gallery ${index + 1}`}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-110"
-                          sizes={index === 0 ? "(max-width: 768px) 100vw, 40vw" : "(max-width: 768px) 33vw, 15vw"}
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                      </div>
-                    ))}
+              <div className="mb-12">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Photo Gallery
+                </h3>
+                <div className="grid grid-cols-3 gap-4">
+                  {/* Main safari image first */}
+                  <div className="relative aspect-[4/3] rounded-xl overflow-hidden group col-span-2 row-span-2">
+                    <Image
+                      src={safariImage}
+                      alt={safari.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, 40vw"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
                   </div>
+                  {/* Additional gallery images */}
+                  {safari.gallery && safari.gallery.slice(0, 4).map((image, index) => (
+                    <div
+                      key={image.id}
+                      className="relative aspect-[4/3] rounded-xl overflow-hidden group"
+                    >
+                      <Image
+                        src={image.url}
+                        alt={image.alt || `${safari.title} gallery ${index + 1}`}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        sizes="(max-width: 768px) 33vw, 15vw"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                    </div>
+                  ))}
+                  {/* If no gallery, show destination image */}
+                  {(!safari.gallery || safari.gallery.length === 0) && (
+                    <div className="relative aspect-[4/3] rounded-xl overflow-hidden group">
+                      <Image
+                        src={getDestinationHeroImage(safari.destination)}
+                        alt={safari.destination.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        sizes="(max-width: 768px) 33vw, 15vw"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
 
               {/* Itinerary */}
               {safari.itinerary && safari.itinerary.length > 0 && (
@@ -499,7 +524,9 @@ async function RelatedSafaris({ currentSafariId, destinationId }: { currentSafar
           More Safaris in {relatedSafaris[0]?.destination.name}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {relatedSafaris.map((safari) => (
+          {relatedSafaris.map((safari) => {
+            const relatedImage = getSafariImage(safari);
+            return (
             <Link
               key={safari.id}
               href={`/trips/${safari.slug}`}
@@ -507,7 +534,7 @@ async function RelatedSafaris({ currentSafariId, destinationId }: { currentSafar
             >
               <div className="relative h-48 overflow-hidden">
                 <Image
-                  src={safari.image || '/images/placeholder-safari.jpg'}
+                  src={relatedImage}
                   alt={safari.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -528,7 +555,8 @@ async function RelatedSafaris({ currentSafariId, destinationId }: { currentSafar
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
