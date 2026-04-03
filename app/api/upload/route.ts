@@ -1,43 +1,41 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-// Upload image to imgbb
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
     const formData = await req.formData();
-    const image = formData.get('image') as File;
+    const file = formData.get('file') as File;
     
-    if (!image) {
-      return NextResponse.json({ error: 'No image provided' }, { status: 400 });
+    if (!file) {
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
-    
-    // Convert file to base64
-    const bytes = await image.arrayBuffer();
+
+    // Convert to base64
+    const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const base64Image = buffer.toString('base64');
+    const base64 = buffer.toString('base64');
+
+    // Upload to ImgBB
+    const imgbbForm = new FormData();
+    imgbbForm.append('image', base64);
     
-    // Upload to imgbb
-    const apiKey = process.env.IMGBB_API_KEY;
-    const uploadFormData = new FormData();
-    uploadFormData.append('image', base64Image);
-    
-    const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`, {
       method: 'POST',
-      body: uploadFormData,
+      body: imgbbForm,
     });
     
-    const data = await response.json();
+    const data = await res.json();
     
     if (!data.success) {
-      return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
+      throw new Error(data.error?.message || 'Upload failed');
     }
+
+    // Ensure URL is properly encoded (handles spaces/special chars in filenames)
+    const rawUrl = data.data.url;
+    const encodedUrl = rawUrl.replace(/ /g, '%20');
     
-    return NextResponse.json({
-      url: data.data.url,
-      thumb: data.data.thumb?.url || data.data.url,
-      deleteUrl: data.data.delete_url,
-    });
+    return NextResponse.json({ url: encodedUrl });
   } catch (error) {
-    console.error('Error uploading image:', error);
-    return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
+    console.error('Upload error:', error);
+    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
   }
 }

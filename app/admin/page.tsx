@@ -4,7 +4,7 @@ import { FaNewspaper, FaPlane, FaMapMarkerAlt, FaEye } from 'react-icons/fa';
 
 async function getStats() {
   const [blogCount, safariCount, destinationCount] = await Promise.all([
-    prisma.blogPost.count(),
+    prisma.post.count(),
     prisma.safari.count(),
     prisma.destination.count(),
   ]);
@@ -13,7 +13,7 @@ async function getStats() {
 }
 
 async function getRecentPosts() {
-  return prisma.blogPost.findMany({
+  return prisma.post.findMany({
     take: 5,
     orderBy: { createdAt: 'desc' },
   });

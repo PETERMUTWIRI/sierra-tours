@@ -75,7 +75,7 @@ export default function BlogPostForm({ post, onSubmit }: BlogPostFormProps) {
     setUploading(true);
     try {
       const uploadFormData = new FormData();
-      uploadFormData.append('image', file);
+      uploadFormData.append('file', file);
 
       const res = await fetch('/api/upload', {
         method: 'POST',

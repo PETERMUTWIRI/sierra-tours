@@ -7,25 +7,55 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model BlogPost {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  excerpt     String
-  content     String   @db.Text
-  image       String
-  author      String
-  category    String
-  published   Boolean  @default(false)
-  featured    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  publishedAt DateTime?
+model Post {
+  id                Int       @id @default(autoincrement())
+  title             String    @db.VarChar(255)
+  slug              String    @unique
+  subtitle          String?   @db.VarChar(500)
+  content           String    @db.Text
+  excerpt           String?   @db.VarChar(500)
+  category          String    @db.VarChar(100)
+  cover             String?   @db.VarChar(500)
+  coverCaption      String?   @db.Text
+  coverPhotographer String?   @db.VarChar(255)
+  published         Boolean   @default(false)
+  publishedAt       DateTime?
+  featured          Boolean   @default(false)
+  featuredQuote     String?   @db.Text
+  isPressRelease    Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  author            String?   @db.VarChar(255)
+  authorTitle       String?   @db.VarChar(255)
+  deletedAt         DateTime? @db.Timestamp(6)
 
+  // SEO Fields
+  metaTitle         String?   @db.VarChar(100)
+  metaDesc          String?   @db.VarChar(160)
+  ogImage           String?   @db.VarChar(500)
+
+  // Article Metadata
+  readingTime       Int?      @default(0)
+  wordCount         Int?      @default(0)
+  tags              String[]  @default([])
+
+  // Location (for travel content)
+  location          String?   @db.VarChar(255)
+  country           String?   @db.VarChar(100)
+
+  // Inline Images (stored as JSON)
+  inlineImages      Json?
+
+  @@unique([slug, deletedAt])
   @@index([slug])
-  @@index([published])
   @@index([category])
-  @@map("blog_posts")
+  @@index([publishedAt])
+  @@index([featured])
+  @@index([deletedAt])
+  @@index([published, deletedAt])
+  @@index([country])
+  @@index([tags])
+  @@map("posts")
 }
 
 model Destination {

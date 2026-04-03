@@ -8,8 +8,8 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const post = await prisma.blogPost.findUnique({
-      where: { id },
+    const post = await prisma.post.findUnique({
+      where: { id: parseInt(id) },
     });
     
     if (!post) {
@@ -41,14 +41,14 @@ export async function PUT(
         .replace(/^-+|-+$/g, '');
       
       // Check if slug exists and belongs to different post
-      const existing = await prisma.blogPost.findUnique({ where: { slug } });
-      if (existing && existing.id !== id) {
+      const existing = await prisma.post.findUnique({ where: { slug } });
+      if (existing && existing.id !== parseInt(id)) {
         return NextResponse.json({ error: 'A post with this title already exists' }, { status: 400 });
       }
     }
     
-    const post = await prisma.blogPost.update({
-      where: { id },
+    const post = await prisma.post.update({
+      where: { id: parseInt(id) },
       data: {
         ...data,
         slug,
@@ -71,7 +71,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    await prisma.blogPost.delete({ where: { id } });
+    await prisma.post.delete({ where: { id: parseInt(id) } });
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting blog post:', error);

@@ -120,7 +120,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
     setUploading(true);
     try {
       const uploadFormData = new FormData();
-      uploadFormData.append('image', file);
+      uploadFormData.append('file', file);
 
       const res = await fetch('/api/upload', {
         method: 'POST',

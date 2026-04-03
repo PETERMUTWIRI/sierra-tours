@@ -230,7 +230,7 @@ async function seed() {
   await prisma.popularPark.deleteMany();
   await prisma.safari.deleteMany();
   await prisma.destination.deleteMany();
-  await prisma.blogPost.deleteMany();
+  await prisma.post.deleteMany();
   console.log('✅ Cleared existing data\n');
 
   // Seed destinations
@@ -311,9 +311,10 @@ async function seed() {
       title: "Top 10 Safari Destinations in Kenya",
       excerpt: "Discover the best wildlife viewing spots in Kenya, from the iconic Masai Mara to the hidden gems of Samburu.",
       content: "<p>Kenya is the birthplace of the safari, offering some of the most incredible wildlife experiences on Earth...</p>",
-      image: "/images/safaris/other/sierra-tours-and-safaris-kenya-safaris-image01-rbamx9reyz8y64l8g8d7yqeb9e95i3mkhgvfivup3c.jpg",
+      cover: "/images/safaris/other/sierra-tours-and-safaris-kenya-safaris-image01-rbamx9reyz8y64l8g8d7yqeb9e95i3mkhgvfivup3c.jpg",
       author: "John Safari",
-      category: "Kenya",
+      category: "Destination Guides",
+      country: "Kenya",
       published: true,
       featured: true,
     },
@@ -321,9 +322,10 @@ async function seed() {
       title: "The Great Migration: A Complete Guide",
       excerpt: "Everything you need to know about witnessing the world's greatest wildlife spectacle in Tanzania and Kenya.",
       content: "<p>The Great Migration is one of nature's most spectacular events, involving over 1.5 million wildebeest...</p>",
-      image: "/images/safaris/other/sierra-tours-and-safaris-7DAYS06NIGHT-TARANGIRE-NGORONGORO-SERENGETI-Group-tour-image03-ra1pcbh1j4lg3dxna0os6fw62mygbuxdtr0cssxrj4.jpg",
+      cover: "/images/safaris/other/sierra-tours-and-safaris-7DAYS06NIGHT-TARANGIRE-NGORONGORO-SERENGETI-Group-tour-image03-ra1pcbh1j4lg3dxna0os6fw62mygbuxdtr0cssxrj4.jpg",
       author: "Sarah Explorer",
-      category: "Tanzania",
+      category: "Safari Guides",
+      country: "Tanzania",
       published: true,
       featured: false,
     },
@@ -331,16 +333,17 @@ async function seed() {
       title: "Luxury Safari Lodges in Botswana",
       excerpt: "Experience the ultimate in safari luxury at these exclusive lodges in the Okavango Delta and Chobe.",
       content: "<p>Botswana is renowned for its exclusive safari experiences and luxurious accommodations...</p>",
-      image: "/images/safaris/botswana/sierra-tours-and-safaris-botswana-safaris-image01-rae4xy0bfoxnp5zs0q0hvq2fjiy1hbwlkskzwr3qu8.jpeg",
+      cover: "/images/safaris/botswana/sierra-tours-and-safaris-botswana-safaris-image01-rae4xy0bfoxnp5zs0q0hvq2fjiy1hbwlkskzwr3qu8.jpeg",
       author: "Michael Wilderness",
-      category: "Botswana",
+      category: "Accommodation Reviews",
+      country: "Botswana",
       published: true,
       featured: false,
     },
   ];
 
   for (const post of blogPosts) {
-    await prisma.blogPost.create({
+    await prisma.post.create({
       data: {
         ...post,
         slug: post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
