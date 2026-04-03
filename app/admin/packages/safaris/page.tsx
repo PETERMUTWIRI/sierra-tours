@@ -22,6 +22,11 @@ interface PackageSafari {
     slug: string;
     category: string;
   };
+  destination?: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
   _count: {
     itinerary: number;
     gallery: number;
@@ -188,6 +193,8 @@ export default function PackageSafarisAdmin() {
                     className={`px-2 py-0.5 text-xs rounded ${
                       safari.packageType.category === "THEMED"
                         ? "bg-[#D32F2F]/10 text-[#D32F2F]"
+                        : safari.packageType.category === "SAFARI"
+                        ? "bg-[#F5A623]/10 text-[#F5A623]"
                         : "bg-[#11A560]/10 text-[#11A560]"
                     }`}
                   >
@@ -204,6 +211,11 @@ export default function PackageSafarisAdmin() {
                     <MapPin size={14} />
                     {safari.location}
                   </span>
+                  {safari.destination && (
+                    <span className="flex items-center gap-1 text-[#11A560]">
+                      {safari.destination.name}
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                   <span className="font-semibold text-[#11A560]">

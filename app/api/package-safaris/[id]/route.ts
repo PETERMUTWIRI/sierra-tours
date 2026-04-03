@@ -16,6 +16,7 @@ const packageSafariSchema = z.object({
   title: z.string().min(1, "Title is required"),
   slug: z.string().min(1, "Slug is required").regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens"),
   packageTypeId: z.string().min(1, "Package type is required"),
+  destinationId: z.string().optional(),
   duration: z.string().min(1, "Duration is required"),
   price: z.number().min(0, "Price must be positive"),
   priceFrom: z.boolean().default(true),
@@ -46,6 +47,13 @@ export async function GET(
       where: { id },
       include: {
         packageType: true,
+        destination: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
         itinerary: {
           orderBy: { day: "asc" },
         },

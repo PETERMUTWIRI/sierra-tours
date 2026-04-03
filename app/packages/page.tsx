@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/db";
 import { ArrowRight, Package } from "lucide-react";
-import { Heart, Ship, Gift, Star, Palmtree, Trees, Calendar } from "lucide-react";
+import { Heart, Ship, Gift, Star, Palmtree, Trees, Calendar, Mountain, Bike, Footprints, Bird, Waves, Compass } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Themed Holiday Packages | Sierra Tours & Safaris",
@@ -20,6 +20,12 @@ const iconMap: Record<string, React.ElementType> = {
   Trees,
   Calendar,
   Package,
+  Mountain,
+  Bike,
+  Footprints,
+  Bird,
+  Waves,
+  Compass,
 };
 
 async function getPackageTypes() {
@@ -54,6 +60,7 @@ export default async function PackagesPage() {
   ]);
 
   const themedTypes = packageTypes.filter((pt) => pt.category === "THEMED");
+  const safariTypes = packageTypes.filter((pt) => pt.category === "SAFARI");
   const localTypes = packageTypes.filter((pt) => pt.category === "LOCAL");
 
   return (
@@ -138,6 +145,63 @@ export default async function PackagesPage() {
                         </span>
                         <span className="flex items-center gap-2 text-[#D32F2F] font-medium group-hover:gap-3 transition-all">
                           Explore <ArrowRight size={18} />
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Safari Experiences Section */}
+      {safariTypes.length > 0 && (
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center gap-2 mb-8">
+              <span className="w-2 h-2 bg-[#F5A623] rounded-full"></span>
+              <span className="text-sm font-medium text-slate-600 uppercase tracking-wider">Safari Experiences</span>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {safariTypes.map((type) => {
+                const IconComponent = type.icon ? iconMap[type.icon] || Package : Package;
+                return (
+                  <Link
+                    key={type.id}
+                    href={`/packages/${type.slug}`}
+                    className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+                  >
+                    <div className="relative h-48 overflow-hidden">
+                      <Image
+                        src={type.image || "/images/destinations/default.jpg"}
+                        alt={type.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                      <div className="absolute top-4 left-4">
+                        <div className="w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center">
+                          <IconComponent className="w-5 h-5 text-[#F5A623]" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-[#1A1A1A] mb-2 group-hover:text-[#D32F2F] transition-colors">
+                        {type.name}
+                      </h3>
+                      {type.description && (
+                        <p className="text-gray-600 text-sm mb-4">{type.description}</p>
+                      )}
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-500">
+                          {type._count.safaris} package{type._count.safaris !== 1 ? "s" : ""}
+                        </span>
+                        <span className="text-[#F5A623] font-medium group-hover:text-[#D32F2F] transition-colors">
+                          View All →
                         </span>
                       </div>
                     </div>

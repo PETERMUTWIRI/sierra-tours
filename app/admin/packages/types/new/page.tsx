@@ -23,7 +23,7 @@ export default function NewPackageType() {
     name: "",
     slug: "",
     description: "",
-    category: "THEMED" as "THEMED" | "LOCAL",
+    category: "THEMED" as "THEMED" | "LOCAL" | "SAFARI",
     icon: "Package",
     image: "",
     order: 0,
@@ -96,7 +96,7 @@ export default function NewPackageType() {
           </Link>
           <div>
             <h1 className="text-3xl font-bold text-[#1A1A1A]">New Package Type</h1>
-            <p className="text-gray-600 mt-1">Create a new themed holiday or local package category</p>
+            <p className="text-gray-600 mt-1">Create a new themed holiday, local package, or safari category</p>
           </div>
         </div>
 

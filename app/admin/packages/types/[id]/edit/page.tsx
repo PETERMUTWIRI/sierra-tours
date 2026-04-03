@@ -29,7 +29,7 @@ export default function EditPackageType({ params }: PageProps) {
     name: "",
     slug: "",
     description: "",
-    category: "THEMED" as "THEMED" | "LOCAL",
+    category: "THEMED" as "THEMED" | "LOCAL" | "SAFARI",
     icon: "Package",
     image: "",
     order: 0,

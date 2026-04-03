@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, Plus, Trash2, GripVertical } from "lucide-react";
 
@@ -25,12 +25,42 @@ interface ItineraryDay {
   activities: string[];
 }
 
-export default function NewPackageSafari() {
+interface PackageSafari {
+  id: string;
+  title: string;
+  slug: string;
+  packageTypeId: string;
+  destinationId?: string;
+  duration: string;
+  price: number;
+  priceFrom: boolean;
+  currency: string;
+  excerpt: string;
+  description: string;
+  location: string;
+  image: string;
+  groupSize: string;
+  accommodation: string;
+  published: boolean;
+  featured: boolean;
+  order: number;
+  highlights: string[];
+  includes: string[];
+  excludes: string[];
+  itinerary: ItineraryDay[];
+}
+
+export default function EditPackageSafari() {
   const router = useRouter();
+  const params = useParams();
+  const safariId = params.id as string;
+
   const [loading, setLoading] = useState(false);
+  const [fetchLoading, setFetchLoading] = useState(true);
   const [packageTypes, setPackageTypes] = useState<PackageType[]>([]);
   const [destinations, setDestinations] = useState<Destination[]>([]);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<PackageSafari>({
+    id: "",
     title: "",
     slug: "",
     packageTypeId: "",
@@ -48,17 +78,18 @@ export default function NewPackageSafari() {
     published: true,
     featured: false,
     order: 0,
-    highlights: [] as string[],
-    includes: [] as string[],
-    excludes: [] as string[],
-    itinerary: [] as ItineraryDay[],
+    highlights: [],
+    includes: [],
+    excludes: [],
+    itinerary: [],
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchPackageTypes();
     fetchDestinations();
-  }, []);
+    fetchSafari();
+  }, [safariId]);
 
   const fetchPackageTypes = async () => {
     try {
@@ -66,9 +97,6 @@ export default function NewPackageSafari() {
       if (response.ok) {
         const data = await response.json();
         setPackageTypes(data.filter((pt: PackageType) => pt.category));
-        if (data.length > 0) {
-          setFormData((prev) => ({ ...prev, packageTypeId: data[0].id }));
-        }
       }
     } catch (error) {
       console.error("Error fetching package types:", error);
@@ -84,6 +112,31 @@ export default function NewPackageSafari() {
       }
     } catch (error) {
       console.error("Error fetching destinations:", error);
+    }
+  };
+
+  const fetchSafari = async () => {
+    try {
+      const response = await fetch(`/api/package-safaris/${safariId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setFormData({
+          ...data,
+          highlights: data.highlights || [],
+          includes: data.includes || [],
+          excludes: data.excludes || [],
+          itinerary: data.itinerary || [],
+        });
+      } else {
+        alert("Failed to load safari package");
+        router.push("/admin/packages/safaris");
+      }
+    } catch (error) {
+      console.error("Error fetching safari:", error);
+      alert("Failed to load safari package");
+      router.push("/admin/packages/safaris");
+    } finally {
+      setFetchLoading(false);
     }
   };
 
@@ -177,8 +230,8 @@ export default function NewPackageSafari() {
 
     setLoading(true);
     try {
-      const response = await fetch("/api/package-safaris", {
-        method: "POST",
+      const response = await fetch(`/api/package-safaris/${safariId}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
@@ -187,15 +240,23 @@ export default function NewPackageSafari() {
         router.push("/admin/packages/safaris");
       } else {
         const data = await response.json();
-        alert(data.error || "Failed to create safari package");
+        alert(data.error || "Failed to update safari package");
       }
     } catch (error) {
-      console.error("Error creating safari:", error);
-      alert("Failed to create safari package");
+      console.error("Error updating safari:", error);
+      alert("Failed to update safari package");
     } finally {
       setLoading(false);
     }
   };
+
+  if (fetchLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#11A560]"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -209,8 +270,8 @@ export default function NewPackageSafari() {
             <ArrowLeft size={24} />
           </Link>
           <div>
-            <h1 className="text-3xl font-bold text-[#1A1A1A]">New Safari Package</h1>
-            <p className="text-gray-600 mt-1">Create a new safari within a package type</p>
+            <h1 className="text-3xl font-bold text-[#1A1A1A]">Edit Safari Package</h1>
+            <p className="text-gray-600 mt-1">Update safari package details</p>
           </div>
         </div>
 
@@ -243,7 +304,7 @@ export default function NewPackageSafari() {
                   Destination <span className="text-[#D32F2F]">*</span>
                 </label>
                 <select
-                  value={formData.destinationId}
+                  value={formData.destinationId || ""}
                   onChange={(e) => setFormData({ ...formData, destinationId: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#11A560]"
                   required
@@ -255,6 +316,7 @@ export default function NewPackageSafari() {
                     </option>
                   ))}
                 </select>
+                {errors.destinationId && <p className="text-red-500 text-sm mt-1">{errors.destinationId}</p>}
               </div>
 
               <div>
@@ -466,7 +528,7 @@ export default function NewPackageSafari() {
           {/* Includes */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-[#1A1A1A]">What's Included</h2>
+              <h2 className="text-lg font-semibold text-[#1A1A1A]">What&apos;s Included</h2>
               <button
                 type="button"
                 onClick={() => addListItem("includes")}
@@ -501,7 +563,7 @@ export default function NewPackageSafari() {
           {/* Excludes */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-[#1A1A1A]">What's Excluded</h2>
+              <h2 className="text-lg font-semibold text-[#1A1A1A]">What&apos;s Excluded</h2>
               <button
                 type="button"
                 onClick={() => addListItem("excludes")}
@@ -629,7 +691,7 @@ export default function NewPackageSafari() {
               className="inline-flex items-center gap-2 px-8 py-3 bg-[#11A560] text-white font-semibold rounded-lg hover:bg-[#0E8A50] transition-colors disabled:opacity-50"
             >
               <Save size={20} />
-              {loading ? "Creating..." : "Create Safari Package"}
+              {loading ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>

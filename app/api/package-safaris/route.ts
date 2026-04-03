@@ -15,6 +15,7 @@ const packageSafariSchema = z.object({
   title: z.string().min(1, "Title is required"),
   slug: z.string().min(1, "Slug is required").regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens"),
   packageTypeId: z.string().min(1, "Package type is required"),
+  destinationId: z.string().optional(),
   duration: z.string().min(1, "Duration is required"),
   price: z.number().min(0, "Price must be positive"),
   priceFrom: z.boolean().default(true),
@@ -39,11 +40,13 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const packageTypeId = searchParams.get("packageTypeId");
+    const destinationId = searchParams.get("destinationId");
     const published = searchParams.get("published");
     const featured = searchParams.get("featured");
 
     const where: any = {};
     if (packageTypeId) where.packageTypeId = packageTypeId;
+    if (destinationId) where.destinationId = destinationId;
     if (published !== null) where.published = published === "true";
     if (featured !== null) where.featured = featured === "true";
 
@@ -56,6 +59,13 @@ export async function GET(request: NextRequest) {
             name: true,
             slug: true,
             category: true,
+          },
+        },
+        destination: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
           },
         },
         _count: {

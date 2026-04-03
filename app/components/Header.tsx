@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Menu, X, Phone, Heart, Palmtree, Gift, Star, Ship, Home, Trees, Calendar } from "lucide-react";
+import {
+  Search, Menu, X, Phone, Heart, Palmtree, Gift, Star, Ship,
+  Home, Trees, Calendar, Globe, Mountain, Bike, Footprints,
+  Bird, Waves, Compass, MapPin, ArrowRight, ChevronDown,
+} from "lucide-react";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import Logo from "./Logo";
 
@@ -17,46 +21,43 @@ const COLORS = {
   red: "#D32F2F",
 };
 
-// Themed Holidays Data
-const themedHolidays = [
-  {
-    title: "Honeymoon Packages",
-    href: "/packages/honeymoon",
-    icon: Heart,
-    description: "Romantic getaways for newlyweds",
-    image: "/images/destinations/diani-beach.jpg",
-  },
-  {
-    title: "Valentine's Day",
-    href: "/packages/valentine",
-    icon: Heart,
-    description: "Special love-themed safaris",
-    image: "/images/destinations/maasai-mara-sunset.jpg",
-  },
-  {
-    title: "Best of Cruise",
-    href: "/packages/cruise",
-    icon: Ship,
-    description: "Luxury cruise adventures",
-    image: "/images/destinations/lake-naivasha.jpg",
-  },
-  {
-    title: "Christmas Packages",
-    href: "/packages/christmas",
-    icon: Gift,
-    description: "Festive season safaris",
-    image: "/images/destinations/amboseli-elephants.jpg",
-  },
-  {
-    title: "Luxury Safaris",
-    href: "/packages/luxury",
-    icon: Star,
-    description: "Premium safari experiences",
-    image: "/images/destinations/serengeti-migration.jpg",
-  },
-];
+// Icon mapping for dynamic package types
+const iconMap: Record<string, React.ElementType> = {
+  Heart,
+  Ship,
+  Gift,
+  Star,
+  Palmtree,
+  Trees,
+  Calendar,
+  Globe,
+  Mountain,
+  Bike,
+  Footprints,
+  Bird,
+  Waves,
+  Compass,
+  Home,
+};
 
-// Local Packages Data
+interface DestinationItem {
+  id: string;
+  name: string;
+  slug: string;
+  _count?: { safaris: number };
+}
+
+interface PackageTypeItem {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  icon?: string | null;
+  category: string;
+  _count?: { safaris: number };
+}
+
+// Local Packages Data (static)
 const localPackages = {
   beach: {
     title: "Beach Packages",
@@ -93,16 +94,26 @@ const localPackages = {
 const mainNavItems = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Destinations", href: "/destinations" },
-  { label: "Safaris", href: "/safaris" },
-  { 
-    label: "Themed Holidays", 
+  {
+    label: "Destinations",
+    href: "/destinations",
+    hasMegaMenu: true,
+    megaMenuType: "destinations",
+  },
+  {
+    label: "Safaris",
+    href: "/safaris",
+    hasMegaMenu: true,
+    megaMenuType: "safaris",
+  },
+  {
+    label: "Themed Holidays",
     href: "/packages",
     hasMegaMenu: true,
     megaMenuType: "themed",
   },
-  { 
-    label: "Local Packages", 
+  {
+    label: "Local Packages",
     href: "/packages/local",
     hasMegaMenu: true,
     megaMenuType: "local",
@@ -115,6 +126,45 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
+  const [destinations, setDestinations] = useState<DestinationItem[]>([]);
+  const [themedHolidays, setThemedHolidays] = useState<PackageTypeItem[]>([]);
+  const [safariTypes, setSafariTypes] = useState<PackageTypeItem[]>([]);
+
+  useEffect(() => {
+    fetchDestinations();
+    fetchPackageTypes();
+  }, []);
+
+  const fetchDestinations = async () => {
+    try {
+      const res = await fetch("/api/destinations");
+      if (res.ok) {
+        const data = await res.json();
+        setDestinations(data);
+      }
+    } catch (error) {
+      console.error("Error fetching destinations:", error);
+    }
+  };
+
+  const fetchPackageTypes = async () => {
+    try {
+      const [themedRes, safariRes] = await Promise.all([
+        fetch("/api/package-types?category=THEMED"),
+        fetch("/api/package-types?category=SAFARI"),
+      ]);
+      if (themedRes.ok) {
+        const data = await themedRes.json();
+        setThemedHolidays(data);
+      }
+      if (safariRes.ok) {
+        const data = await safariRes.json();
+        setSafariTypes(data);
+      }
+    } catch (error) {
+      console.error("Error fetching package types:", error);
+    }
+  };
 
   return (
     <header className="relative z-50">
@@ -172,11 +222,11 @@ export default function Header() {
 
               {/* Phone Number */}
               <a
-                href="tel:+254123456789"
+                href="tel:+254725162916"
                 className="hidden md:flex items-center gap-2 text-[#D32F2F] hover:text-[#11A560] transition-colors"
               >
                 <Phone size={18} />
-                <span className="font-semibold">+254 123 456 789</span>
+                <span className="font-semibold">+254 725 162 916</span>
               </a>
 
               {/* Search Button */}
@@ -248,13 +298,108 @@ export default function Header() {
                   >
                     {item.label}
                     {item.hasMegaMenu && (
-                      <svg className="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
+                      <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
                     )}
                     {/* Underline animation */}
                     <span className="absolute bottom-3 left-4 right-4 h-0.5 bg-[#F5A623] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                   </Link>
+
+                  {/* Destinations Mega Menu */}
+                  {item.megaMenuType === "destinations" && activeMegaMenu === "destinations" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute top-full left-0 w-[700px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
+                    >
+                      <div className="p-6">
+                        <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
+                          <Globe className="w-5 h-5 text-[#D32F2F]" />
+                          <h3 className="text-lg font-bold text-[#1A1A1A]">Explore Destinations</h3>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          {destinations.map((dest) => (
+                            <Link
+                              key={dest.id}
+                              href={`/destinations/${dest.slug}`}
+                              className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                            >
+                              <div className="w-10 h-10 rounded-lg bg-[#11A560]/10 flex items-center justify-center group-hover:bg-[#11A560] transition-colors">
+                                <MapPin className="w-5 h-5 text-[#11A560] group-hover:text-white transition-colors" />
+                              </div>
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-[#1A1A1A] group-hover:text-[#D32F2F] transition-colors">
+                                  {dest.name}
+                                </h4>
+                                <p className="text-xs text-gray-500">
+                                  {dest._count?.safaris || 0} Safari{dest._count?.safaris !== 1 ? 's' : ''}
+                                </p>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-gray-100">
+                          <Link
+                            href="/destinations"
+                            className="inline-flex items-center gap-2 text-[#11A560] font-medium hover:text-[#D32F2F] transition-colors"
+                          >
+                            View All Destinations
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Safaris Mega Menu */}
+                  {item.megaMenuType === "safaris" && activeMegaMenu === "safaris" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute top-full left-0 w-[700px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
+                    >
+                      <div className="p-6">
+                        <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
+                          <Compass className="w-5 h-5 text-[#D32F2F]" />
+                          <h3 className="text-lg font-bold text-[#1A1A1A]">Safari Experiences</h3>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          {safariTypes.map((safariType) => {
+                            const IconComponent = safariType.icon ? iconMap[safariType.icon] || Compass : Compass;
+                            return (
+                              <Link
+                                key={safariType.id}
+                                href={`/packages/${safariType.slug}`}
+                                className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                              >
+                                <div className="w-10 h-10 rounded-lg bg-[#11A560]/10 flex items-center justify-center group-hover:bg-[#11A560] transition-colors">
+                                  <IconComponent className="w-5 h-5 text-[#11A560] group-hover:text-white transition-colors" />
+                                </div>
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-[#1A1A1A] group-hover:text-[#D32F2F] transition-colors">
+                                    {safariType.name}
+                                  </h4>
+                                  <p className="text-xs text-gray-500">
+                                    {safariType._count?.safaris || 0} Packages
+                                  </p>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-gray-100">
+                          <Link
+                            href="/safaris"
+                            className="inline-flex items-center gap-2 text-[#11A560] font-medium hover:text-[#D32F2F] transition-colors"
+                          >
+                            View All Safaris
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
 
                   {/* Themed Holidays Mega Menu */}
                   {item.megaMenuType === "themed" && activeMegaMenu === "themed" && (
@@ -262,31 +407,36 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 w-[600px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
+                      className="absolute top-full left-0 w-[700px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
                     >
                       <div className="p-6">
                         <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
                           <Gift className="w-5 h-5 text-[#D32F2F]" />
                           <h3 className="text-lg font-bold text-[#1A1A1A]">Themed Holidays</h3>
                         </div>
-                        <div className="grid grid-cols-1 gap-3">
-                          {themedHolidays.map((holiday) => (
-                            <Link
-                              key={holiday.title}
-                              href={holiday.href}
-                              className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
-                            >
-                              <div className="w-12 h-12 rounded-lg bg-[#11A560]/10 flex items-center justify-center group-hover:bg-[#11A560] transition-colors">
-                                <holiday.icon className="w-6 h-6 text-[#11A560] group-hover:text-white transition-colors" />
-                              </div>
-                              <div>
-                                <h4 className="font-semibold text-[#1A1A1A] group-hover:text-[#D32F2F] transition-colors">
-                                  {holiday.title}
-                                </h4>
-                                <p className="text-sm text-gray-500">{holiday.description}</p>
-                              </div>
-                            </Link>
-                          ))}
+                        <div className="grid grid-cols-2 gap-4">
+                          {themedHolidays.map((holiday) => {
+                            const IconComponent = holiday.icon ? iconMap[holiday.icon] || Star : Star;
+                            return (
+                              <Link
+                                key={holiday.id}
+                                href={`/packages/${holiday.slug}`}
+                                className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                              >
+                                <div className="w-12 h-12 rounded-lg bg-[#11A560]/10 flex items-center justify-center group-hover:bg-[#11A560] transition-colors">
+                                  <IconComponent className="w-6 h-6 text-[#11A560] group-hover:text-white transition-colors" />
+                                </div>
+                                <div>
+                                  <h4 className="font-semibold text-[#1A1A1A] group-hover:text-[#D32F2F] transition-colors">
+                                    {holiday.name}
+                                  </h4>
+                                  <p className="text-sm text-gray-500">
+                                    {holiday.description || `${holiday._count?.safaris || 0} packages available`}
+                                  </p>
+                                </div>
+                              </Link>
+                            );
+                          })}
                         </div>
                         <div className="mt-4 pt-4 border-t border-gray-100">
                           <Link
@@ -294,9 +444,7 @@ export default function Header() {
                             className="inline-flex items-center gap-2 text-[#11A560] font-medium hover:text-[#D32F2F] transition-colors"
                           >
                             View All Themed Packages
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
+                            <ArrowRight className="w-4 h-4" />
                           </Link>
                         </div>
                       </div>
@@ -309,7 +457,7 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 w-[700px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
+                      className="absolute top-full left-0 w-[750px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
                     >
                       <div className="p-6">
                         <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
@@ -386,9 +534,7 @@ export default function Header() {
                             className="inline-flex items-center gap-2 text-[#11A560] font-medium hover:text-[#D32F2F] transition-colors"
                           >
                             View All Local Packages
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
+                            <ArrowRight className="w-4 h-4" />
                           </Link>
                         </div>
                       </div>
@@ -458,23 +604,55 @@ export default function Header() {
                   >
                     {item.label}
                   </Link>
-                  
+
+                  {/* Mobile Submenu for Destinations */}
+                  {item.megaMenuType === "destinations" && (
+                    <div className="bg-[#0A6B3D] px-4 py-2">
+                      {destinations.map((dest) => (
+                        <Link
+                          key={dest.id}
+                          href={`/destinations/${dest.slug}`}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="block py-2 pl-4 text-white/90 hover:text-[#F5A623] transition-colors text-sm"
+                        >
+                          {dest.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Mobile Submenu for Safaris */}
+                  {item.megaMenuType === "safaris" && (
+                    <div className="bg-[#0A6B3D] px-4 py-2">
+                      {safariTypes.map((type) => (
+                        <Link
+                          key={type.id}
+                          href={`/packages/${type.slug}`}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="block py-2 pl-4 text-white/90 hover:text-[#F5A623] transition-colors text-sm"
+                        >
+                          {type.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
                   {/* Mobile Submenu for Themed Holidays */}
                   {item.megaMenuType === "themed" && (
                     <div className="bg-[#0A6B3D] px-4 py-2">
                       {themedHolidays.map((holiday) => (
                         <Link
-                          key={holiday.title}
-                          href={holiday.href}
+                          key={holiday.id}
+                          href={`/packages/${holiday.slug}`}
                           onClick={() => setIsMobileMenuOpen(false)}
                           className="block py-2 pl-4 text-white/90 hover:text-[#F5A623] transition-colors text-sm"
                         >
-                          {holiday.title}
+                          {holiday.name}
                         </Link>
                       ))}
                     </div>
                   )}
-                  
+
                   {/* Mobile Submenu for Local Packages */}
                   {item.megaMenuType === "local" && (
                     <div className="bg-[#0A6B3D] px-4 py-2">

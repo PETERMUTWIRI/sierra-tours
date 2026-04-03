@@ -13,7 +13,7 @@ interface PackageType {
   name: string;
   slug: string;
   description: string | null;
-  category: "THEMED" | "LOCAL";
+  category: "THEMED" | "LOCAL" | "SAFARI";
   icon: string | null;
   order: number;
   published: boolean;
@@ -89,6 +89,7 @@ export default function PackageTypesAdmin() {
   );
 
   const themedTypes = filteredTypes.filter((pt) => pt.category === "THEMED");
+  const safariTypes = filteredTypes.filter((pt) => pt.category === "SAFARI");
   const localTypes = filteredTypes.filter((pt) => pt.category === "LOCAL");
 
   if (loading) {
@@ -106,7 +107,7 @@ export default function PackageTypesAdmin() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-[#1A1A1A]">Package Types</h1>
-            <p className="text-gray-600 mt-1">Manage themed holidays and local packages</p>
+            <p className="text-gray-600 mt-1">Manage themed holidays, safari experiences, and local packages</p>
           </div>
           <Link
             href="/admin/packages/types/new"

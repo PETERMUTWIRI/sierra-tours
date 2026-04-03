@@ -101,7 +101,11 @@ export default async function PackageTypePage({ params }: PageProps) {
               <IconComponent className="w-7 h-7 text-[#F5A623]" />
             </div>
             <span className="px-3 py-1 bg-[#D32F2F]/20 text-[#F5A623] text-sm font-medium rounded-full border border-[#D32F2F]/30">
-              {packageType.category === "THEMED" ? "Themed Holiday" : "Local Package"}
+              {packageType.category === "THEMED"
+                ? "Themed Holiday"
+                : packageType.category === "LOCAL"
+                ? "Local Package"
+                : "Safari Experience"}
             </span>
           </div>
           

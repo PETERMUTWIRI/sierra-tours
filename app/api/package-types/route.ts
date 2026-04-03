@@ -6,7 +6,7 @@ const packageTypeSchema = z.object({
   name: z.string().min(1, "Name is required"),
   slug: z.string().min(1, "Slug is required").regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens"),
   description: z.string().optional(),
-  category: z.enum(["THEMED", "LOCAL"]),
+  category: z.enum(["THEMED", "LOCAL", "SAFARI"]),
   icon: z.string().optional(),
   image: z.string().optional(),
   order: z.number().default(0),
