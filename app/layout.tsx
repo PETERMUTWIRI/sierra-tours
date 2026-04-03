@@ -31,6 +31,13 @@ export const metadata: Metadata = {
     description: "Discover the magic of Africa with our expertly curated safari experiences.",
     type: "website",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

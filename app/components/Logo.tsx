@@ -18,6 +18,16 @@ const sizes = {
   xl: { width: 80, height: 80 },
 };
 
+// Brand colors from logo
+const BRAND_COLORS = {
+  green: "#11A560",      // Palm tree green
+  lime: "#B3CE4D",       // Accent lime/yellow-green
+  sun: "#F5A623",        // Sun orange/yellow
+  black: "#1A1A1A",      // Sierra text
+  red: "#D32F2F",        // TOURS AND SAFARIS red
+  darkGreen: "#0E8A50",  // Darker green for hover
+};
+
 export default function Logo({
   className,
   showTagline = true,
@@ -26,14 +36,13 @@ export default function Logo({
 }: LogoProps) {
   const { width, height } = sizes[size];
 
-  // Use the main logo image
   const logoSrc = "/images/general/logos/sierra-tours-and-safaris-logo.png";
 
   if (variant === "icon-only") {
     return (
       <Link href="/" className={cn("block", className)}>
         <div
-          className="relative bg-[#11A560] rounded-full flex items-center justify-center overflow-hidden"
+          className="relative rounded-full flex items-center justify-center overflow-hidden border-2 border-[#11A560]"
           style={{ width, height }}
         >
           <Image
@@ -57,8 +66,8 @@ export default function Logo({
       {/* Logo Icon */}
       <div
         className={cn(
-          "relative rounded-full flex items-center justify-center overflow-hidden flex-shrink-0",
-          variant === "light" ? "bg-white" : "bg-[#11A560]"
+          "relative rounded-full flex items-center justify-center overflow-hidden flex-shrink-0 border-2",
+          variant === "light" ? "bg-white border-white" : "bg-white border-[#11A560]"
         )}
         style={{ width, height }}
       >
@@ -72,37 +81,41 @@ export default function Logo({
         />
       </div>
 
-      {/* Logo Text */}
-      <div className="flex flex-col">
+      {/* Logo Text - One Line */}
+      <div className="flex items-baseline gap-1.5">
         <span
           className={cn(
-            "font-bold leading-tight",
-            variant === "light" ? "text-white" : "text-gray-900",
+            "font-bold tracking-tight",
+            variant === "light" ? "text-white" : "text-[#1A1A1A]",
             size === "sm" && "text-lg",
             size === "md" && "text-xl",
             size === "lg" && "text-2xl",
             size === "xl" && "text-3xl"
           )}
         >
-          Sierra Tours
+          Sierra
         </span>
         {showTagline && (
           <span
             className={cn(
-              "text-sm font-medium",
-              variant === "light" ? "text-white/80" : "text-[#11A560]",
-              size === "sm" && "text-xs",
-              size === "lg" && "text-base",
-              size === "xl" && "text-lg"
+              "font-bold tracking-wide",
+              variant === "light" ? "text-[#F5A623]" : "text-[#D32F2F]",
+              size === "sm" && "text-lg",
+              size === "md" && "text-xl",
+              size === "lg" && "text-2xl",
+              size === "xl" && "text-3xl"
             )}
           >
-            & Safaris
+            Tours & Safaris
           </span>
         )}
       </div>
     </Link>
   );
 }
+
+// Export brand colors for use in other components
+export { BRAND_COLORS };
 
 // Trust Badge Component
 export function TrustBadge({ className }: { className?: string }) {
@@ -119,7 +132,7 @@ export function TrustBadge({ className }: { className?: string }) {
         {[1, 2, 3, 4, 5].map((star) => (
           <svg
             key={star}
-            className="w-4 h-4 text-[#11A560] fill-current"
+            className="w-4 h-4 text-[#F5A623] fill-current"
             viewBox="0 0 20 20"
           >
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />

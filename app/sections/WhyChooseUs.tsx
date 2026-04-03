@@ -37,6 +37,17 @@ const features = [
   },
 ];
 
+// Brand colors
+const COLORS = {
+  green: "#11A560",
+  darkGreen: "#0E8A50",
+  lime: "#B3CE4D",
+  sun: "#F5A623",
+  black: "#1A1A1A",
+  red: "#D32F2F",
+  redDark: "#B71C1C",
+};
+
 export default function WhyChooseUs() {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -68,10 +79,7 @@ export default function WhyChooseUs() {
           loading="lazy"
           quality={65}
         />
-        {/* Multi-layer overlay for content readability */}
-        {/* Base overlay - light gray to match original design */}
         <div className="absolute inset-0 bg-gray-50/92" />
-        {/* Subtle gradient for depth */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-gray-100/50" />
       </div>
 
@@ -86,7 +94,7 @@ export default function WhyChooseUs() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
               <Image
                 src="/images/hero/sierra-tours-and-travel-luxury-safaris.jpg"
                 alt="Safari Experience"
@@ -101,14 +109,14 @@ export default function WhyChooseUs() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="absolute -bottom-6 -right-6 md:bottom-8 md:-right-8 bg-white rounded-xl shadow-xl p-6 max-w-xs"
+              className="absolute -bottom-6 -right-6 md:bottom-8 md:-right-8 bg-white rounded-xl shadow-xl p-6 max-w-xs border border-gray-100"
             >
               <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 bg-[#E8F5EE] rounded-full flex items-center justify-center">
-                  <Award className="w-6 h-6 text-[#11A560]" />
+                <div className="w-12 h-12 bg-[#11A560]/10 rounded-full flex items-center justify-center">
+                  <Award className="w-6 h-6 text-[#D32F2F]" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">15+</div>
+                  <div className="text-2xl font-bold text-[#1A1A1A]">15+</div>
                   <div className="text-sm text-gray-500">Years Experience</div>
                 </div>
               </div>
@@ -127,8 +135,8 @@ export default function WhyChooseUs() {
               transition={{ duration: 0.6 }}
               className="mb-8"
             >
-              <span className="text-[#11A560] font-medium mb-2 block">Why Choose Us</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <span className="text-[#D32F2F] font-semibold mb-2 block uppercase tracking-wide text-sm">Why Choose Us</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A1A] mb-4">
                 Your Trusted Safari Partner in Africa
               </h2>
               <p className="text-gray-600 text-lg">
@@ -149,11 +157,11 @@ export default function WhyChooseUs() {
                   variants={itemVariants}
                   className="flex gap-4"
                 >
-                  <div className="w-12 h-12 bg-[#E8F5EE] rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-[#11A560]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <feature.icon className="w-6 h-6 text-[#11A560]" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">
+                    <h3 className="font-semibold text-[#1A1A1A] mb-1">
                       {feature.title}
                     </h3>
                     <p className="text-sm text-gray-600">

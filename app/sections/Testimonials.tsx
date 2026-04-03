@@ -34,6 +34,17 @@ const testimonials = [
   },
 ];
 
+// Brand colors
+const COLORS = {
+  green: "#11A560",
+  darkGreen: "#0E8A50",
+  lime: "#B3CE4D",
+  sun: "#F5A623",
+  black: "#1A1A1A",
+  red: "#D32F2F",
+  redDark: "#B71C1C",
+};
+
 export default function Testimonials() {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -65,15 +76,11 @@ export default function Testimonials() {
           loading="lazy"
           quality={60}
         />
-        {/* Multi-layer overlay for content readability */}
-        {/* Base dark overlay */}
         <div className="absolute inset-0 bg-gray-900/92" />
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/40" />
-        {/* Subtle green accent glows */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-[#11A560] rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#11A560] rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#D32F2F] rounded-full blur-3xl" />
         </div>
       </div>
 
@@ -86,7 +93,7 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center max-w-2xl mx-auto mb-12"
         >
-          <span className="text-[#B3CE4D] font-medium mb-2 block">Testimonials</span>
+          <span className="text-[#F5A623] font-semibold mb-2 block uppercase tracking-wide text-sm">Testimonials</span>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             What Our Travelers Say
           </h2>
@@ -110,12 +117,12 @@ export default function Testimonials() {
               className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-[#11A560]/50 transition-colors"
             >
               {/* Quote Icon */}
-              <Quote className="w-10 h-10 text-[#11A560] mb-4" />
+              <Quote className="w-10 h-10 text-[#F5A623] mb-4" />
               
               {/* Rating */}
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                  <Star key={i} className="w-5 h-5 text-[#F5A623] fill-current" />
                 ))}
               </div>
 
@@ -131,7 +138,7 @@ export default function Testimonials() {
 
               {/* Author */}
               <div className="flex items-center gap-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-[#11A560]">
                   <Image
                     src={testimonial.image}
                     alt={testimonial.name}
@@ -163,7 +170,7 @@ export default function Testimonials() {
             { value: "4.9", label: "Average Rating" },
           ].map((stat) => (
             <div key={stat.label}>
-              <div className="text-3xl md:text-4xl font-bold text-[#11A560] mb-2">
+              <div className="text-3xl md:text-4xl font-bold text-[#F5A623] mb-2">
                 {stat.value}
               </div>
               <div className="text-gray-400">{stat.label}</div>

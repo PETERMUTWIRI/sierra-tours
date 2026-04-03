@@ -29,28 +29,39 @@ const footerLinks = [
   },
 ];
 
+// Brand colors
+const COLORS = {
+  green: "#11A560",
+  darkGreen: "#0E8A50",
+  lime: "#B3CE4D",
+  sun: "#F5A623",
+  black: "#1A1A1A",
+  red: "#D32F2F",
+  redDark: "#B71C1C",
+};
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-[#1A1A1A] text-gray-300">
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Column */}
           <div>
             <Logo variant="light" size="md" showTagline={true} className="mb-4" />
-            <p className="text-sm mb-4">
+            <p className="text-sm mb-4 text-gray-400">
               Discover the magic of Africa with our expertly curated safari
               experiences. From the Serengeti to Victoria Falls, we create
               unforgettable adventures.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#11A560] transition-colors"
+                className="w-9 h-9 bg-[#11A560]/20 rounded-full flex items-center justify-center hover:bg-[#11A560] transition-all duration-300 text-[#11A560] hover:text-white"
                 aria-label="Facebook"
               >
                 <FaFacebookF size={14} />
@@ -59,7 +70,7 @@ export default function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#11A560] transition-colors"
+                className="w-9 h-9 bg-[#11A560]/20 rounded-full flex items-center justify-center hover:bg-[#11A560] transition-all duration-300 text-[#11A560] hover:text-white"
                 aria-label="Instagram"
               >
                 <FaInstagram size={14} />
@@ -68,7 +79,7 @@ export default function Footer() {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#11A560] transition-colors"
+                className="w-9 h-9 bg-[#11A560]/20 rounded-full flex items-center justify-center hover:bg-[#11A560] transition-all duration-300 text-[#11A560] hover:text-white"
                 aria-label="Twitter"
               >
                 <FaTwitter size={14} />
@@ -77,7 +88,7 @@ export default function Footer() {
                 href="https://youtube.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#11A560] transition-colors"
+                className="w-9 h-9 bg-[#D32F2F]/20 rounded-full flex items-center justify-center hover:bg-[#D32F2F] transition-all duration-300 text-[#D32F2F] hover:text-white"
                 aria-label="Youtube"
               >
                 <FaYoutube size={14} />
@@ -87,13 +98,16 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Quick Links</h4>
+            <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 bg-[#D32F2F] rounded-full"></span>
+              Quick Links
+            </h4>
             <ul className="space-y-2">
               {footerLinks[0].links.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm hover:text-[#11A560] transition-colors"
+                    className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -104,13 +118,16 @@ export default function Footer() {
 
           {/* Destinations */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Destinations</h4>
+            <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 bg-[#F5A623] rounded-full"></span>
+              Destinations
+            </h4>
             <ul className="space-y-2">
               {footerLinks[1].links.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm hover:text-[#11A560] transition-colors"
+                    className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -121,11 +138,14 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Contact Us</h4>
+            <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 bg-[#11A560] rounded-full"></span>
+              Contact Us
+            </h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-[#11A560] mt-0.5 flex-shrink-0" />
-                <span className="text-sm">
+                <MapPin size={18} className="text-[#D32F2F] mt-0.5 flex-shrink-0" />
+                <span className="text-sm text-gray-400">
                   123 Safari Road, Nairobi
                   <br />
                   Kenya, East Africa
@@ -135,16 +155,16 @@ export default function Footer() {
                 <Phone size={18} className="text-[#11A560] flex-shrink-0" />
                 <a
                   href="tel:+254123456789"
-                  className="text-sm hover:text-[#11A560] transition-colors"
+                  className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
                 >
                   +254 123 456 789
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <Mail size={18} className="text-[#11A560] flex-shrink-0" />
+                <Mail size={18} className="text-[#F5A623] flex-shrink-0" />
                 <a
                   href="mailto:info@sierratours.com"
-                  className="text-sm hover:text-[#11A560] transition-colors"
+                  className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
                 >
                   info@sierratours.com
                 </a>
@@ -158,25 +178,25 @@ export default function Footer() {
       <div className="border-t border-gray-800">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-center md:text-left">
+            <p className="text-sm text-center md:text-left text-gray-500">
               &copy; {currentYear} Sierra Tours & Safaris. All rights reserved.
             </p>
             <nav className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/privacy"
-                className="text-sm hover:text-[#11A560] transition-colors"
+                className="text-sm text-gray-500 hover:text-[#11A560] transition-colors"
               >
                 Privacy Policy
               </Link>
               <Link
                 href="/terms"
-                className="text-sm hover:text-[#11A560] transition-colors"
+                className="text-sm text-gray-500 hover:text-[#11A560] transition-colors"
               >
                 Terms of Service
               </Link>
               <Link
                 href="/sitemap"
-                className="text-sm hover:text-[#11A560] transition-colors"
+                className="text-sm text-gray-500 hover:text-[#11A560] transition-colors"
               >
                 Sitemap
               </Link>
