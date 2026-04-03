@@ -35,6 +35,8 @@ export async function POST(
         day: data.day,
         title: data.title,
         description: data.description,
+        meals: data.meals || [],
+        accommodation: data.accommodation || '',
       },
     });
     
@@ -57,13 +59,15 @@ export async function PUT(
     // Delete existing itinerary
     await prisma.itineraryDay.deleteMany({ where: { safariId: id } });
     
-    // Create new itinerary
+    // Create new itinerary with all fields
     const created = await prisma.itineraryDay.createMany({
       data: days.map((day: any, index: number) => ({
         safariId: id,
         day: index + 1,
         title: day.title,
         description: day.description,
+        meals: day.meals || [],
+        accommodation: day.accommodation || '',
       })),
     });
     

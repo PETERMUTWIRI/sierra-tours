@@ -128,14 +128,16 @@ model Safari {
 }
 
 model ItineraryDay {
-  id          String   @id @default(cuid())
-  day         Int
-  title       String
-  description String   @db.Text
-  safariId    String
-  safari      Safari   @relation(fields: [safariId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(cuid())
+  day           Int
+  title         String
+  description   String   @db.Text
+  meals         String[] @default([])
+  accommodation String   @default("")
+  safariId      String
+  safari        Safari   @relation(fields: [safariId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@unique([safariId, day])
   @@index([safariId])

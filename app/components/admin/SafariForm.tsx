@@ -3,7 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { FaSave, FaImage, FaSpinner, FaPlus, FaTrash, FaCalendarAlt } from 'react-icons/fa';
+import { 
+  FaSave, FaImage, FaSpinner, FaPlus, FaTrash, FaCalendarAlt,
+  FaUtensils, FaBed, FaMapMarkerAlt, FaUsers, FaClock, FaStar,
+  FaCheckCircle, FaTimesCircle, FaLightbulb, FaHiking, FaDollarSign
+} from 'react-icons/fa';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import 'react-quill-new/dist/quill.snow.css';
@@ -18,6 +22,8 @@ interface ItineraryDay {
   day: number;
   title: string;
   description: string;
+  meals: string[];
+  accommodation: string;
 }
 
 interface Safari {
@@ -57,12 +63,23 @@ const quillModules = {
   ],
 };
 
+const MEAL_OPTIONS = ['Breakfast', 'Lunch', 'Dinner', 'None'];
+
 export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [destinations, setDestinations] = useState<Destination[]>([]);
-  const [itinerary, setItinerary] = useState<ItineraryDay[]>(safari?.itinerary || []);
+  const [activeTab, setActiveTab] = useState<'details' | 'itinerary' | 'inclusions'>('details');
+  const [itinerary, setItinerary] = useState<ItineraryDay[]>(
+    safari?.itinerary?.map((d: any) => ({
+      day: d.day,
+      title: d.title,
+      description: d.description,
+      meals: d.meals || ['Breakfast', 'Lunch', 'Dinner'],
+      accommodation: d.accommodation || ''
+    })) || []
+  );
   
   const [formData, setFormData] = useState<Safari>({
     title: '',
@@ -73,8 +90,8 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
     excerpt: '',
     description: '',
     image: '',
-    groupSize: '',
-    accommodation: '',
+    groupSize: '2-12 people',
+    accommodation: 'Comfortable lodges and camps',
     activities: [],
     includes: [],
     excludes: [],
@@ -144,19 +161,28 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
       day: itinerary.length + 1,
       title: '',
       description: '',
+      meals: ['Breakfast', 'Lunch', 'Dinner'],
+      accommodation: '',
     }]);
   };
 
   const removeItineraryDay = (index: number) => {
     const newItinerary = itinerary.filter((_, i) => i !== index);
-    // Renumber days
     setItinerary(newItinerary.map((day, i) => ({ ...day, day: i + 1 })));
   };
 
-  const updateItineraryDay = (index: number, field: keyof ItineraryDay, value: string) => {
+  const updateItineraryDay = (index: number, field: keyof ItineraryDay, value: any) => {
     setItinerary(itinerary.map((day, i) => 
       i === index ? { ...day, [field]: value } : day
     ));
+  };
+
+  const toggleMeal = (dayIndex: number, meal: string) => {
+    const day = itinerary[dayIndex];
+    const meals = day.meals.includes(meal)
+      ? day.meals.filter(m => m !== meal)
+      : [...day.meals, meal];
+    updateItineraryDay(dayIndex, 'meals', meals);
   };
 
   const addArrayItem = (field: keyof Safari, value: string) => {
@@ -172,352 +198,565 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-slate-900 rounded-xl border border-slate-800 p-6">
-            <label className="block text-sm font-medium text-slate-300 mb-2">Title</label>
-            <input
-              type="text"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
-              placeholder="Enter safari title"
-              required
-            />
-          </div>
+      {/* Tab Navigation */}
+      <div className="bg-slate-900 rounded-xl border border-slate-800 p-1">
+        <div className="flex gap-1">
+          {[
+            { id: 'details', label: 'Safari Details', icon: FaMapMarkerAlt },
+            { id: 'itinerary', label: 'Daily Itinerary', icon: FaCalendarAlt },
+            { id: 'inclusions', label: 'Inclusions & Highlights', icon: FaCheckCircle },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all ${
+                activeTab === tab.id
+                  ? 'bg-orange-600 text-white'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <tab.icon />
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
-          <div className="bg-slate-900 rounded-xl border border-slate-800 p-6">
-            <label className="block text-sm font-medium text-slate-300 mb-2">Excerpt</label>
-            <textarea
-              value={formData.excerpt}
-              onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
-              rows={2}
-              placeholder="Brief summary for listings"
-              required
-            />
-          </div>
+      {/* Details Tab */}
+      {activeTab === 'details' && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Basic Info Card */}
+            <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+              <div className="px-6 py-4 border-b border-slate-800 bg-slate-800/50">
+                <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                  <FaMapMarkerAlt className="text-orange-500" />
+                  Basic Information
+                </h3>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Safari Title <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                    placeholder="e.g., 7-Day Kenya Safari Adventure"
+                    required
+                  />
+                </div>
 
-          <div className="bg-slate-900 rounded-xl border border-slate-800 p-6">
-            <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
-            <div className="prose prose-invert max-w-none">
-              <ReactQuill
-                theme="snow"
-                value={formData.description}
-                onChange={(content) => setFormData({ ...formData, description: content })}
-                modules={quillModules}
-                className="bg-slate-800 border border-slate-700 rounded-lg"
-                style={{ minHeight: '300px' }}
-              />
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Short Excerpt <span className="text-red-400">*</span>
+                  </label>
+                  <textarea
+                    value={formData.excerpt}
+                    onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                    rows={2}
+                    placeholder="Brief summary for safari listings (150-200 characters)"
+                    required
+                  />
+                  <p className="mt-1 text-xs text-slate-500">This appears in safari cards and search results</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Full Description <span className="text-red-400">*</span>
+                  </label>
+                  <div className="prose prose-invert max-w-none">
+                    <ReactQuill
+                      theme="snow"
+                      value={formData.description}
+                      onChange={(content) => setFormData({ ...formData, description: content })}
+                      modules={quillModules}
+                      className="bg-slate-800 border border-slate-700 rounded-lg"
+                      style={{ minHeight: '300px' }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Pricing & Logistics */}
+            <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+              <div className="px-6 py-4 border-b border-slate-800 bg-slate-800/50">
+                <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                  <FaDollarSign className="text-orange-500" />
+                  Pricing & Logistics
+                </h3>
+              </div>
+              <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Duration <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.duration}
+                    onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                    placeholder="e.g., 7 Days / 6 Nights"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Group Size
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.groupSize}
+                    onChange={(e) => setFormData({ ...formData, groupSize: e.target.value })}
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                    placeholder="e.g., 2-12 people"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Accommodation Type
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.accommodation}
+                    onChange={(e) => setFormData({ ...formData, accommodation: e.target.value })}
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                    placeholder="e.g., Luxury lodges and tented camps"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Itinerary Builder */}
-          <div className="bg-slate-900 rounded-xl border border-slate-800 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                <FaCalendarAlt />
-                Itinerary
-              </h3>
-              <button
-                type="button"
-                onClick={addItineraryDay}
-                className="inline-flex items-center gap-2 px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
-              >
-                <FaPlus />
-                Add Day
-              </button>
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Publish Card */}
+            <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+              <div className="px-6 py-4 border-b border-slate-800 bg-slate-800/50">
+                <h3 className="text-lg font-semibold text-white">Publishing</h3>
+              </div>
+              <div className="p-6 space-y-4">
+                <label className="flex items-center gap-3 p-3 bg-slate-800 rounded-lg cursor-pointer hover:bg-slate-750 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={formData.published}
+                    onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
+                    className="w-5 h-5 rounded border-slate-600 text-orange-600 focus:ring-orange-500"
+                  />
+                  <div>
+                    <span className="text-white font-medium block">Published</span>
+                    <span className="text-slate-400 text-sm">Visible on website</span>
+                  </div>
+                </label>
+
+                <label className="flex items-center gap-3 p-3 bg-slate-800 rounded-lg cursor-pointer hover:bg-slate-750 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={formData.featured}
+                    onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                    className="w-5 h-5 rounded border-slate-600 text-orange-600 focus:ring-orange-500"
+                  />
+                  <div>
+                    <span className="text-white font-medium block flex items-center gap-2">
+                      <FaStar className="text-yellow-500" />
+                      Featured Safari
+                    </span>
+                    <span className="text-slate-400 text-sm">Highlight on homepage</span>
+                  </div>
+                </label>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full mt-4 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-semibold rounded-lg hover:from-orange-500 hover:to-orange-600 disabled:opacity-50 transition-all shadow-lg shadow-orange-900/20"
+                >
+                  {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
+                  {safari ? 'Update Safari' : 'Create Safari'}
+                </button>
+              </div>
             </div>
 
-            <div className="space-y-4">
-              {itinerary.map((day, index) => (
-                <div key={index} className="bg-slate-800 rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-orange-500 font-semibold">Day {day.day}</span>
+            {/* Featured Image */}
+            <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+              <div className="px-6 py-4 border-b border-slate-800 bg-slate-800/50">
+                <h3 className="text-lg font-semibold text-white">Featured Image</h3>
+              </div>
+              <div className="p-6">
+                {formData.image ? (
+                  <div className="relative aspect-video rounded-lg overflow-hidden mb-4 border border-slate-700">
+                    <img src={formData.image} alt="Featured" className="w-full h-full object-cover" />
                     <button
                       type="button"
-                      onClick={() => removeItineraryDay(index)}
-                      className="p-1 text-slate-400 hover:text-red-400"
+                      onClick={() => setFormData({ ...formData, image: '' })}
+                      className="absolute top-2 right-2 p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                     >
                       <FaTrash />
                     </button>
                   </div>
+                ) : (
+                  <div className="aspect-video bg-slate-800 rounded-lg flex flex-col items-center justify-center mb-4 border-2 border-dashed border-slate-700">
+                    <FaImage className="w-12 h-12 text-slate-600 mb-2" />
+                    <span className="text-slate-500 text-sm">No image selected</span>
+                  </div>
+                )}
+
+                <label className="block">
                   <input
-                    type="text"
-                    value={day.title}
-                    onChange={(e) => updateItineraryDay(index, 'title', e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white mb-3 focus:ring-2 focus:ring-orange-500"
-                    placeholder="Day title (e.g., Arrival in Nairobi)"
-                    required
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                    className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-600 file:text-white hover:file:bg-orange-700 file:cursor-pointer file:transition-colors"
                   />
-                  <textarea
-                    value={day.description}
-                    onChange={(e) => updateItineraryDay(index, 'description', e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
-                    rows={2}
-                    placeholder="Day description"
+                </label>
+                {uploading && <p className="mt-2 text-sm text-slate-400 flex items-center gap-2"><FaSpinner className="animate-spin" /> Uploading...</p>}
+              </div>
+            </div>
+
+            {/* Quick Details */}
+            <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+              <div className="px-6 py-4 border-b border-slate-800 bg-slate-800/50">
+                <h3 className="text-lg font-semibold text-white">Quick Details</h3>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Destination <span className="text-red-400">*</span>
+                  </label>
+                  <select
+                    value={formData.destinationId}
+                    onChange={(e) => setFormData({ ...formData, destinationId: e.target.value })}
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
                     required
-                  />
+                  >
+                    <option value="">Select destination</option>
+                    {destinations.map((dest) => (
+                      <option key={dest.id} value={dest.id}>{dest.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                      Price <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.price}
+                      onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
+                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                      placeholder="0"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                      Currency
+                    </label>
+                    <select
+                      value={formData.currency}
+                      onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                    >
+                      <option value="USD">USD ($)</option>
+                      <option value="EUR">EUR (€)</option>
+                      <option value="GBP">GBP (£)</option>
+                      <option value="KES">KES (KSh)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Itinerary Tab */}
+      {activeTab === 'itinerary' && (
+        <div className="space-y-6">
+          <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-800 bg-slate-800/50 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                <FaCalendarAlt className="text-orange-500" />
+                Daily Itinerary
+              </h3>
+              <div className="flex items-center gap-4">
+                <span className="text-slate-400 text-sm">{itinerary.length} days configured</span>
+                <button
+                  type="button"
+                  onClick={addItineraryDay}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all"
+                >
+                  <FaPlus />
+                  Add Day
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-4">
+              {itinerary.map((day, index) => (
+                <div key={index} className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                  {/* Day Header */}
+                  <div className="px-4 py-3 bg-slate-750 border-b border-slate-700 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <span className="w-10 h-10 rounded-full bg-orange-600 text-white flex items-center justify-center font-bold">
+                        {day.day}
+                      </span>
+                      <input
+                        type="text"
+                        value={day.title}
+                        onChange={(e) => updateItineraryDay(index, 'title', e.target.value)}
+                        className="bg-transparent text-white font-semibold text-lg border-b border-slate-600 focus:border-orange-500 outline-none px-1"
+                        placeholder="Day title"
+                        required
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeItineraryDay(index)}
+                      className="p-2 text-slate-400 hover:text-red-400 transition-colors"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+
+                  {/* Day Content */}
+                  <div className="p-4 space-y-4">
+                    {/* Description */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-400 mb-2">
+                        Day Description
+                      </label>
+                      <textarea
+                        value={day.description}
+                        onChange={(e) => updateItineraryDay(index, 'description', e.target.value)}
+                        className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                        rows={3}
+                        placeholder="Describe the activities for this day..."
+                        required
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Meals */}
+                      <div>
+                        <label className="block text-sm font-medium text-slate-400 mb-2 flex items-center gap-2">
+                          <FaUtensils />
+                          Meals Included
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          {MEAL_OPTIONS.filter(m => m !== 'None').map((meal) => (
+                            <button
+                              key={meal}
+                              type="button"
+                              onClick={() => toggleMeal(index, meal)}
+                              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                                day.meals.includes(meal)
+                                  ? 'bg-green-600 text-white'
+                                  : 'bg-slate-700 text-slate-400 hover:bg-slate-600'
+                              }`}
+                            >
+                              {meal}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Accommodation */}
+                      <div>
+                        <label className="block text-sm font-medium text-slate-400 mb-2 flex items-center gap-2">
+                          <FaBed />
+                          Accommodation
+                        </label>
+                        <input
+                          type="text"
+                          value={day.accommodation}
+                          onChange={(e) => updateItineraryDay(index, 'accommodation', e.target.value)}
+                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                          placeholder="e.g., Mara Serena Lodge"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ))}
+
               {itinerary.length === 0 && (
-                <p className="text-slate-400 text-center py-4">No itinerary days added yet.</p>
+                <div className="text-center py-12 bg-slate-800/50 rounded-xl border-2 border-dashed border-slate-700">
+                  <FaCalendarAlt className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+                  <p className="text-slate-400 mb-4">No itinerary days added yet</p>
+                  <button
+                    type="button"
+                    onClick={addItineraryDay}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  >
+                    <FaPlus />
+                    Add First Day
+                  </button>
+                </div>
               )}
             </div>
           </div>
 
-          {/* Lists */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Includes */}
-            <ArrayInput
-              label="Includes"
-              items={formData.includes}
-              onAdd={(v) => addArrayItem('includes', v)}
-              onRemove={(i) => removeArrayItem('includes', i)}
-              placeholder="Add included item"
-            />
-
-            {/* Excludes */}
-            <ArrayInput
-              label="Excludes"
-              items={formData.excludes}
-              onAdd={(v) => addArrayItem('excludes', v)}
-              onRemove={(i) => removeArrayItem('excludes', i)}
-              placeholder="Add excluded item"
-            />
-
-            {/* Highlights */}
-            <ArrayInput
-              label="Highlights"
-              items={formData.highlights}
-              onAdd={(v) => addArrayItem('highlights', v)}
-              onRemove={(i) => removeArrayItem('highlights', i)}
-              placeholder="Add highlight"
-            />
-
-            {/* Activities */}
-            <ArrayInput
-              label="Activities"
-              items={formData.activities}
-              onAdd={(v) => addArrayItem('activities', v)}
-              onRemove={(i) => removeArrayItem('activities', i)}
-              placeholder="Add activity"
-            />
-          </div>
-        </div>
-
-        {/* Sidebar */}
-        <div className="space-y-6">
-          {/* Publish Card */}
-          <div className="bg-slate-900 rounded-xl border border-slate-800 p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Publish</h3>
-            
-            <div className="space-y-4">
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  checked={formData.published}
-                  onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-                  className="w-5 h-5 rounded border-slate-600 text-orange-600 focus:ring-orange-500"
-                />
-                <span className="text-slate-300">Publish immediately</span>
-              </label>
-
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  checked={formData.featured}
-                  onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                  className="w-5 h-5 rounded border-slate-600 text-orange-600 focus:ring-orange-500"
-                />
-                <span className="text-slate-300">Featured safari</span>
-              </label>
-            </div>
-
+          <div className="flex justify-end">
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-6 inline-flex items-center justify-center gap-2 px-4 py-2 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-semibold rounded-lg hover:from-orange-500 hover:to-orange-600 disabled:opacity-50 transition-all shadow-lg shadow-orange-900/20"
             >
               {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
               {safari ? 'Update Safari' : 'Create Safari'}
             </button>
           </div>
+        </div>
+      )}
 
-          {/* Featured Image */}
-          <div className="bg-slate-900 rounded-xl border border-slate-800 p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Featured Image</h3>
-            
-            {formData.image ? (
-              <div className="relative aspect-video rounded-lg overflow-hidden mb-4">
-                <img src={formData.image} alt="Featured" className="w-full h-full object-cover" />
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, image: '' })}
-                  className="absolute top-2 right-2 p-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                >
-                  Remove
-                </button>
-              </div>
-            ) : (
-              <div className="aspect-video bg-slate-800 rounded-lg flex items-center justify-center mb-4">
-                <FaImage className="w-12 h-12 text-slate-600" />
-              </div>
-            )}
+      {/* Inclusions Tab */}
+      {activeTab === 'inclusions' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Includes */}
+          <ArrayInput
+            label="What's Included"
+            icon={FaCheckCircle}
+            items={formData.includes}
+            onAdd={(v) => addArrayItem('includes', v)}
+            onRemove={(i) => removeArrayItem('includes', i)}
+            placeholder="Add included item (e.g., All accommodation)"
+            color="green"
+          />
 
-            <label className="block">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                disabled={uploading}
-                className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-orange-600 file:text-white hover:file:bg-orange-700"
-              />
-            </label>
-            {uploading && <p className="mt-2 text-sm text-slate-400">Uploading...</p>}
-          </div>
+          {/* Excludes */}
+          <ArrayInput
+            label="What's Excluded"
+            icon={FaTimesCircle}
+            items={formData.excludes}
+            onAdd={(v) => addArrayItem('excludes', v)}
+            onRemove={(i) => removeArrayItem('excludes', i)}
+            placeholder="Add excluded item (e.g., International flights)"
+            color="red"
+          />
 
-          {/* Safari Details */}
-          <div className="bg-slate-900 rounded-xl border border-slate-800 p-6 space-y-4">
-            <h3 className="text-lg font-semibold text-white">Details</h3>
-            
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Destination</label>
-              <select
-                value={formData.destinationId}
-                onChange={(e) => setFormData({ ...formData, destinationId: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
-                required
-              >
-                <option value="">Select destination</option>
-                {destinations.map((dest) => (
-                  <option key={dest.id} value={dest.id}>{dest.name}</option>
-                ))}
-              </select>
-            </div>
+          {/* Highlights */}
+          <ArrayInput
+            label="Safari Highlights"
+            icon={FaLightbulb}
+            items={formData.highlights}
+            onAdd={(v) => addArrayItem('highlights', v)}
+            onRemove={(i) => removeArrayItem('highlights', i)}
+            placeholder="Add highlight (e.g., Big Five Viewing)"
+            color="yellow"
+          />
 
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Duration</label>
-              <input
-                type="text"
-                value={formData.duration}
-                onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
-                placeholder="e.g., 7 Days / 6 Nights"
-                required
-              />
-            </div>
+          {/* Activities */}
+          <ArrayInput
+            label="Available Activities"
+            icon={FaHiking}
+            items={formData.activities}
+            onAdd={(v) => addArrayItem('activities', v)}
+            onRemove={(i) => removeArrayItem('activities', i)}
+            placeholder="Add activity (e.g., Game Drives)"
+            color="blue"
+          />
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Price</label>
-                <input
-                  type="number"
-                  value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Currency</label>
-                <select
-                  value={formData.currency}
-                  onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
-                >
-                  <option value="USD">USD</option>
-                  <option value="EUR">EUR</option>
-                  <option value="GBP">GBP</option>
-                  <option value="KES">KES</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Group Size</label>
-              <input
-                type="text"
-                value={formData.groupSize}
-                onChange={(e) => setFormData({ ...formData, groupSize: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
-                placeholder="e.g., 2-6 people"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Accommodation</label>
-              <input
-                type="text"
-                value={formData.accommodation}
-                onChange={(e) => setFormData({ ...formData, accommodation: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
-                placeholder="e.g., Luxury lodges"
-              />
-            </div>
+          <div className="md:col-span-2 flex justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-semibold rounded-lg hover:from-orange-500 hover:to-orange-600 disabled:opacity-50 transition-all shadow-lg shadow-orange-900/20"
+            >
+              {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
+              {safari ? 'Update Safari' : 'Create Safari'}
+            </button>
           </div>
         </div>
-      </div>
+      )}
     </form>
   );
 }
 
 interface ArrayInputProps {
   label: string;
+  icon: any;
   items: string[];
   onAdd: (value: string) => void;
   onRemove: (index: number) => void;
   placeholder: string;
+  color: 'green' | 'red' | 'yellow' | 'blue';
 }
 
-function ArrayInput({ label, items, onAdd, onRemove, placeholder }: ArrayInputProps) {
+function ArrayInput({ label, icon: Icon, items, onAdd, onRemove, placeholder, color }: ArrayInputProps) {
   const [value, setValue] = useState('');
 
+  const colorClasses = {
+    green: 'bg-green-600 hover:bg-green-500 text-green-400',
+    red: 'bg-red-600 hover:bg-red-500 text-red-400',
+    yellow: 'bg-yellow-600 hover:bg-yellow-500 text-yellow-400',
+    blue: 'bg-blue-600 hover:bg-blue-500 text-blue-400',
+  };
+
   return (
-    <div className="bg-slate-900 rounded-xl border border-slate-800 p-6">
-      <h3 className="text-lg font-semibold text-white mb-4">{label}</h3>
-      
-      <div className="flex gap-2 mb-3">
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          className="flex-1 px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-orange-500"
-          placeholder={placeholder}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
+    <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+      <div className="px-6 py-4 border-b border-slate-800 bg-slate-800/50">
+        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+          <Icon className={colorClasses[color].split(' ')[2]} />
+          {label}
+        </h3>
+      </div>
+      <div className="p-6">
+        <div className="flex gap-2 mb-4">
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            className="flex-1 px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+            placeholder={placeholder}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                onAdd(value);
+                setValue('');
+              }
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => {
               onAdd(value);
               setValue('');
-            }
-          }}
-        />
-        <button
-          type="button"
-          onClick={() => {
-            onAdd(value);
-            setValue('');
-          }}
-          className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          <FaPlus />
-        </button>
-      </div>
+            }}
+            className={`px-4 py-2 text-white rounded-lg transition-colors ${colorClasses[color].split(' ')[0]} ${colorClasses[color].split(' ')[1]}`}
+          >
+            <FaPlus />
+          </button>
+        </div>
 
-      <div className="space-y-2">
-        {items.map((item, index) => (
-          <div key={index} className="flex items-center justify-between bg-slate-800 px-3 py-2 rounded-lg">
-            <span className="text-slate-300 text-sm">{item}</span>
-            <button
-              type="button"
-              onClick={() => onRemove(index)}
-              className="p-1 text-slate-400 hover:text-red-400"
-            >
-              <FaTrash size={12} />
-            </button>
-          </div>
-        ))}
+        <div className="space-y-2 max-h-80 overflow-y-auto">
+          {items.length === 0 ? (
+            <p className="text-slate-500 text-center py-4 text-sm">No items added yet</p>
+          ) : (
+            items.map((item, index) => (
+              <div key={index} className="flex items-center justify-between bg-slate-800 px-4 py-3 rounded-lg group hover:bg-slate-750 transition-colors">
+                <span className="text-slate-300">{item}</span>
+                <button
+                  type="button"
+                  onClick={() => onRemove(index)}
+                  className="p-1.5 text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"
+                >
+                  <FaTrash size={14} />
+                </button>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

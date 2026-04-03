@@ -1,0 +1,146 @@
+[
+  {
+    "id": 35,
+    "title": "7-DAY KENYA SAFARI",
+    "slug": "7-day-kenya-safari",
+    "price": 1155,
+    "duration": 1,
+    "settings": null,
+    "featured": true
+  },
+  {
+    "id": 40,
+    "title": "10 Days / 9 Nights Kenya Safari",
+    "slug": "10-days-9-nights-kenya-safari",
+    "price": 0,
+    "duration": 1,
+    "settings": null,
+    "featured": false
+  },
+  {
+    "id": 41,
+    "title": "15 Days Kenya Culture, Safari & Beach Experience",
+    "slug": "15-days-kenya-culture-safari-beach-experience",
+    "price": 0,
+    "duration": 1,
+    "settings": null,
+    "featured": true
+  },
+  {
+    "id": 43,
+    "title": "Malaysia 3 Nights 4 Days",
+    "slug": "malaysia-3-nights-4-days",
+    "price": 0,
+    "duration": 1,
+    "settings": null,
+    "featured": true
+  },
+  {
+    "id": 48,
+    "title": "4 NIGHTS 5 DAYS CAPE TOWN SOUTH AFRICA",
+    "slug": "4-nights-5-days-cape-town-south-africa",
+    "price": 0,
+    "duration": 1,
+    "settings": null,
+    "featured": false
+  },
+  {
+    "id": 49,
+    "title": "MORONDAVA THROUGH MADAGASCAR ‘S NATURAL WONDERS",
+    "slug": "morondava-through-madagascar-s-natural-wonders",
+    "price": 0,
+    "duration": 1,
+    "settings": null,
+    "featured": false
+  },
+  {
+    "id": 50,
+    "title": "Rwanda 5 Days",
+    "slug": "rwanda-5-days",
+    "price": 0,
+    "duration": 1,
+    "settings": null,
+    "featured": true
+  },
+  {
+    "id": 55,
+    "title": "3 Nights Sharm El Sheikh + 3 Nights Cairo",
+    "slug": "3-nights-sharm-el-sheikh-3-nights-cairo",
+    "price": 0,
+    "duration": 1,
+    "settings": null,
+    "featured": false
+  },
+  {
+    "id": 56,
+    "title": "3 Nights North Cost + 3 Nights Cairo",
+    "slug": "3-nights-north-cost-3-nights-cairo",
+    "price": 0,
+    "duration": 1,
+    "settings": null,
+    "featured": false
+  },
+  {
+    "id": 57,
+    "title": "4 DAYS – THE ULTIMATE OF NORTHERN TANZANIA EXPERIENCES",
+    "slug": "4-days-the-ultimate-of-northern-tanzania-experiences",
+    "price": 0,
+    "duration": 1,
+    "settings": null,
+    "featured": false
+  },
+  {
+    "id": 61,
+    "title": "Mount Kenya Climbing 5 days and safari 1 nights 2025",
+    "slug": "mount-kenya-climbing-5-days-and-safari-1-nights-2025",
+    "price": 1779,
+    "duration": 1,
+    "settings": null,
+    "featured": true
+  },
+  {
+    "id": 469,
+    "title": "7DAYS/06NIGHT -TARANGIRE-NGORONGORO- SERENGETI",
+    "slug": "7days-06night-tarangire-ngorongoro-serengeti",
+    "price": 1974,
+    "duration": 7,
+    "settings": null,
+    "featured": true
+  },
+  {
+    "id": 806,
+    "title": "7-Day Gaborone Adventure & Culture Itinerary",
+    "slug": "7-day-gaborone-adventure-culture-itinerary",
+    "price": 801,
+    "duration": 7,
+    "settings": null,
+    "featured": false
+  },
+  {
+    "id": 818,
+    "title": "9 NIGHTS – THE SECRET OF ZAMBIA SAFARI",
+    "slug": "9-nights-the-secret-of-zambia-safari",
+    "price": 8755,
+    "duration": 1,
+    "settings": null,
+    "featured": true
+  },
+  {
+    "id": 859,
+    "title": "5-night adventure package in the Malindi",
+    "slug": "5-night-adventure-package-in-the-malindi",
+    "price": 1050,
+    "duration": 1,
+    "settings": null,
+    "featured": false
+  },
+  {
+    "id": 986,
+    "title": "15 Days Kenya Culture, Safari & Beach Experience",
+    "slug": "15-days-kenya-culture-safari-beach-experience-2",
+    "price": 0,
+    "duration": 1,
+    "settings": null,
+    "featured": false
+  }
+]
