@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { 
   FaNewspaper, FaPlane, FaMapMarkerAlt, FaEye, 
   FaStar, FaDollarSign, FaUsers, FaCalendarAlt,
-  FaArrowUp, FaPlus, FaEdit, FaExternalLinkAlt
+  FaArrowUp, FaPlus, FaEdit, FaExternalLinkAlt,
+  FaGift, FaBox
 } from 'react-icons/fa';
 
 async function getStats() {
@@ -11,19 +12,27 @@ async function getStats() {
     blogCount, 
     safariCount, 
     destinationCount, 
+    packageTypeCount,
+    packageSafariCount,
     publishedPosts, 
     featuredPosts,
     publishedSafaris,
     featuredSafaris,
+    publishedPackageSafaris,
+    featuredPackageSafaris,
     itineraryDays,
   ] = await Promise.all([
     prisma.post.count(),
     prisma.safari.count(),
     prisma.destination.count(),
+    prisma.packageType.count(),
+    prisma.packageSafari.count(),
     prisma.post.count({ where: { published: true } }),
     prisma.post.count({ where: { featured: true } }),
     prisma.safari.count({ where: { published: true } }),
     prisma.safari.count({ where: { featured: true } }),
+    prisma.packageSafari.count({ where: { published: true } }),
+    prisma.packageSafari.count({ where: { featured: true } }),
     prisma.itineraryDay.count(),
   ]);
 
@@ -38,10 +47,14 @@ async function getStats() {
     blogCount, 
     safariCount, 
     destinationCount, 
+    packageTypeCount,
+    packageSafariCount,
     publishedPosts, 
     featuredPosts,
     publishedSafaris,
     featuredSafaris,
+    publishedPackageSafaris,
+    featuredPackageSafaris,
     itineraryDays,
     avgSafariPrice,
     totalSafariValue,
@@ -72,11 +85,20 @@ async function getFeaturedSafaris() {
   });
 }
 
+async function getRecentPackageSafaris() {
+  return prisma.packageSafari.findMany({
+    take: 5,
+    include: { packageType: true, destination: true },
+    orderBy: { createdAt: 'desc' },
+  });
+}
+
 export default async function AdminDashboard() {
   const stats = await getStats();
   const recentPosts = await getRecentPosts();
   const recentSafaris = await getRecentSafaris();
   const featuredSafaris = await getFeaturedSafaris();
+  const recentPackageSafaris = await getRecentPackageSafaris();
 
   const statCards = [
     { 
@@ -106,12 +128,20 @@ export default async function AdminDashboard() {
       href: '/admin/destinations',
     },
     { 
-      label: 'Avg. Safari Price', 
-      value: `$${stats.avgSafariPrice.toLocaleString()}`, 
-      subtext: `${stats.itineraryDays} itinerary days`,
-      icon: FaDollarSign, 
+      label: 'Package Types', 
+      value: stats.packageTypeCount, 
+      subtext: `${stats.packageSafariCount} package safaris`,
+      icon: FaGift, 
+      color: 'amber',
+      href: '/admin/packages/types',
+    },
+    { 
+      label: 'Package Safaris', 
+      value: stats.packageSafariCount, 
+      subtext: `${stats.publishedPackageSafaris} published • ${stats.featuredPackageSafaris} featured`,
+      icon: FaBox, 
       color: 'purple',
-      href: '/admin/safaris',
+      href: '/admin/packages/safaris',
     },
   ];
 
@@ -140,6 +170,12 @@ export default async function AdminDashboard() {
       glow: 'shadow-purple-500/20',
       border: 'border-purple-500/20'
     },
+    amber: { 
+      bg: 'bg-amber-500/10', 
+      icon: 'text-amber-500', 
+      glow: 'shadow-amber-500/20',
+      border: 'border-amber-500/20'
+    },
   };
 
   return (
@@ -152,7 +188,14 @@ export default async function AdminDashboard() {
             Welcome to Sierra Tours Admin. Manage your safaris, blog, and destinations.
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
+          <Link 
+            href="/admin/packages/safaris/new" 
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-amber-600/20"
+          >
+            <FaPlus className="w-4 h-4" />
+            New Package Safari
+          </Link>
           <Link 
             href="/admin/safaris/new" 
             className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-blue-600/20"
@@ -395,10 +438,140 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
+      {/* Three Column Layout - Package Safaris */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        {/* Recent Package Safaris */}
+        <div className="xl:col-span-2 bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+          <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                <FaBox className="w-5 h-5 text-amber-500" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-white">Recent Package Safaris</h2>
+                <p className="text-slate-400 text-sm">Latest packages from themed & safari collections</p>
+              </div>
+            </div>
+            <Link 
+              href="/admin/packages/safaris" 
+              className="text-sm font-medium text-[#11A560] hover:text-[#B3CE4D] transition-colors"
+            >
+              View All →
+            </Link>
+          </div>
+          <div className="divide-y divide-slate-800">
+            {recentPackageSafaris.length === 0 ? (
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FaBox className="w-8 h-8 text-slate-600" />
+                </div>
+                <p className="text-slate-400">No package safaris yet</p>
+                <Link 
+                  href="/admin/packages/safaris/new" 
+                  className="inline-flex items-center gap-2 mt-3 text-[#11A560] hover:text-[#B3CE4D] text-sm font-medium"
+                >
+                  <FaPlus className="w-4 h-4" />
+                  Create your first package safari
+                </Link>
+              </div>
+            ) : (
+              recentPackageSafaris.map((safari) => (
+                <div key={safari.id} className="p-4 flex items-center gap-4 hover:bg-slate-800/50 transition-colors group">
+                  <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center flex-shrink-0">
+                    <FaBox className="w-5 h-5 text-slate-500" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white font-medium truncate group-hover:text-[#B3CE4D] transition-colors">
+                      {safari.title}
+                    </p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs px-2 py-0.5 bg-slate-800 text-slate-400 rounded">
+                        {safari.packageType?.name}
+                      </span>
+                      <span className="text-xs text-slate-400">
+                        {safari.destination?.name}
+                      </span>
+                      <span className="text-slate-600">•</span>
+                      <span className="text-xs text-slate-400">{safari.duration}</span>
+                      {safari.featured && (
+                        <>
+                          <span className="text-slate-600">•</span>
+                          <span className="text-xs text-amber-400 flex items-center gap-1">
+                            <FaStar className="w-3 h-3" />
+                            Featured
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <Link 
+                    href={`/admin/packages/safaris/${safari.id}/edit`} 
+                    className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                  >
+                    <FaEdit className="w-4 h-4" />
+                  </Link>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Package Types Summary */}
+        <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+          <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                <FaGift className="w-5 h-5 text-purple-500" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-white">Package Types</h2>
+                <p className="text-slate-400 text-sm">Categories & collections</p>
+              </div>
+            </div>
+            <Link 
+              href="/admin/packages/types" 
+              className="text-sm font-medium text-[#11A560] hover:text-[#B3CE4D] transition-colors"
+            >
+              Manage →
+            </Link>
+          </div>
+          <div className="p-6 space-y-4">
+            <QuickActionCard
+              title="Themed Holidays"
+              description="Honeymoon, Valentine, Christmas, Luxury"
+              icon={FaGift}
+              href="/admin/packages/types"
+              color="purple"
+            />
+            <QuickActionCard
+              title="Safari Experiences"
+              description="Beach, Wildlife, Mountain, Cultural, Cycling"
+              icon={FaPlane}
+              href="/admin/packages/types"
+              color="blue"
+            />
+            <QuickActionCard
+              title="Local Packages"
+              description="Beach, Bush, Weekend Getaways"
+              icon={FaMapMarkerAlt}
+              href="/admin/packages/types"
+              color="green"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Quick Actions Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <QuickActionCard
-          title="Create Safari Package"
+          title="Create Package Safari"
+          description="Add a new themed or safari package"
+          icon={FaBox}
+          href="/admin/packages/safaris/new"
+          color="orange"
+        />
+        <QuickActionCard
+          title="Create Safari Tour"
           description="Add a new safari tour with full itinerary"
           icon={FaPlane}
           href="/admin/safaris/new"
@@ -409,7 +582,7 @@ export default async function AdminDashboard() {
           description="Share travel stories and updates"
           icon={FaNewspaper}
           href="/admin/blog/new"
-          color="orange"
+          color="green"
         />
         <QuickActionCard
           title="View Website"
@@ -429,7 +602,7 @@ interface QuickActionCardProps {
   description: string;
   icon: any;
   href: string;
-  color: 'blue' | 'orange' | 'green';
+  color: 'blue' | 'orange' | 'green' | 'purple';
   external?: boolean;
 }
 
@@ -438,12 +611,14 @@ function QuickActionCard({ title, description, icon: Icon, href, color, external
     blue: 'from-blue-600/10 to-blue-700/10 hover:border-blue-500/30 group-hover:text-blue-400',
     orange: 'from-[#0E8A50]/10 to-[#0C7845]/10 hover:border-[#11A560]/30 group-hover:text-[#B3CE4D]',
     green: 'from-green-600/10 to-green-700/10 hover:border-green-500/30 group-hover:text-green-400',
+    purple: 'from-purple-600/10 to-purple-700/10 hover:border-purple-500/30 group-hover:text-purple-400',
   };
 
   const iconColors = {
     blue: 'text-blue-500 bg-blue-500/10',
     orange: 'text-[#11A560] bg-[#11A560]/10',
     green: 'text-green-500 bg-green-500/10',
+    purple: 'text-purple-500 bg-purple-500/10',
   };
 
   return (

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import {
   FaHome, FaNewspaper, FaPlane, FaMapMarkerAlt, FaImages,
   FaSignOutAlt, FaBars, FaTimes, FaGlobeAfrica, FaChevronRight,
+  FaBox, FaList, FaGift,
 } from 'react-icons/fa';
 
 const adminNavLinks = [
@@ -15,6 +16,8 @@ const adminNavLinks = [
   { name: 'Safaris', href: '/admin/safaris', icon: FaPlane },
   { name: 'Destinations', href: '/admin/destinations', icon: FaMapMarkerAlt },
   { name: 'Gallery', href: '/admin/gallery', icon: FaImages },
+  { name: 'Package Types', href: '/admin/packages/types', icon: FaGift },
+  { name: 'Package Safaris', href: '/admin/packages/safaris', icon: FaBox },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -134,6 +137,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               >
                 <FaNewspaper className="w-4 h-4" />
                 <span className="hidden lg:inline">New Post</span>
+              </Link>
+              <Link 
+                href="/admin/packages/safaris/new" 
+                className="hidden sm:flex items-center gap-2 px-3 lg:px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold transition-all shadow-lg shadow-amber-600/20"
+              >
+                <FaBox className="w-4 h-4" />
+                <span className="hidden lg:inline">New Package</span>
               </Link>
               <Link 
                 href="/admin/safaris/new" 
