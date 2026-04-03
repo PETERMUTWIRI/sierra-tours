@@ -1,11 +1,13 @@
 import { prisma } from '@/lib/db';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { 
   FaCalendar, FaClock, FaUser, FaMapMarkerAlt, 
   FaFacebook, FaTwitter, FaWhatsapp, FaLinkedin, FaEnvelope,
   FaArrowLeft, FaTag
 } from 'react-icons/fa';
+import { getBlogImage } from '@/lib/blogImageMapping';
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -42,7 +44,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     openGraph: {
       title: post.title,
       description: post.metaDesc || post.excerpt || '',
-      images: post.ogImage || post.cover ? [{ url: post.ogImage || post.cover || '' }] : undefined,
+      images: post.ogImage || getBlogImage(post) ? [{ url: post.ogImage || getBlogImage(post) }] : undefined,
     },
   };
 }
@@ -60,6 +62,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const shareUrl = `https://sierratours.com/blog/${post.slug}`;
   const shareText = encodeURIComponent(post.title);
 
+  // Get mapped image for this post
+  const heroImage = getBlogImage(post);
+
   return (
     <main className="min-h-screen bg-white">
       {/* Back Link */}
@@ -67,7 +72,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="container mx-auto px-4 py-4">
           <Link 
             href="/blog" 
-            className="inline-flex items-center gap-2 text-slate-600 hover:text-[#0E8A50] transition-colors"
+            className="inline-flex items-center gap-2 text-slate-600 hover:text-[#D32F2F] transition-colors"
           >
             <FaArrowLeft size={14} />
             Back to Blog
@@ -76,38 +81,40 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       </div>
 
       {/* Hero Image */}
-      {post.cover && (
-        <div className="relative h-[50vh] min-h-[400px] max-h-[600px]">
-          <img
-            src={post.cover}
-            alt={post.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-          {post.coverCaption && (
-            <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-              <div className="container mx-auto">
-                <p className="text-white/80 text-sm">
-                  {post.coverCaption}
-                  {post.coverPhotographer && (
-                    <span className="text-white/60"> • Photo by {post.coverPhotographer}</span>
-                  )}
-                </p>
-              </div>
+      <div className="relative h-[50vh] min-h-[400px] max-h-[600px]">
+        <Image
+          src={heroImage}
+          alt={post.title}
+          fill
+          className="object-cover"
+          sizes="100vw"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/40 to-transparent"></div>
+        {post.coverCaption && (
+          <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+            <div className="container mx-auto">
+              <p className="text-white/80 text-sm">
+                {post.coverCaption}
+                {post.coverPhotographer && (
+                  <span className="text-white/60"> • Photo by {post.coverPhotographer}</span>
+                )}
+              </p>
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
 
       {/* Article Header */}
       <header className="py-8 md:py-12 border-b">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className="px-3 py-1 bg-[#11A560] text-[#0E8A50] text-sm font-medium rounded-full">
+            <span className="px-3 py-1 bg-[#11A560] text-white text-sm font-medium rounded-full">
               {post.category}
             </span>
             {post.featured && (
-              <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
+              <span className="px-3 py-1 bg-[#D32F2F]/10 text-[#D32F2F] text-sm font-medium rounded-full border border-[#D32F2F]/20">
                 Featured
               </span>
             )}
@@ -125,7 +132,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {post.author && (
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-[#11A560] flex items-center justify-center">
-                  <FaUser className="text-[#0E8A50]" />
+                  <FaUser className="text-white" />
                 </div>
                 <div>
                   <p className="font-medium text-slate-900">{post.author}</p>
@@ -174,7 +181,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="container mx-auto px-4 max-w-4xl">
           {/* Featured Quote */}
           {post.featuredQuote && (
-            <blockquote className="border-l-4 border-[#11A560] pl-6 py-2 mb-8 bg-[#E8F5EE]/50 rounded-r-lg">
+            <blockquote className="border-l-4 border-[#D32F2F] pl-6 py-2 mb-8 bg-[#D32F2F]/5 rounded-r-lg">
               <p className="text-xl md:text-2xl font-medium text-slate-800 italic">
                 &ldquo;{post.featuredQuote}&rdquo;
               </p>
@@ -186,9 +193,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             className="prose prose-lg prose-slate max-w-none
               prose-headings:font-bold prose-headings:text-slate-900
               prose-p:text-slate-600 prose-p:leading-relaxed
-              prose-a:text-[#0E8A50] prose-a:no-underline hover:prose-a:underline
+              prose-a:text-[#11A560] prose-a:no-underline hover:prose-a:underline
               prose-img:rounded-xl prose-img:shadow-lg
-              prose-blockquote:border-[#11A560] prose-blockquote:bg-[#E8F5EE]/50 prose-blockquote:py-2 prose-blockquote:rounded-r-lg
+              prose-blockquote:border-[#D32F2F] prose-blockquote:bg-[#D32F2F]/5 prose-blockquote:py-2 prose-blockquote:rounded-r-lg
               prose-strong:text-slate-900
               prose-li:text-slate-600"
             dangerouslySetInnerHTML={{ __html: post.content }}
@@ -198,7 +205,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {post.tags && post.tags.length > 0 && (
             <div className="mt-12 pt-8 border-t">
               <div className="flex items-center gap-2 mb-3">
-                <FaTag className="text-slate-400" />
+                <FaTag className="text-[#D32F2F]" />
                 <span className="text-sm font-medium text-slate-600">Tags</span>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -206,7 +213,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <Link
                     key={index}
                     href={`/blog?tag=${encodeURIComponent(tag)}`}
-                    className="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full hover:bg-[#11A560] hover:text-[#0E8A50] transition-colors"
+                    className="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full hover:bg-[#11A560] hover:text-white transition-colors"
                   >
                     {tag}
                   </Link>
@@ -223,7 +230,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors"
+                className="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
                 aria-label="Share on Facebook"
               >
                 <FaFacebook />
@@ -232,7 +239,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${shareText}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-sky-500 text-white flex items-center justify-center hover:bg-sky-600 transition-colors"
+                className="w-10 h-10 rounded-full bg-[#1DA1F2] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
                 aria-label="Share on Twitter"
               >
                 <FaTwitter />
@@ -241,7 +248,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 href={`https://wa.me/?text=${shareText}%20${encodeURIComponent(shareUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:bg-green-600 transition-colors"
+                className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
                 aria-label="Share on WhatsApp"
               >
                 <FaWhatsapp />
@@ -250,14 +257,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-blue-700 text-white flex items-center justify-center hover:bg-blue-800 transition-colors"
+                className="w-10 h-10 rounded-full bg-[#0A66C2] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
                 aria-label="Share on LinkedIn"
               >
                 <FaLinkedin />
               </a>
               <a
                 href={`mailto:?subject=${shareText}&body=${encodeURIComponent(shareUrl)}`}
-                className="w-10 h-10 rounded-full bg-slate-600 text-white flex items-center justify-center hover:bg-slate-700 transition-colors"
+                className="w-10 h-10 rounded-full bg-slate-600 text-white flex items-center justify-center hover:opacity-90 transition-opacity"
                 aria-label="Share via Email"
               >
                 <FaEnvelope />
@@ -271,28 +278,28 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       {relatedPosts.length > 0 && (
         <section className="py-16 bg-slate-50 border-t">
           <div className="container mx-auto px-4 max-w-6xl">
-            <h2 className="text-2xl font-bold text-slate-900 mb-8">More Articles</h2>
+            <h2 className="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-2">
+              <span className="w-1 h-6 bg-[#11A560] rounded-full"></span>
+              More Articles
+            </h2>
             <div className="grid md:grid-cols-3 gap-8">
               {relatedPosts.map((related) => (
                 <article key={related.id} className="group">
                   <Link href={`/blog/${related.slug}`} className="block">
-                    <div className="relative aspect-video rounded-xl overflow-hidden mb-4">
-                      {related.cover ? (
-                        <img
-                          src={related.cover}
-                          alt={related.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-slate-200 flex items-center justify-center">
-                          <span className="text-slate-400">No image</span>
-                        </div>
-                      )}
+                    <div className="relative aspect-video rounded-xl overflow-hidden mb-4 shadow-sm">
+                      <Image
+                        src={getBlogImage(related)}
+                        alt={related.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                     </div>
-                    <span className="text-xs font-medium text-[#0E8A50] uppercase tracking-wider">
+                    <span className="text-xs font-medium text-[#11A560] uppercase tracking-wider">
                       {related.category}
                     </span>
-                    <h3 className="text-lg font-bold text-slate-900 mt-1 group-hover:text-[#0E8A50] transition-colors line-clamp-2">
+                    <h3 className="text-lg font-bold text-slate-900 mt-1 group-hover:text-[#D32F2F] transition-colors line-clamp-2">
                       {related.title}
                     </h3>
                     <p className="text-slate-600 text-sm mt-2 line-clamp-2">{related.excerpt}</p>
