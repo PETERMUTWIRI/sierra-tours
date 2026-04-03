@@ -60,7 +60,7 @@ export default function WhyChooseUs() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/hero/sierra-tours-and-travel-luxury-safaris-scaled-ras5mxcvjkwgb2j7xd519ueuyycgwfi5kwkvxfrue8.jpg"
+          src="/images/hero/sierra-tours-and-travel-luxury-safaris.jpg"
           alt=""
           fill
           className="object-cover"
@@ -68,8 +68,11 @@ export default function WhyChooseUs() {
           loading="lazy"
           quality={65}
         />
-        {/* Gray overlay to maintain original bg-gray-50 feel */}
-        <div className="absolute inset-0 bg-gray-50/94" />
+        {/* Multi-layer overlay for content readability */}
+        {/* Base overlay - light gray to match original design */}
+        <div className="absolute inset-0 bg-gray-50/92" />
+        {/* Subtle gradient for depth */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-gray-100/50" />
       </div>
 
       {/* Content */}

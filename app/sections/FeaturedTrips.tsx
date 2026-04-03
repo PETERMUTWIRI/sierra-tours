@@ -62,7 +62,7 @@ export default function FeaturedTrips({
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/safaris/kenya/sierra-tours-and-safaris-kenya-safaris-image01-rbamx9reyz8y64l8g8d7yqeb9e95i3mkhgvfivup3c.jpg"
+          src="/images/safaris/kenya/sierra-tours-and-safaris-kenya-safaris-image01.jpg"
           alt=""
           fill
           className="object-cover"
@@ -70,8 +70,11 @@ export default function FeaturedTrips({
           loading="lazy"
           quality={70}
         />
-        {/* Gray overlay to maintain original bg-gray-50 feel */}
-        <div className="absolute inset-0 bg-gray-50/95" />
+        {/* Multi-layer overlay for content readability */}
+        {/* Base gray overlay */}
+        <div className="absolute inset-0 bg-gray-50/93" />
+        {/* Subtle gradient for visual interest */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-gray-100/60 via-transparent to-white/40" />
       </div>
 
       {/* Content */}

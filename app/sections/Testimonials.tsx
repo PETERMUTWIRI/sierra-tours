@@ -57,7 +57,7 @@ export default function Testimonials() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/safaris/kenya/sierra-tours-and-safaris-kenya-safaris-image01-rbamx9reyz8y64l8g8d7yqeb9e95i3mkhgvfivup3c.jpg"
+          src="/images/safaris/kenya/sierra-tours-and-safaris-kenya-safaris-image01.jpg"
           alt=""
           fill
           className="object-cover"
@@ -65,8 +65,11 @@ export default function Testimonials() {
           loading="lazy"
           quality={60}
         />
-        {/* Dark overlay to maintain original bg-gray-900 feel */}
+        {/* Multi-layer overlay for content readability */}
+        {/* Base dark overlay */}
         <div className="absolute inset-0 bg-gray-900/92" />
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/40" />
         {/* Subtle green accent glows */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-[#11A560] rounded-full blur-3xl" />

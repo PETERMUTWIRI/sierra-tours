@@ -46,7 +46,7 @@ export default function Destinations({ destinations = [] }: DestinationsProps) {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/destinations/tanzania/sierra-tours-and-safaris-tanzania-safaris-image01-rbamxa1d0t7xs4l8g8d7yqeb9e95i3mkhgvfivup3c.jpg"
+          src="/images/destinations/tanzania/sierra-tours-and-safaris-tanzania-safaris-image01.jpg"
           alt=""
           fill
           className="object-cover"
@@ -54,8 +54,11 @@ export default function Destinations({ destinations = [] }: DestinationsProps) {
           loading="lazy"
           quality={70}
         />
-        {/* White overlay to maintain original bg-white feel */}
-        <div className="absolute inset-0 bg-white/93" />
+        {/* Multi-layer overlay for content readability */}
+        {/* Base white overlay */}
+        <div className="absolute inset-0 bg-white/94" />
+        {/* Subtle gradient for depth */}
+        <div className="absolute inset-0 bg-gradient-to-bl from-gray-50/60 via-transparent to-white/50" />
       </div>
 
       {/* Content */}

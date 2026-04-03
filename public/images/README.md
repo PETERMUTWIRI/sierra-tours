@@ -52,7 +52,7 @@ public/images/
 ## 🖼️ Key Images Reference
 
 ### Hero/Banner Images
-- `/images/hero/sierra-tours-and-travel-luxury-safaris-scaled-ras5mxcvjkwgb2j7xd519ueuyycgwfi5kwkvxfrue8.jpg` - Main hero banner
+- `/images/hero/sierra-tours-and-travel-luxury-safaris.jpg` - Main hero banner
 - `/images/hero/banners/banner-image.webp` - Alternative banner
 
 ### Popular Safari Images
@@ -68,7 +68,7 @@ public/images/
 
 ```tsx
 // Hero Banner
-<Image src="/images/hero/sierra-tours-and-travel-luxury-safaris-scaled-ras5mxcvjkwgb2j7xd519ueuyycgwfi5kwkvxfrue8.jpg" ... />
+<Image src="/images/hero/sierra-tours-and-travel-luxury-safaris.jpg" ... />
 
 // Safari Cards
 <Image src="/images/safaris/botswana/sierra-tours-and-safaris-botswana-safaris-image01-rae4xy0bfoxnp5zs0q0hvq2fjiy1hbwlkskzwr3qu8.jpeg" ... />

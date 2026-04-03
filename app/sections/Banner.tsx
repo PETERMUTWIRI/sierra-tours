@@ -13,7 +13,7 @@ interface BannerProps {
 export default function Banner({
   title = "Find Your Best Holiday",
   subtitle = "Find great adventure holidays and activities around the planet.",
-  backgroundImage = "/images/hero/sierra-tours-and-travel-luxury-safaris-scaled-ras5mxcvjkwgb2j7xd519ueuyycgwfi5kwkvxfrue8.jpg",
+  backgroundImage = "/images/hero/sierra-tours-and-travel-luxury-safaris.jpg",
   showSearch = true,
 }: BannerProps) {
   return (
@@ -28,8 +28,18 @@ export default function Banner({
           priority
           sizes="100vw"
         />
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/40" />
+        {/* Multi-layer Overlay for better text readability */}
+        {/* Base dark overlay */}
+        <div className="absolute inset-0 bg-black/50" />
+        {/* Gradient overlay - darker at top and bottom for text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/60" />
+        {/* Subtle vignette effect */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 100%)'
+          }}
+        />
       </div>
 
       {/* Content */}

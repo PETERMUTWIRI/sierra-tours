@@ -87,10 +87,10 @@ export default function BlogSection({
 
   return (
     <section className="relative py-16 md:py-24 overflow-hidden">
-      {/* Background Image - subtle pattern effect */}
+      {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/safaris/botswana/sierra-tours-and-safaris-botswana-safaris-image01-rae4xy0bfoxnp5zs0q0hvq2fjiy1hbwlkskzwr3qu8.jpeg"
+          src="/images/safaris/botswana/sierra-tours-and-safaris-botswana-safaris-image01.jpeg"
           alt=""
           fill
           className="object-cover"
@@ -98,8 +98,11 @@ export default function BlogSection({
           loading="lazy"
           quality={60}
         />
-        {/* White overlay to maintain original bg-white feel */}
-        <div className="absolute inset-0 bg-white/94" />
+        {/* Multi-layer overlay for content readability */}
+        {/* Base white overlay */}
+        <div className="absolute inset-0 bg-white/95" />
+        {/* Subtle gradient */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-gray-50/70 via-transparent to-white/60" />
       </div>
 
       {/* Content */}
