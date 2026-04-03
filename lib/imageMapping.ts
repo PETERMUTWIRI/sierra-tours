@@ -1,130 +1,276 @@
 // Image Mapping Utility
 // Maps safaris and destinations to available images in the public folder
-// Falls back to appropriate defaults based on destination/title keywords
+// Each image is carefully matched to represent the actual destination/safari content
 
-// Available images in public folder organized by category
-const AVAILABLE_IMAGES = {
-  // Hero images for destinations
-  hero: {
-    default: '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg',
-    kenya: '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg',
-    tanzania: '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg',
-    rwanda: '/images/hero/sierra-tours-and-travel-valentine-safaris.jpg',
-    botswana: '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg',
-    zambia: '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg',
-    egypt: '/images/hero/mafunditv-homepage-about-us.jpg',
-    malaysia: '/images/hero/mafunditv-homepage-about-us.jpg',
-    madagascar: '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg',
-    'south-africa': '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg',
-  },
+// ============================================================================
+// DESTINATION HERO IMAGES
+// These represent each destination accurately
+// ============================================================================
+const DESTINATION_HERO_IMAGES: Record<string, string> = {
+  // Kenya - Mount Kenya landscape (iconic Kenyan landmark)
+  kenya: '/images/safaris/other/sierra-tours-and-safaris-mount-kenya-safaris-image01.jpg',
   
-  // Safari images organized by destination
-  safaris: {
-    rwanda: [
-      '/images/safaris/rwanda/sierra-tours-and-safaris-rwanda-safaris-image01.jpg',
-      '/images/safaris/rwanda/sierra-tours-and-travel-Rwanda-5-Nights-image-01.jpg',
-      '/images/safaris/rwanda/sierra-tours-and-travel-Rwanda-5-Nights-image-02.jpg',
-      '/images/safaris/rwanda/sierra-tours-and-travel-Rwanda-5-Nights-image-03.jpg',
-      '/images/safaris/rwanda/sierra-tours-and-travel-Rwanda-5-Nights-image-04.jpg',
-    ],
-    other: [
-      '/images/safaris/other/sierra-tours-and-safaris-7DAYS06NIGHT-TARANGIRE-NGORONGORO-SERENGETI-Group-tour-image01-1024x630.jpg',
-      '/images/safaris/other/sierra-tours-and-safaris-kenya-safaris-image01-1024x683.jpg',
-      '/images/safaris/other/sierra-tours-and-safaris-tanzania-safaris-image01-150x150.jpg',
-      '/images/safaris/other/sierra-tours-and-safaris-nakuru-safaris-image01-1024x683.jpg',
-      '/images/safaris/other/sierra-tours-and-safaris-mount-kenya-safaris-image01-raf9sp372ga7w3n6uyoht3210vsmfvou4capo4ekyo.jpg',
-      '/images/safaris/other/sierra-tours-and-safaris-samburu-safaris-image01-410x250.jpg',
-      '/images/safaris/other/sierra-tours-and-safaris-naivasha-safaris-image01-300x146.jpg',
-      '/images/safaris/other/Sierra-tours-and-safaris-7-DAY-KENYA-SAFARI-image-03-1-410x250.jpg',
-      '/images/safaris/other/sierra-tours-and-travel-5-night-adventure-package-in-the-Malindi–Turtle-Bay-area-image-02-990x490.jpg',
-      '/images/safaris/other/sierra-tours-and-travel-5-night-adventure-package-in-the-Malindi–Turtle-Bay-area-image-03-1024x685.jpg',
-      '/images/safaris/other/sierra-tours-and-travel-5-night-adventure-package-in-the-Malindi–Turtle-Bay-area-image-04-600x768.jpg',
-      '/images/safaris/other/sierra-tours-and-travel-7-Day-Gaborone-Adventure-Culture-Itinerary-image02-600x480.jpg',
-      '/images/safaris/other/sierra-tours-and-safaris-mombasa-north-coast-safaris-image01-2048x1366.jpg',
-      '/images/safaris/other/sierra-tours-and-safaris-mombasa-north-coast-safaris-image01-410x250.jpg',
-    ],
-  },
+  // Tanzania - Serengeti/Ngorongoro landscape
+  tanzania: '/images/safaris/other/sierra-tours-and-safaris-7DAYS06NIGHT-TARANGIRE-NGORONGORO-SERENGETI-Group-tour-image01.jpg',
+  
+  // Rwanda - Gorilla/mountain landscape
+  rwanda: '/images/safaris/rwanda/sierra-tours-and-safaris-rwanda-safaris-image01.jpg',
+  
+  // Botswana - Okavango/savanna landscape
+  botswana: '/images/safaris/botswana/sierra-tours-and-safaris-botswana-safaris-image01.jpeg',
+  
+  // Zambia - Victoria Falls/safari landscape
+  zambia: '/images/safaris/other/Sierra-tours-and-safaris-7-DAY-KENYA-SAFARI-image-01.jpg',
+  
+  // Egypt - Pyramids of Giza
+  egypt: '/images/safaris/egypt/sierra-tours-and-safaris-egypt-safaris-image01.jpg',
+  
+  // Malaysia - Tropical/beach landscape
+  malaysia: '/images/safaris/other/sierra-tours-and-travel-3-nights-4-days-Malaysia-image-01.jpg',
+  
+  // Madagascar - Lush natural landscape
+  madagascar: '/images/general/sierra-tours-and-safaris-madagascar-safaris-image01.jpg',
+  
+  // South Africa - Safari landscape
+  'south-africa': '/images/general/sierra-tours-and-safaris-south-africa-safaris-image01.jpg',
+  
+  // Uganda - Similar to Rwanda (gorillas)
+  uganda: '/images/safaris/rwanda/sierra-tours-and-safaris-rwanda-safaris-image01.jpg',
+  
+  // Namibia - Desert landscape (fallback to generic)
+  namibia: '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg',
+  
+  // Zimbabwe - Victoria Falls area
+  zimbabwe: '/images/safaris/other/sierra-tours-and-safaris-naivasha-safaris-image01.jpg',
+  
+  // Default fallback
+  default: '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg',
 };
 
-// Hash function to consistently map a string to an index
-function hashString(str: string, max: number): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return Math.abs(hash) % max;
-}
+// ============================================================================
+// SAFARI-SPECIFIC IMAGE MAPPING
+// Maps safari slugs to their most relevant image
+// ============================================================================
+const SAFARI_SPECIFIC_IMAGES: Record<string, string> = {
+  // Kenya Safaris
+  'mount-kenya-climbing-5-days-and-safari-1-nights-2025': '/images/safaris/other/sierra-tours-and-safaris-Mount-Kenya-Climbing-5-days-and-safari-1-nights-2025-image01.jpg',
+  '7-day-kenya-safari': '/images/safaris/other/Sierra-tours-and-safaris-7-DAY-KENYA-SAFARI-image-01.jpg',
+  '10-days-9-nights-kenya-safari': '/images/safaris/other/sierra-tours-and-safaris-kenya-safaris-image01.jpg',
+  '15-days-kenya-culture-safari-beach-experience': '/images/safaris/other/sierra-tours-and-safaris-mombasa-north-coast-safaris-image01.jpg',
+  
+  // Coastal Kenya
+  '5-night-adventure-package-in-the-malindi': '/images/safaris/other/sierra-tours-and-travel-5-night-adventure-package-in-the-Malindi–Turtle-Bay-area-image-01.jpg',
+  
+  // Tanzania Safaris
+  '4-days-the-ultimate-of-northern-tanzania-experiences': '/images/safaris/other/sierra-tours-and-travel-4-DAYS-–-THE-ULTIMATE-OF-NORTHERN-TANZANIA-EXPERIENCES-img01.jpg',
+  '7days-06night-tarangire-ngorongoro-serengeti': '/images/safaris/other/sierra-tours-and-safaris-7DAYS06NIGHT-TARANGIRE-NGORONGORO-SERENGETI-Group-tour-image01.jpg',
+  
+  // Rwanda Safaris
+  'rwanda-5-days': '/images/safaris/rwanda/sierra-tours-and-travel-Rwanda-5-Nights-image-01.jpg',
+  
+  // Botswana Safaris
+  '7-day-gaborone-adventure-culture-itinerary': '/images/safaris/other/sierra-tours-and-travel-7-Day-Gaborone-Adventure-Culture-Itinerary-image01.jpg',
+  
+  // Zambia Safaris
+  '9-nights-the-secret-of-zambia-safari': '/images/safaris/other/Sierra-tours-and-safaris-7-DAY-KENYA-SAFARI-image-02.jpg',
+  
+  // Egypt Safaris
+  '3-nights-sharm-el-sheikh-3-nights-cairo': '/images/safaris/egypt/sierra-tours-and-safaris-egypt-safaris-image01.jpg',
+  '3-nights-north-coast-3-nights-cairo': '/images/safaris/egypt/sierra-tours-and-safaris-egypt-safaris-image01.jpg',
+  
+  // South Africa
+  '4-nights-5-days-cape-town-south-africa': '/images/general/sierra-tours-and-safaris-south-africa-safaris-image01.jpg',
+  
+  // Malaysia
+  'malaysia-3-nights-4-days': '/images/safaris/other/sierra-tours-and-travel-3-nights-4-days-Malaysia-image-01.jpg',
+  
+  // Madagascar
+  'morondava-through-madagascar-s-natural-wonders': '/images/general/sierra-tours-and-safaris-madagascar-safaris-image01.jpg',
+};
+
+// ============================================================================
+// REGION-SPECIFIC IMAGE POOLS
+// When a specific safari isn't mapped, use these pools based on region/keywords
+// ============================================================================
+const REGION_IMAGE_POOLS: Record<string, string[]> = {
+  kenya: [
+    '/images/safaris/other/sierra-tours-and-safaris-kenya-safaris-image01.jpg',
+    '/images/safaris/other/Sierra-tours-and-safaris-7-DAY-KENYA-SAFARI-image-01.jpg',
+    '/images/safaris/other/Sierra-tours-and-safaris-7-DAY-KENYA-SAFARI-image-02.jpg',
+    '/images/safaris/other/Sierra-tours-and-safaris-7-DAY-KENYA-SAFARI-image-03-1.jpg',
+    '/images/safaris/other/Sierra-tours-and-safaris-7-DAY-KENYA-SAFARI-image-04.jpg',
+  ],
+  
+  'mount-kenya': [
+    '/images/safaris/other/sierra-tours-and-safaris-Mount-Kenya-Climbing-5-days-and-safari-1-nights-2025-image01.jpg',
+    '/images/safaris/other/sierra-tours-and-safaris-Mount-Kenya-Climbing-5-days-and-safari-1-nights-2025-image02.jpg',
+    '/images/safaris/other/sierra-tours-and-safaris-Mount-Kenya-Climbing-5-days-and-safari-1-nights-2025-image03.jpg',
+    '/images/safaris/other/sierra-tours-and-safaris-mount-kenya-safaris-image01.jpg',
+  ],
+  
+  nakuru: [
+    '/images/safaris/other/sierra-tours-and-safaris-nakuru-safaris-image01.jpg',
+  ],
+  
+  samburu: [
+    '/images/safaris/other/sierra-tours-and-safaris-samburu-safaris-image01.jpg',
+  ],
+  
+  naivasha: [
+    '/images/safaris/other/sierra-tours-and-safaris-naivasha-safaris-image01.jpg',
+  ],
+  
+  tanzania: [
+    '/images/safaris/other/sierra-tours-and-safaris-7DAYS06NIGHT-TARANGIRE-NGORONGORO-SERENGETI-Group-tour-image01.jpg',
+    '/images/safaris/other/sierra-tours-and-safaris-7DAYS06NIGHT-TARANGIRE-NGORONGORO-SERENGETI-Group-tour-image02.jpg',
+    '/images/safaris/other/sierra-tours-and-safaris-7DAYS06NIGHT-TARANGIRE-NGORONGORO-SERENGETI-Group-tour-image03.jpg',
+    '/images/safaris/other/sierra-tours-and-safaris-tanzania-safaris-image01.jpg',
+    '/images/safaris/other/sierra-tours-and-travel-4-DAYS-–-THE-ULTIMATE-OF-NORTHERN-TANZANIA-EXPERIENCES-img01.jpg',
+  ],
+  
+  rwanda: [
+    '/images/safaris/rwanda/sierra-tours-and-safaris-rwanda-safaris-image01.jpg',
+    '/images/safaris/rwanda/sierra-tours-and-travel-Rwanda-5-Nights-image-01.jpg',
+    '/images/safaris/rwanda/sierra-tours-and-travel-Rwanda-5-Nights-image-02.jpg',
+    '/images/safaris/rwanda/sierra-tours-and-travel-Rwanda-5-Nights-image-03.jpg',
+    '/images/safaris/rwanda/sierra-tours-and-travel-Rwanda-5-Nights-image-04.jpg',
+  ],
+  
+  botswana: [
+    '/images/safaris/botswana/sierra-tours-and-safaris-botswana-safaris-image01.jpeg',
+  ],
+  
+  egypt: [
+    '/images/safaris/egypt/sierra-tours-and-safaris-egypt-safaris-image01.jpg',
+  ],
+  
+  'coast-beach': [
+    '/images/safaris/other/sierra-tours-and-safaris-mombasa-north-coast-safaris-image01.jpg',
+    '/images/safaris/other/sierra-tours-and-travel-5-night-adventure-package-in-the-Malindi–Turtle-Bay-area-image-01.jpg',
+    '/images/safaris/other/sierra-tours-and-travel-5-night-adventure-package-in-the-Malindi–Turtle-Bay-area-image-02.jpg',
+    '/images/safaris/other/sierra-tours-and-travel-5-night-adventure-package-in-the-Malindi–Turtle-Bay-area-image-03.jpg',
+    '/images/general/sierra-tours-and-safaris-diani-ukunda-safaris-image01.jpeg',
+  ],
+  
+  malaysia: [
+    '/images/safaris/other/sierra-tours-and-travel-3-nights-4-days-Malaysia-image-01.jpg',
+    '/images/safaris/other/sierra-tours-and-travel-3-nights-4-days-Malaysia-image-02.jpg',
+    '/images/safaris/other/sierra-tours-and-travel-3-nights-4-days-Malaysia-image-03.jpg',
+    '/images/safaris/other/sierra-tours-and-travel-3-nights-4-days-Malaysia-image-04.jpg',
+  ],
+  
+  madagascar: [
+    '/images/general/sierra-tours-and-safaris-madagascar-safaris-image01.jpg',
+  ],
+  
+  'south-africa': [
+    '/images/general/sierra-tours-and-safaris-south-africa-safaris-image01.jpg',
+  ],
+  
+  generic: [
+    '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg',
+  ],
+};
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
 
 /**
- * Get an appropriate image for a safari based on its destination and title
+ * Get the best matching image for a safari based on its slug and destination
  */
 export function getSafariImage(safari: { 
   id: string; 
+  slug: string; 
   title: string; 
   destination?: { slug: string; name: string } | null;
   image?: string | null;
 }): string {
   // If safari already has an external image URL (imgbb), use it
-  if (safari.image && (safari.image.startsWith('http') || safari.image.startsWith('https'))) {
+  if (safari.image?.startsWith('http')) {
     return safari.image;
   }
   
-  const destSlug = safari.destination?.slug || '';
+  // 1. Check for specific safari slug mapping
+  if (SAFARI_SPECIFIC_IMAGES[safari.slug]) {
+    return SAFARI_SPECIFIC_IMAGES[safari.slug];
+  }
+  
   const title = safari.title.toLowerCase();
+  const destSlug = safari.destination?.slug?.toLowerCase() || '';
   
-  // Check if we have specific images for this destination
-  if (destSlug === 'rwanda' && AVAILABLE_IMAGES.safaris.rwanda.length > 0) {
-    // Use hash of safari id to pick consistently
-    const index = hashString(safari.id, AVAILABLE_IMAGES.safaris.rwanda.length);
-    return AVAILABLE_IMAGES.safaris.rwanda[index];
+  // 2. Check for Mount Kenya specific safaris
+  if (title.includes('mount kenya') || safari.slug.includes('mount-kenya')) {
+    return REGION_IMAGE_POOLS['mount-kenya'][0];
   }
   
-  // Try to match by title keywords
-  if (title.includes('rwanda')) {
-    return AVAILABLE_IMAGES.safaris.rwanda[0] || AVAILABLE_IMAGES.safaris.other[0];
+  // 3. Check for Nakuru specific safaris
+  if (title.includes('nakuru')) {
+    return REGION_IMAGE_POOLS.nakuru[0];
   }
-  if (title.includes('kenya') || title.includes('masai') || title.includes('mara')) {
-    const kenyaImages = AVAILABLE_IMAGES.safaris.other.filter(img => 
-      img.includes('kenya') || img.includes('nakuru') || img.includes('7-DAY')
-    );
-    if (kenyaImages.length > 0) {
-      return kenyaImages[hashString(safari.id, kenyaImages.length)];
-    }
+  
+  // 4. Check for Samburu specific safaris
+  if (title.includes('samburu')) {
+    return REGION_IMAGE_POOLS.samburu[0];
   }
+  
+  // 5. Check for Naivasha specific safaris
+  if (title.includes('naivasha')) {
+    return REGION_IMAGE_POOLS.naivasha[0];
+  }
+  
+  // 6. Check for coastal/beach safaris
+  if (title.includes('beach') || title.includes('coast') || title.includes('mombasa') || 
+      title.includes('malindi') || title.includes('diani') || title.includes('watamu')) {
+    const pool = REGION_IMAGE_POOLS['coast-beach'];
+    return pool[Math.abs(safari.id.charCodeAt(0)) % pool.length];
+  }
+  
+  // 7. Check destination-based pools
+  if (REGION_IMAGE_POOLS[destSlug] && REGION_IMAGE_POOLS[destSlug].length > 0) {
+    const pool = REGION_IMAGE_POOLS[destSlug];
+    return pool[Math.abs(safari.id.charCodeAt(0)) % pool.length];
+  }
+  
+  // 8. Check for generic keywords
+  if (title.includes('kenya')) {
+    const pool = REGION_IMAGE_POOLS.kenya;
+    return pool[Math.abs(safari.id.charCodeAt(0)) % pool.length];
+  }
+  
   if (title.includes('tanzania') || title.includes('serengeti') || title.includes('ngorongoro')) {
-    const tanzaniaImages = AVAILABLE_IMAGES.safaris.other.filter(img => 
-      img.includes('tanzania') || img.includes('TARANGIRE')
-    );
-    if (tanzaniaImages.length > 0) {
-      return tanzaniaImages[hashString(safari.id, tanzaniaImages.length)];
-    }
-  }
-  if (title.includes('mount kenya')) {
-    const mountKenyaImages = AVAILABLE_IMAGES.safaris.other.filter(img => 
-      img.includes('mount-kenya')
-    );
-    if (mountKenyaImages.length > 0) return mountKenyaImages[0];
-  }
-  if (title.includes('malindi') || title.includes('coast') || title.includes('mombasa')) {
-    const coastImages = AVAILABLE_IMAGES.safaris.other.filter(img => 
-      img.includes('mombasa') || img.includes('Malindi')
-    );
-    if (coastImages.length > 0) {
-      return coastImages[hashString(safari.id, coastImages.length)];
-    }
-  }
-  if (title.includes('gaborone') || title.includes('botswana')) {
-    const botswanaImages = AVAILABLE_IMAGES.safaris.other.filter(img => 
-      img.includes('Gaborone')
-    );
-    if (botswanaImages.length > 0) return botswanaImages[0];
+    const pool = REGION_IMAGE_POOLS.tanzania;
+    return pool[Math.abs(safari.id.charCodeAt(0)) % pool.length];
   }
   
-  // Default to other images
-  const index = hashString(safari.id, AVAILABLE_IMAGES.safaris.other.length);
-  return AVAILABLE_IMAGES.safaris.other[index];
+  if (title.includes('rwanda')) {
+    const pool = REGION_IMAGE_POOLS.rwanda;
+    return pool[Math.abs(safari.id.charCodeAt(0)) % pool.length];
+  }
+  
+  if (title.includes('botswana')) {
+    return REGION_IMAGE_POOLS.botswana[0];
+  }
+  
+  if (title.includes('egypt')) {
+    return REGION_IMAGE_POOLS.egypt[0];
+  }
+  
+  if (title.includes('malaysia')) {
+    const pool = REGION_IMAGE_POOLS.malaysia;
+    return pool[Math.abs(safari.id.charCodeAt(0)) % pool.length];
+  }
+  
+  if (title.includes('madagascar')) {
+    return REGION_IMAGE_POOLS.madagascar[0];
+  }
+  
+  if (title.includes('south africa')) {
+    return REGION_IMAGE_POOLS['south-africa'][0];
+  }
+  
+  // 9. Default to generic safari image
+  return REGION_IMAGE_POOLS.generic[0];
 }
 
 /**
@@ -137,19 +283,15 @@ export function getDestinationHeroImage(destination: {
   image?: string | null;
 }): string {
   // If destination already has an external image URL, use it
-  if (destination.heroImage && (destination.heroImage.startsWith('http') || destination.heroImage.startsWith('https'))) {
+  if (destination.heroImage?.startsWith('http')) {
     return destination.heroImage;
   }
-  if (destination.image && (destination.image.startsWith('http') || destination.image.startsWith('https'))) {
+  if (destination.image?.startsWith('http')) {
     return destination.image;
   }
   
-  // Check for specific destination hero
-  const specificHero = AVAILABLE_IMAGES.hero[destination.slug as keyof typeof AVAILABLE_IMAGES.hero];
-  if (specificHero) return specificHero;
-  
-  // Default hero
-  return AVAILABLE_IMAGES.hero.default;
+  // Return specific hero or default
+  return DESTINATION_HERO_IMAGES[destination.slug] || DESTINATION_HERO_IMAGES.default;
 }
 
 /**
@@ -161,7 +303,7 @@ export function getDestinationCardImage(destination: {
   image?: string | null;
 }): string {
   // If destination already has an external image URL, use it
-  if (destination.image && (destination.image.startsWith('http') || destination.image.startsWith('https'))) {
+  if (destination.image?.startsWith('http')) {
     return destination.image;
   }
   
@@ -170,7 +312,7 @@ export function getDestinationCardImage(destination: {
 }
 
 /**
- * Check if an image path is valid (not empty and looks like a path)
+ * Check if an image path is valid
  */
 export function hasValidImage(imagePath?: string | null): boolean {
   if (!imagePath) return false;

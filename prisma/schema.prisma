@@ -12,38 +12,30 @@ model Post {
   title             String    @db.VarChar(255)
   slug              String    @unique
   subtitle          String?   @db.VarChar(500)
-  content           String    @db.Text
+  content           String
   excerpt           String?   @db.VarChar(500)
   category          String    @db.VarChar(100)
   cover             String?   @db.VarChar(500)
-  coverCaption      String?   @db.Text
+  coverCaption      String?
   coverPhotographer String?   @db.VarChar(255)
   published         Boolean   @default(false)
   publishedAt       DateTime?
   featured          Boolean   @default(false)
-  featuredQuote     String?   @db.Text
+  featuredQuote     String?
   isPressRelease    Boolean   @default(false)
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   author            String?   @db.VarChar(255)
   authorTitle       String?   @db.VarChar(255)
   deletedAt         DateTime? @db.Timestamp(6)
-
-  // SEO Fields
   metaTitle         String?   @db.VarChar(100)
   metaDesc          String?   @db.VarChar(160)
   ogImage           String?   @db.VarChar(500)
-
-  // Article Metadata
   readingTime       Int?      @default(0)
   wordCount         Int?      @default(0)
   tags              String[]  @default([])
-
-  // Location (for travel content)
   location          String?   @db.VarChar(255)
   country           String?   @db.VarChar(100)
-
-  // Inline Images (stored as JSON)
   inlineImages      Json?
 
   @@unique([slug, deletedAt])
@@ -59,34 +51,33 @@ model Post {
 }
 
 model Destination {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  slug        String   @unique
-  tagline     String
-  description String   @db.Text
-  image       String
-  heroImage   String
-  highlights  String[] @default([])
+  id              String         @id @default(cuid())
+  name            String         @unique
+  slug            String         @unique
+  tagline         String
+  description     String
+  image           String
+  heroImage       String
+  highlights      String[]       @default([])
   bestTimeToVisit String
-  languages   String[] @default([])
-  currency    String
-  published   Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  safaris     Safari[]
-  popularParks PopularPark[]
-  gallery     GalleryImage[]
+  languages       String[]       @default([])
+  currency        String
+  published       Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  gallery         GalleryImage[]
+  popularParks    PopularPark[]
+  safaris         Safari[]
 
   @@index([slug])
   @@map("destinations")
 }
 
 model PopularPark {
-  id          String   @id @default(cuid())
-  name        String
-  description String   @db.Text
-  image       String
+  id            String      @id @default(cuid())
+  name          String
+  description   String
+  image         String
   destinationId String
   destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
 
@@ -95,30 +86,29 @@ model PopularPark {
 }
 
 model Safari {
-  id            String   @id @default(cuid())
+  id            String         @id @default(cuid())
   title         String
-  slug          String   @unique
+  slug          String         @unique
   destinationId String
-  destination   Destination @relation(fields: [destinationId], references: [id])
   duration      String
   price         Float
-  currency      String   @default("USD")
+  currency      String         @default("USD")
   excerpt       String
-  description   String   @db.Text
+  description   String
   image         String
   groupSize     String
   accommodation String
-  activities    String[] @default([])
-  includes      String[] @default([])
-  excludes      String[] @default([])
-  highlights    String[] @default([])
-  published     Boolean  @default(true)
-  featured      Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  itinerary     ItineraryDay[]
+  activities    String[]       @default([])
+  includes      String[]       @default([])
+  excludes      String[]       @default([])
+  highlights    String[]       @default([])
+  published     Boolean        @default(true)
+  featured      Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   gallery       GalleryImage[]
+  itinerary     ItineraryDay[]
+  destination   Destination    @relation(fields: [destinationId], references: [id])
 
   @@index([slug])
   @@index([destinationId])
@@ -131,13 +121,13 @@ model ItineraryDay {
   id            String   @id @default(cuid())
   day           Int
   title         String
-  description   String   @db.Text
-  meals         String[] @default([])
-  accommodation String   @default("")
+  description   String
   safariId      String
-  safari        Safari   @relation(fields: [safariId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  accommodation String   @default("")
+  meals         String[] @default([])
+  safari        Safari   @relation(fields: [safariId], references: [id], onDelete: Cascade)
 
   @@unique([safariId, day])
   @@index([safariId])
@@ -145,15 +135,15 @@ model ItineraryDay {
 }
 
 model GalleryImage {
-  id            String   @id @default(cuid())
+  id            String       @id @default(cuid())
   url           String
-  alt           String   @default("")
+  alt           String       @default("")
   safariId      String?
-  safari        Safari?  @relation(fields: [safariId], references: [id], onDelete: Cascade)
   destinationId String?
+  order         Int          @default(0)
+  createdAt     DateTime     @default(now())
   destination   Destination? @relation(fields: [destinationId], references: [id], onDelete: Cascade)
-  order         Int      @default(0)
-  createdAt     DateTime @default(now())
+  safari        Safari?      @relation(fields: [safariId], references: [id], onDelete: Cascade)
 
   @@index([safariId])
   @@index([destinationId])
@@ -163,7 +153,7 @@ model GalleryImage {
 model Setting {
   id        String   @id @default(cuid())
   key       String   @unique
-  value     String   @db.Text
+  value     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

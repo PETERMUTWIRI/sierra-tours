@@ -56,8 +56,24 @@ export default function WhyChooseUs() {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50">
-      <div className="container mx-auto px-4">
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/hero/sierra-tours-and-travel-luxury-safaris-scaled-ras5mxcvjkwgb2j7xd519ueuyycgwfi5kwkvxfrue8.jpg"
+          alt=""
+          fill
+          className="object-cover"
+          sizes="100vw"
+          loading="lazy"
+          quality={65}
+        />
+        {/* Gray overlay to maintain original bg-gray-50 feel */}
+        <div className="absolute inset-0 bg-gray-50/94" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Image Side */}
           <motion.div
@@ -67,7 +83,7 @@ export default function WhyChooseUs() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="relative h-[500px] rounded-2xl overflow-hidden">
+            <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
               <Image
                 src="/images/hero/sierra-tours-and-travel-luxury-safaris.jpg"
                 alt="Safari Experience"
@@ -77,7 +93,13 @@ export default function WhyChooseUs() {
               />
             </div>
             {/* Floating Card */}
-            <div className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-xl p-6 max-w-xs">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="absolute -bottom-6 -right-6 md:bottom-8 md:-right-8 bg-white rounded-xl shadow-xl p-6 max-w-xs"
+            >
               <div className="flex items-center gap-4 mb-3">
                 <div className="w-12 h-12 bg-[#E8F5EE] rounded-full flex items-center justify-center">
                   <Award className="w-6 h-6 text-[#11A560]" />
@@ -90,7 +112,7 @@ export default function WhyChooseUs() {
               <p className="text-sm text-gray-600">
                 Creating unforgettable African safari experiences since 2009.
               </p>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Content Side */}

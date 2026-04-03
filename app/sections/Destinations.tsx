@@ -39,12 +39,27 @@ export default function Destinations({ destinations = [] }: DestinationsProps) {
     },
   };
 
-  // Use provided destinations or show empty state
   const displayDestinations = destinations.slice(0, 4);
 
   return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4">
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/destinations/tanzania/sierra-tours-and-safaris-tanzania-safaris-image01-rbamxa1d0t7xs4l8g8d7yqeb9e95i3mkhgvfivup3c.jpg"
+          alt=""
+          fill
+          className="object-cover"
+          sizes="100vw"
+          loading="lazy"
+          quality={70}
+        />
+        {/* White overlay to maintain original bg-white feel */}
+        <div className="absolute inset-0 bg-white/93" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -71,7 +86,6 @@ export default function Destinations({ destinations = [] }: DestinationsProps) {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {displayDestinations.map((destination) => {
-              // Get mapped image (handles both local files and imgbb URLs)
               const imageUrl = getDestinationCardImage(destination);
               const safariCount = destination._count?.safaris || destination.safaris?.length || 0;
               

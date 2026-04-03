@@ -86,8 +86,24 @@ export default function BlogSection({
   };
 
   return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4">
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* Background Image - subtle pattern effect */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/safaris/botswana/sierra-tours-and-safaris-botswana-safaris-image01-rae4xy0bfoxnp5zs0q0hvq2fjiy1hbwlkskzwr3qu8.jpeg"
+          alt=""
+          fill
+          className="object-cover"
+          sizes="100vw"
+          loading="lazy"
+          quality={60}
+        />
+        {/* White overlay to maintain original bg-white feel */}
+        <div className="absolute inset-0 bg-white/94" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

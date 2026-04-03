@@ -55,12 +55,27 @@ export default function FeaturedTrips({
     },
   };
 
-  // Use provided safaris or show empty state
   const displaySafaris = safaris.slice(0, 4);
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50">
-      <div className="container mx-auto px-4">
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/safaris/kenya/sierra-tours-and-safaris-kenya-safaris-image01-rbamx9reyz8y64l8g8d7yqeb9e95i3mkhgvfivup3c.jpg"
+          alt=""
+          fill
+          className="object-cover"
+          sizes="100vw"
+          loading="lazy"
+          quality={70}
+        />
+        {/* Gray overlay to maintain original bg-gray-50 feel */}
+        <div className="absolute inset-0 bg-gray-50/95" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -85,7 +100,6 @@ export default function FeaturedTrips({
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {displaySafaris.map((safari) => {
-              // Get mapped image (handles both local files and imgbb URLs)
               const imageUrl = getSafariImage(safari);
               
               return (

@@ -53,11 +53,25 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-gray-900 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-[#11A560] rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#11A560] rounded-full blur-3xl" />
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/safaris/kenya/sierra-tours-and-safaris-kenya-safaris-image01-rbamx9reyz8y64l8g8d7yqeb9e95i3mkhgvfivup3c.jpg"
+          alt=""
+          fill
+          className="object-cover"
+          sizes="100vw"
+          loading="lazy"
+          quality={60}
+        />
+        {/* Dark overlay to maintain original bg-gray-900 feel */}
+        <div className="absolute inset-0 bg-gray-900/92" />
+        {/* Subtle green accent glows */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-[#11A560] rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#11A560] rounded-full blur-3xl" />
+        </div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
