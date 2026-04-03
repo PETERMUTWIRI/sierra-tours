@@ -83,19 +83,19 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-8 md:gap-16">
             <div className="text-center">
-              <p className="text-3xl font-bold text-orange-600">{safaris.length}+</p>
+              <p className="text-3xl font-bold text-[#11A560]">{safaris.length}+</p>
               <p className="text-gray-600 text-sm">Safari Packages</p>
             </div>
             <div className="text-center">
-              <p className="text-3xl font-bold text-orange-600">{destinations.length}</p>
+              <p className="text-3xl font-bold text-[#11A560]">{destinations.length}</p>
               <p className="text-gray-600 text-sm">Destinations</p>
             </div>
             <div className="text-center">
-              <p className="text-3xl font-bold text-orange-600">15+</p>
+              <p className="text-3xl font-bold text-[#11A560]">15+</p>
               <p className="text-gray-600 text-sm">Years Experience</p>
             </div>
             <div className="text-center">
-              <p className="text-3xl font-bold text-orange-600">5000+</p>
+              <p className="text-3xl font-bold text-[#11A560]">5000+</p>
               <p className="text-gray-600 text-sm">Happy Travelers</p>
             </div>
           </div>
@@ -107,7 +107,7 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2 text-gray-700">
-              <Filter size={20} className="text-orange-500" />
+              <Filter size={20} className="text-[#11A560]" />
               <span className="font-semibold">Filter by destination:</span>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -115,7 +115,7 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
                 href="/safaris"
                 className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${
                   !destinationFilter
-                    ? "bg-orange-500 text-white shadow-lg shadow-orange-500/25"
+                    ? "bg-[#11A560] text-white shadow-lg shadow-[#11A560]/25"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -127,7 +127,7 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
                   href={`/safaris?destination=${dest.slug}`}
                   className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${
                     destinationFilter === dest.slug
-                      ? "bg-orange-500 text-white shadow-lg shadow-orange-500/25"
+                      ? "bg-[#11A560] text-white shadow-lg shadow-[#11A560]/25"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -141,10 +141,10 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
 
       {/* Featured Safaris */}
       {featuredSafaris.length > 0 && !destinationFilter && (
-        <section className="py-16 bg-gradient-to-b from-orange-50 to-white">
+        <section className="py-16 bg-gradient-to-b from-[#E8F5EE] to-white">
           <div className="container mx-auto px-4">
             <div className="flex items-center gap-3 mb-8">
-              <Star className="w-6 h-6 text-orange-500 fill-orange-500" />
+              <Star className="w-6 h-6 text-[#11A560] fill-[#11A560]" />
               <h2 className="text-2xl font-bold text-gray-900">Featured Safaris</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -181,7 +181,7 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
               </p>
               <Link
                 href="/safaris"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#11A560] text-white font-semibold rounded-lg hover:bg-[#0E8A50] transition-colors"
               >
                 View All Safaris
                 <ArrowRight size={18} />
@@ -218,7 +218,7 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/25"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#11A560] text-white font-semibold rounded-lg hover:bg-[#0E8A50] transition-all shadow-lg shadow-[#11A560]/25"
             >
               Request Custom Safari
               <ArrowRight size={20} />
@@ -260,7 +260,7 @@ function SafariCard({ safari, featured }: SafariCardProps) {
   return (
     <article
       className={`bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group ${
-        featured ? 'ring-2 ring-orange-500 ring-offset-2' : ''
+        featured ? 'ring-2 ring-[#11A560] ring-offset-2' : ''
       }`}
     >
       {/* Image */}
@@ -281,7 +281,7 @@ function SafariCard({ safari, featured }: SafariCardProps) {
               {safari.destination.name}
             </span>
             {featured && (
-              <span className="px-3 py-1.5 bg-orange-500 text-white text-sm font-semibold rounded-full shadow-sm flex items-center gap-1">
+              <span className="px-3 py-1.5 bg-[#11A560] text-white text-sm font-semibold rounded-full shadow-sm flex items-center gap-1">
                 <Star size={14} className="fill-white" />
                 Featured
               </span>
@@ -291,7 +291,7 @@ function SafariCard({ safari, featured }: SafariCardProps) {
           {/* Price Badge */}
           <div className="absolute bottom-4 right-4 px-4 py-2 bg-white rounded-xl shadow-lg">
             <span className="text-xs text-gray-500 block">From</span>
-            <span className="text-xl font-bold text-orange-600">
+            <span className="text-xl font-bold text-[#11A560]">
               {safari.currency} {safari.price.toLocaleString()}
             </span>
           </div>
@@ -302,18 +302,18 @@ function SafariCard({ safari, featured }: SafariCardProps) {
       <div className="p-6">
         <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
           <span className="flex items-center gap-1.5">
-            <Clock size={16} className="text-orange-500" />
+            <Clock size={16} className="text-[#11A560]" />
             {safari.duration}
           </span>
           {safari.groupSize && (
             <span className="flex items-center gap-1.5">
-              <Users size={16} className="text-orange-500" />
+              <Users size={16} className="text-[#11A560]" />
               {safari.groupSize}
             </span>
           )}
         </div>
 
-        <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors line-clamp-2">
+        <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#11A560] transition-colors line-clamp-2">
           <Link href={`/trips/${safari.slug}`}>{safari.title}</Link>
         </h2>
 
@@ -323,7 +323,7 @@ function SafariCard({ safari, featured }: SafariCardProps) {
 
         <Link
           href={`/trips/${safari.slug}`}
-          className="inline-flex items-center justify-center gap-2 w-full px-4 py-3 bg-orange-50 text-orange-600 font-semibold rounded-xl hover:bg-orange-500 hover:text-white transition-all duration-300"
+          className="inline-flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#E8F5EE] text-[#11A560] font-semibold rounded-xl hover:bg-[#11A560] hover:text-white transition-all duration-300"
         >
           View Details
           <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />

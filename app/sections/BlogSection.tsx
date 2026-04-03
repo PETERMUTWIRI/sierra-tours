@@ -127,7 +127,7 @@ export default function BlogSection({
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   {/* Category Badge */}
-                  <span className="absolute top-4 left-4 px-3 py-1 bg-orange-500 text-white text-sm font-medium rounded-full">
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-[#11A560] text-white text-sm font-medium rounded-full">
                     {post.category}
                   </span>
                 </div>
@@ -148,7 +148,7 @@ export default function BlogSection({
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-500 transition-colors line-clamp-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#11A560] transition-colors line-clamp-2">
                   <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                 </h3>
 
@@ -158,7 +158,7 @@ export default function BlogSection({
                 {/* Read More */}
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center gap-2 text-orange-500 font-medium hover:text-orange-600 transition-colors"
+                  className="inline-flex items-center gap-2 text-[#11A560] font-medium hover:text-[#0E8A50] transition-colors"
                 >
                   Read More
                   <ArrowRight
@@ -181,7 +181,7 @@ export default function BlogSection({
         >
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-[#11A560] text-white font-medium rounded-lg hover:bg-[#0E8A50] transition-colors"
           >
             View All Posts
             <ArrowRight size={18} />

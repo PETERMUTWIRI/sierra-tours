@@ -96,7 +96,7 @@ export default function Destinations({ destinations = [] }: DestinationsProps) {
                   {/* Content */}
                   <div className="absolute inset-0 flex flex-col justify-end p-6">
                     <div className="transform transition-transform duration-300 group-hover:-translate-y-2">
-                      <div className="flex items-center gap-2 text-orange-400 mb-2">
+                      <div className="flex items-center gap-2 text-[#B3CE4D] mb-2">
                         <MapPin size={18} />
                         <span className="text-sm font-medium">
                           {safariCount} Safari{safariCount !== 1 ? 's' : ''}
@@ -110,7 +110,7 @@ export default function Destinations({ destinations = [] }: DestinationsProps) {
                       </p>
                       <Link
                         href={`/destinations/${destination.slug}`}
-                        className="inline-flex items-center gap-2 text-white font-medium hover:text-orange-400 transition-colors"
+                        className="inline-flex items-center gap-2 text-white font-medium hover:text-[#B3CE4D] transition-colors"
                       >
                         Explore
                         <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
@@ -137,7 +137,7 @@ export default function Destinations({ destinations = [] }: DestinationsProps) {
         >
           <Link
             href="/destinations"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-[#11A560] text-white font-medium rounded-lg hover:bg-[#0E8A50] transition-colors"
           >
             View All Destinations
             <ArrowRight size={18} />

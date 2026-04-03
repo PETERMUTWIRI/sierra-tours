@@ -77,7 +77,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
         <div className="absolute inset-0 flex items-end">
           <div className="container mx-auto px-4 pb-16">
             <div className="max-w-3xl">
-              <span className="text-orange-400 font-semibold mb-2 block uppercase tracking-wider">
+              <span className="text-[#B3CE4D] font-semibold mb-2 block uppercase tracking-wider">
                 Safari Destination
               </span>
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
@@ -89,7 +89,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
               <div className="flex flex-wrap gap-4">
                 <Link
                   href={`/safaris?destination=${destination.slug}`}
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/25"
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-[#11A560] text-white font-semibold rounded-lg hover:bg-[#0E8A50] transition-colors shadow-lg shadow-[#11A560]/25"
                 >
                   View {destination.safaris.length} Safari{destination.safaris.length !== 1 ? 's' : ''}
                   <ArrowRight size={20} />
@@ -129,7 +129,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                     {destination.highlights.map((highlight) => (
                       <li key={highlight} className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                        <Check className="w-5 h-5 text-[#11A560] flex-shrink-0 mt-0.5" />
                         <span className="text-gray-600">{highlight}</span>
                       </li>
                     ))}
@@ -185,7 +185,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                       <Link
                         key={safari.id}
                         href={`/trips/${safari.slug}`}
-                        className="bg-white border border-gray-200 rounded-xl p-4 hover:border-orange-500 hover:shadow-md transition-all group"
+                        className="bg-white border border-gray-200 rounded-xl p-4 hover:border-[#11A560] hover:shadow-md transition-all group"
                       >
                         <div className="relative h-32 rounded-lg overflow-hidden mb-3">
                           <Image
@@ -197,10 +197,10 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                           />
                         </div>
                         <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">
+                          <h4 className="font-semibold text-gray-900 group-hover:text-[#0E8A50] transition-colors">
                             {safari.title}
                           </h4>
-                          <span className="text-orange-600 font-bold">
+                          <span className="text-[#0E8A50] font-bold">
                             {safari.currency} {safari.price.toLocaleString()}
                           </span>
                         </div>
@@ -227,7 +227,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                     <div className="mt-6 text-center">
                       <Link
                         href={`/safaris?destination=${destination.slug}`}
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-orange-50 text-orange-600 font-semibold rounded-lg hover:bg-orange-100 transition-colors"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-[#E8F5EE] text-[#0E8A50] font-semibold rounded-lg hover:bg-[#11A560] transition-colors"
                       >
                         View All {destination.safaris.length} Safaris
                         <ArrowRight size={18} />
@@ -247,7 +247,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                 
                 <div className="space-y-5">
                   <div className="flex items-start gap-3">
-                    <Calendar className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                    <Calendar className="w-5 h-5 text-[#11A560] flex-shrink-0 mt-0.5" />
                     <div>
                       <span className="font-medium text-gray-900 block">
                         Best Time to Visit
@@ -259,7 +259,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <Globe className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                    <Globe className="w-5 h-5 text-[#11A560] flex-shrink-0 mt-0.5" />
                     <div>
                       <span className="font-medium text-gray-900 block">
                         Languages
@@ -271,7 +271,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <Banknote className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                    <Banknote className="w-5 h-5 text-[#11A560] flex-shrink-0 mt-0.5" />
                     <div>
                       <span className="font-medium text-gray-900 block">
                         Currency
@@ -283,7 +283,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                    <MapPin className="w-5 h-5 text-[#11A560] flex-shrink-0 mt-0.5" />
                     <div>
                       <span className="font-medium text-gray-900 block">
                         Safari Packages
@@ -298,14 +298,14 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                 <div className="mt-8 pt-6 border-t border-gray-200 space-y-3">
                   <Link
                     href={`/safaris?destination=${destination.slug}`}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/25"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#11A560] text-white font-semibold rounded-xl hover:bg-[#0E8A50] transition-colors shadow-lg shadow-[#11A560]/25"
                   >
                     View All Safaris
                     <ArrowRight size={18} />
                   </Link>
                   <Link
                     href="/contact"
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-orange-500 hover:text-orange-500 transition-colors"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-[#11A560] hover:text-[#11A560] transition-colors"
                   >
                     Customize Trip
                   </Link>
@@ -347,7 +347,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
       )}
 
       {/* CTA Section */}
-      <section className="py-20 bg-orange-500">
+      <section className="py-20 bg-[#11A560]">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to Explore {destination.name}?
@@ -359,7 +359,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href={`/safaris?destination=${destination.slug}`}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-orange-500 font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#11A560] font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg"
             >
               Browse Safaris
               <ArrowRight size={20} />

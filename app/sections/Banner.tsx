@@ -65,7 +65,7 @@ export default function Banner({
                   <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
                     Destination
                   </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#11A560] bg-white">
                     <option value="">Select Destination</option>
                     <option value="kenya">Kenya</option>
                     <option value="tanzania">Tanzania</option>
@@ -79,7 +79,7 @@ export default function Banner({
                   <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
                     Trip Type
                   </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#11A560] bg-white">
                     <option value="">Select Trip Type</option>
                     <option value="luxury">Luxury Safari</option>
                     <option value="budget">Budget Safari</option>
@@ -93,7 +93,7 @@ export default function Banner({
                   <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
                     Duration
                   </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#11A560] bg-white">
                     <option value="">Select Duration</option>
                     <option value="1-3">1-3 Days</option>
                     <option value="4-7">4-7 Days</option>
@@ -104,7 +104,7 @@ export default function Banner({
                 <div className="flex items-end">
                   <button
                     type="submit"
-                    className="w-full md:w-auto px-8 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors shadow-lg hover:shadow-xl"
+                    className="w-full md:w-auto px-8 py-3 bg-[#11A560] text-white font-semibold rounded-lg hover:bg-[#0E8A50] transition-colors shadow-lg hover:shadow-xl"
                   >
                     Search
                   </button>

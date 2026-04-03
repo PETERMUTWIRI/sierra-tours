@@ -79,8 +79,8 @@ export default function WhyChooseUs() {
             {/* Floating Card */}
             <div className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-xl p-6 max-w-xs">
               <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                  <Award className="w-6 h-6 text-orange-500" />
+                <div className="w-12 h-12 bg-[#E8F5EE] rounded-full flex items-center justify-center">
+                  <Award className="w-6 h-6 text-[#11A560]" />
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-gray-900">15+</div>
@@ -102,7 +102,7 @@ export default function WhyChooseUs() {
               transition={{ duration: 0.6 }}
               className="mb-8"
             >
-              <span className="text-orange-500 font-medium mb-2 block">Why Choose Us</span>
+              <span className="text-[#11A560] font-medium mb-2 block">Why Choose Us</span>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 Your Trusted Safari Partner in Africa
               </h2>
@@ -124,8 +124,8 @@ export default function WhyChooseUs() {
                   variants={itemVariants}
                   className="flex gap-4"
                 >
-                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <feature.icon className="w-6 h-6 text-orange-500" />
+                  <div className="w-12 h-12 bg-[#E8F5EE] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <feature.icon className="w-6 h-6 text-[#11A560]" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">

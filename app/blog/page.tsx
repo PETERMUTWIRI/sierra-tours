@@ -57,7 +57,7 @@ export default async function BlogPage() {
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="flex items-center gap-2 mb-6">
-              <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+              <span className="w-2 h-2 bg-[#11A560] rounded-full"></span>
               <span className="text-sm font-medium text-slate-600 uppercase tracking-wider">Featured Story</span>
             </div>
             <Link href={`/blog/${featured.slug}`} className="group block">
@@ -75,7 +75,7 @@ export default async function BlogPage() {
                     </div>
                   )}
                   <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 bg-orange-500 text-white text-sm font-medium rounded-full">
+                    <span className="px-3 py-1 bg-[#11A560] text-white text-sm font-medium rounded-full">
                       {featured.category}
                     </span>
                   </div>
@@ -105,14 +105,14 @@ export default async function BlogPage() {
                       </span>
                     )}
                   </div>
-                  <h2 className="text-3xl font-bold text-slate-900 mb-3 group-hover:text-orange-600 transition-colors">
+                  <h2 className="text-3xl font-bold text-slate-900 mb-3 group-hover:text-[#0E8A50] transition-colors">
                     {featured.title}
                   </h2>
                   {featured.subtitle && (
                     <p className="text-lg text-slate-600 mb-4">{featured.subtitle}</p>
                   )}
                   <p className="text-slate-600 mb-6 line-clamp-3">{featured.excerpt}</p>
-                  <span className="inline-flex items-center gap-2 text-orange-600 font-medium group-hover:gap-3 transition-all">
+                  <span className="inline-flex items-center gap-2 text-[#0E8A50] font-medium group-hover:gap-3 transition-all">
                     Read Article <FaArrowRight size={14} />
                   </span>
                 </div>
@@ -169,7 +169,7 @@ export default async function BlogPage() {
                           </span>
                         )}
                       </div>
-                      <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-orange-600 transition-colors line-clamp-2">
+                      <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-[#0E8A50] transition-colors line-clamp-2">
                         {post.title}
                       </h3>
                       <p className="text-slate-600 text-sm line-clamp-2">{post.excerpt}</p>

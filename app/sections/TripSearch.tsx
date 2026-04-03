@@ -38,7 +38,7 @@ export default function TripSearch({ className }: TripSearchProps) {
                   size={18}
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                 />
-                <select className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none bg-white">
+                <select className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#11A560] appearance-none bg-white">
                   <option value="">All Destinations</option>
                   <option value="kenya">Kenya</option>
                   <option value="tanzania">Tanzania</option>
@@ -55,7 +55,7 @@ export default function TripSearch({ className }: TripSearchProps) {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Activity
               </label>
-              <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+              <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#11A560] bg-white">
                 <option value="">All Activities</option>
                 <option value="game-drive">Game Drive</option>
                 <option value="walking-safari">Walking Safari</option>
@@ -76,7 +76,7 @@ export default function TripSearch({ className }: TripSearchProps) {
                   size={18}
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                 />
-                <select className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none bg-white">
+                <select className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#11A560] appearance-none bg-white">
                   <option value="">Any Duration</option>
                   <option value="1-3">1-3 Days</option>
                   <option value="4-7">4-7 Days</option>
@@ -96,7 +96,7 @@ export default function TripSearch({ className }: TripSearchProps) {
                   size={18}
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                 />
-                <select className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none bg-white">
+                <select className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#11A560] appearance-none bg-white">
                   <option value="1">1 Person</option>
                   <option value="2">2 People</option>
                   <option value="3-5">3-5 People</option>
@@ -110,7 +110,7 @@ export default function TripSearch({ className }: TripSearchProps) {
             <div className="flex items-end">
               <button
                 type="submit"
-                className="w-full px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                className="w-full px-6 py-3 bg-[#11A560] text-white font-semibold rounded-lg hover:bg-[#0E8A50] transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
               >
                 <Search size={18} />
                 Find Trips

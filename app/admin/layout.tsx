@@ -57,7 +57,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4" />
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0E8A50] mx-auto mb-4" />
           <p className="text-slate-400">Checking authentication...</p>
         </div>
       </div>
@@ -130,7 +130,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="flex items-center gap-2 sm:gap-3">
               <Link 
                 href="/admin/blog/new" 
-                className="hidden sm:flex items-center gap-2 px-3 lg:px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold transition-all shadow-lg shadow-orange-600/20"
+                className="hidden sm:flex items-center gap-2 px-3 lg:px-4 py-2 rounded-xl bg-[#0E8A50] hover:bg-[#0C7845] text-white text-sm font-semibold transition-all shadow-lg shadow-[#0E8A50]/20"
               >
                 <FaNewspaper className="w-4 h-4" />
                 <span className="hidden lg:inline">New Post</span>
@@ -170,7 +170,7 @@ function SidebarContent({ user, pathname, onClose, mobile }: SidebarContentProps
       {/* Logo Header */}
       <div className="h-16 lg:h-20 flex items-center justify-between px-4 lg:px-6 border-b border-slate-800">
         <Link href="/admin" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg shadow-orange-500/20">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#E8F5EE]0 to-[#0C7845] flex items-center justify-center shadow-lg shadow-[#11A560]/20">
             <span className="text-white font-bold text-lg">S</span>
           </div>
           <div>
@@ -203,7 +203,7 @@ function SidebarContent({ user, pathname, onClose, mobile }: SidebarContentProps
               className={`
                 flex items-center gap-3 px-3 lg:px-4 py-3 rounded-xl transition-all duration-200 group
                 ${isActive 
-                  ? 'bg-orange-600 text-white shadow-lg shadow-orange-600/20' 
+                  ? 'bg-[#0E8A50] text-white shadow-lg shadow-[#0E8A50]/20' 
                   : 'text-slate-400 hover:text-white hover:bg-slate-800'
                 }
               `}
@@ -223,7 +223,7 @@ function SidebarContent({ user, pathname, onClose, mobile }: SidebarContentProps
       {/* User Section - Bottom */}
       <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4 border-t border-slate-800 bg-slate-900/50 backdrop-blur">
         <div className="flex items-center gap-3 px-3 lg:px-4 py-2 mb-2">
-          <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-gradient-to-br from-orange-600 to-red-600 flex items-center justify-center shadow-lg flex-shrink-0">
+          <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-gradient-to-br from-[#0E8A50] to-red-600 flex items-center justify-center shadow-lg flex-shrink-0">
             <span className="text-white font-semibold text-sm">
               {user?.name?.[0] || user?.email?.[0] || 'A'}
             </span>

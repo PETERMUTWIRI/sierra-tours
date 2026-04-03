@@ -134,7 +134,7 @@ export default function PostForm({ post, onSubmit }: PostFormProps) {
               type="checkbox"
               checked={formData.published}
               onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-              className="w-4 h-4 rounded border-slate-600 text-orange-600"
+              className="w-4 h-4 rounded border-slate-600 text-[#0E8A50]"
             />
             Publish
           </label>
@@ -143,14 +143,14 @@ export default function PostForm({ post, onSubmit }: PostFormProps) {
               type="checkbox"
               checked={formData.featured}
               onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-              className="w-4 h-4 rounded border-slate-600 text-orange-600"
+              className="w-4 h-4 rounded border-slate-600 text-[#0E8A50]"
             />
             Featured
           </label>
           <button
             type="submit"
             disabled={loading}
-            className="inline-flex items-center gap-2 px-6 py-2 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-6 py-2 bg-[#0E8A50] text-white font-medium rounded-lg hover:bg-[#11A560] disabled:opacity-50"
           >
             {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
             {post ? 'Update' : 'Create'}
@@ -172,7 +172,7 @@ export default function PostForm({ post, onSubmit }: PostFormProps) {
               )}
             </div>
           )}
-          <span className="inline-block px-3 py-1 bg-orange-100 text-orange-800 text-sm rounded-full mb-4">
+          <span className="inline-block px-3 py-1 bg-[#11A560] text-[#11A560] text-sm rounded-full mb-4">
             {formData.category}
           </span>
           <h1 className="text-4xl font-bold mb-2">{formData.title || 'Untitled Post'}</h1>
@@ -200,7 +200,7 @@ export default function PostForm({ post, onSubmit }: PostFormProps) {
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-xl font-semibold focus:ring-2 focus:ring-orange-500"
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-xl font-semibold focus:ring-2 focus:ring-[#11A560]"
                 placeholder="Enter post title"
                 required
               />
@@ -216,7 +216,7 @@ export default function PostForm({ post, onSubmit }: PostFormProps) {
                 type="text"
                 value={formData.subtitle}
                 onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                 placeholder="Secondary headline"
               />
             </div>
@@ -240,7 +240,7 @@ export default function PostForm({ post, onSubmit }: PostFormProps) {
               <textarea
                 value={formData.excerpt}
                 onChange={(e) => setFormData({ ...formData, excerpt: e.target.value.slice(0, 500) })}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                 rows={3}
                 placeholder="Brief summary for cards and SEO"
                 required
@@ -253,7 +253,7 @@ export default function PostForm({ post, onSubmit }: PostFormProps) {
               <textarea
                 value={formData.featuredQuote}
                 onChange={(e) => setFormData({ ...formData, featuredQuote: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                 rows={2}
                 placeholder="Pull quote for highlighting"
               />
@@ -276,7 +276,7 @@ export default function PostForm({ post, onSubmit }: PostFormProps) {
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                 required
               >
                 {POST_CATEGORIES.map((cat) => (
@@ -311,7 +311,7 @@ export default function PostForm({ post, onSubmit }: PostFormProps) {
                 accept="image/*"
                 onChange={(e) => handleImageUpload(e, 'cover')}
                 disabled={uploading}
-                className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-orange-600 file:text-white"
+                className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#0E8A50] file:text-white"
               />
               {uploading && <p className="mt-2 text-sm text-slate-400">Uploading...</p>}
 
@@ -421,7 +421,7 @@ export default function PostForm({ post, onSubmit }: PostFormProps) {
                     type="file"
                     accept="image/*"
                     onChange={(e) => handleImageUpload(e, 'ogImage')}
-                    className="block w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-orange-600 file:text-white"
+                    className="block w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-[#0E8A50] file:text-white"
                   />
                   {formData.ogImage && (
                     <img src={formData.ogImage} alt="OG" className="mt-2 h-20 rounded object-cover" />
@@ -438,7 +438,7 @@ export default function PostForm({ post, onSubmit }: PostFormProps) {
                   type="checkbox"
                   checked={formData.isPressRelease}
                   onChange={(e) => setFormData({ ...formData, isPressRelease: e.target.checked })}
-                  className="w-4 h-4 rounded border-slate-600 text-orange-600"
+                  className="w-4 h-4 rounded border-slate-600 text-[#0E8A50]"
                 />
                 Press Release
               </label>

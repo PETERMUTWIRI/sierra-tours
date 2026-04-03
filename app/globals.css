@@ -3,12 +3,22 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Brand Colors - Matching live WordPress site */
+  --brand-primary: #11A560;
+  --brand-primary-dark: #0E8A50;
+  --brand-primary-light: #E8F5EE;
+  --brand-accent: #B3CE4D;
+  --brand-purple: #605BE5;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
+  /* Brand color mapping for Tailwind */
+  --color-brand: var(--brand-primary);
+  --color-brand-dark: var(--brand-primary-dark);
+  --color-brand-light: var(--brand-primary-light);
 }
 
 @layer base {

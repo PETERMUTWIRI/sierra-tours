@@ -55,22 +55,22 @@ export default async function DestinationsPage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Globe className="w-8 h-8 text-orange-600" />
+              <div className="w-16 h-16 bg-[#11A560] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Globe className="w-8 h-8 text-[#0E8A50]" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">12 Countries</h3>
               <p className="text-gray-600 text-sm">Across East, Southern & North Africa</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Compass className="w-8 h-8 text-orange-600" />
+              <div className="w-16 h-16 bg-[#11A560] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Compass className="w-8 h-8 text-[#0E8A50]" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">Expert Guides</h3>
               <p className="text-gray-600 text-sm">Local knowledge & professional service</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-8 h-8 text-orange-600" />
+              <div className="w-16 h-16 bg-[#11A560] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-[#0E8A50]" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">Trusted Partner</h3>
               <p className="text-gray-600 text-sm">15+ years of safari excellence</p>
@@ -117,7 +117,7 @@ export default async function DestinationsPage() {
                 <div className="absolute inset-0 flex flex-col justify-end p-6">
                   {/* Safari Count Badge */}
                   <div className="mb-3">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 text-white text-sm font-semibold rounded-full">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#11A560] text-white text-sm font-semibold rounded-full">
                       <MapPin size={14} />
                       {destination._count.safaris} Safari{destination._count.safaris !== 1 ? 's' : ''}
                     </span>
@@ -131,7 +131,7 @@ export default async function DestinationsPage() {
                     {destination.tagline || destination.description}
                   </p>
 
-                  <div className="flex items-center gap-2 text-white font-medium group-hover:text-orange-400 transition-colors">
+                  <div className="flex items-center gap-2 text-white font-medium group-hover:text-[#B3CE4D] transition-colors">
                     <span>Explore {destination.name}</span>
                     <ArrowRight
                       size={18}
@@ -141,7 +141,7 @@ export default async function DestinationsPage() {
                 </div>
 
                 {/* Hover Border Effect */}
-                <div className="absolute inset-0 border-4 border-transparent group-hover:border-orange-500/50 rounded-2xl transition-colors duration-300" />
+                <div className="absolute inset-0 border-4 border-transparent group-hover:border-[#11A560]/50 rounded-2xl transition-colors duration-300" />
               </Link>
               );
             })}
@@ -159,8 +159,8 @@ export default async function DestinationsPage() {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-6">
                 <div className="flex gap-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-orange-600 font-bold">KE</span>
+                  <div className="w-12 h-12 bg-[#11A560] rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span className="text-[#0E8A50] font-bold">KE</span>
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Kenya</h3>
@@ -168,8 +168,8 @@ export default async function DestinationsPage() {
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-orange-600 font-bold">TZ</span>
+                  <div className="w-12 h-12 bg-[#11A560] rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span className="text-[#0E8A50] font-bold">TZ</span>
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Tanzania</h3>
@@ -177,8 +177,8 @@ export default async function DestinationsPage() {
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-orange-600 font-bold">BW</span>
+                  <div className="w-12 h-12 bg-[#11A560] rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span className="text-[#0E8A50] font-bold">BW</span>
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Botswana</h3>
@@ -188,8 +188,8 @@ export default async function DestinationsPage() {
               </div>
               <div className="space-y-6">
                 <div className="flex gap-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-orange-600 font-bold">ZM</span>
+                  <div className="w-12 h-12 bg-[#11A560] rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span className="text-[#0E8A50] font-bold">ZM</span>
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Zambia</h3>
@@ -197,8 +197,8 @@ export default async function DestinationsPage() {
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-orange-600 font-bold">RW</span>
+                  <div className="w-12 h-12 bg-[#11A560] rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span className="text-[#0E8A50] font-bold">RW</span>
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Rwanda</h3>
@@ -206,8 +206,8 @@ export default async function DestinationsPage() {
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-orange-600 font-bold">EG</span>
+                  <div className="w-12 h-12 bg-[#11A560] rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span className="text-[#0E8A50] font-bold">EG</span>
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Egypt</h3>
@@ -233,7 +233,7 @@ export default async function DestinationsPage() {
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/25"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#11A560] text-white font-semibold rounded-lg hover:bg-[#0E8A50] transition-all shadow-lg shadow-[#11A560]/25"
             >
               Get Expert Advice
               <ArrowRight size={20} />

@@ -106,17 +106,17 @@ export default function FeaturedTrips({
                       />
                       {/* Destination Badge */}
                       <span className="absolute top-4 left-4 flex items-center gap-1 px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-800 text-sm font-medium rounded-full">
-                        <MapPin size={14} className="text-orange-500" />
+                        <MapPin size={14} className="text-[#11A560]" />
                         {safari.destination.name}
                       </span>
                       {/* Featured Badge */}
                       {safari.featured && (
-                        <span className="absolute top-4 right-4 px-3 py-1 bg-orange-500 text-white text-xs font-bold rounded-full">
+                        <span className="absolute top-4 right-4 px-3 py-1 bg-[#11A560] text-white text-xs font-bold rounded-full">
                           FEATURED
                         </span>
                       )}
                       {/* Price Badge */}
-                      <div className="absolute bottom-4 right-4 px-4 py-2 bg-orange-500 text-white font-bold rounded-lg">
+                      <div className="absolute bottom-4 right-4 px-4 py-2 bg-[#11A560] text-white font-bold rounded-lg">
                         <span className="text-sm">{safari.currency}</span>
                         <span className="text-lg"> {safari.price.toLocaleString()}</span>
                       </div>
@@ -127,12 +127,12 @@ export default function FeaturedTrips({
                   <div className="p-5">
                     {/* Duration */}
                     <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                      <Clock size={16} className="text-orange-500" />
+                      <Clock size={16} className="text-[#11A560]" />
                       <span>{safari.duration}</span>
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-orange-500 transition-colors line-clamp-2">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#11A560] transition-colors line-clamp-2">
                       <Link href={`/trips/${safari.slug}`}>{safari.title}</Link>
                     </h3>
 
@@ -144,7 +144,7 @@ export default function FeaturedTrips({
                     {/* CTA Button */}
                     <Link
                       href={`/trips/${safari.slug}`}
-                      className="inline-flex items-center gap-2 w-full justify-center px-4 py-2 border-2 border-orange-500 text-orange-500 font-medium rounded-lg hover:bg-orange-500 hover:text-white transition-all duration-300"
+                      className="inline-flex items-center gap-2 w-full justify-center px-4 py-2 border-2 border-[#11A560] text-[#11A560] font-medium rounded-lg hover:bg-[#11A560] hover:text-white transition-all duration-300"
                     >
                       View Details
                       <ArrowRight size={16} />
@@ -170,7 +170,7 @@ export default function FeaturedTrips({
         >
           <Link
             href="/safaris"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors shadow-lg hover:shadow-xl"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-[#11A560] text-white font-medium rounded-lg hover:bg-[#0E8A50] transition-colors shadow-lg hover:shadow-xl"
           >
             View All Safaris
             <ArrowRight size={18} />

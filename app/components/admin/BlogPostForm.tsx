@@ -105,7 +105,7 @@ export default function BlogPostForm({ post, onSubmit }: BlogPostFormProps) {
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560] focus:border-transparent"
               placeholder="Enter post title"
               required
             />
@@ -116,7 +116,7 @@ export default function BlogPostForm({ post, onSubmit }: BlogPostFormProps) {
             <textarea
               value={formData.excerpt}
               onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560] focus:border-transparent"
               rows={3}
               placeholder="Brief summary of the post"
               required
@@ -150,7 +150,7 @@ export default function BlogPostForm({ post, onSubmit }: BlogPostFormProps) {
                   type="checkbox"
                   checked={formData.published}
                   onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-                  className="w-5 h-5 rounded border-slate-600 text-orange-600 focus:ring-orange-500"
+                  className="w-5 h-5 rounded border-slate-600 text-[#0E8A50] focus:ring-[#11A560]"
                 />
                 <span className="text-slate-300">Publish immediately</span>
               </label>
@@ -160,7 +160,7 @@ export default function BlogPostForm({ post, onSubmit }: BlogPostFormProps) {
                   type="checkbox"
                   checked={formData.featured}
                   onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                  className="w-5 h-5 rounded border-slate-600 text-orange-600 focus:ring-orange-500"
+                  className="w-5 h-5 rounded border-slate-600 text-[#0E8A50] focus:ring-[#11A560]"
                 />
                 <span className="text-slate-300">Featured post</span>
               </label>
@@ -169,7 +169,7 @@ export default function BlogPostForm({ post, onSubmit }: BlogPostFormProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-6 inline-flex items-center justify-center gap-2 px-4 py-2 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 disabled:opacity-50"
+              className="w-full mt-6 inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#0E8A50] text-white font-medium rounded-lg hover:bg-[#11A560] disabled:opacity-50"
             >
               {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
               {post ? 'Update Post' : 'Create Post'}
@@ -204,7 +204,7 @@ export default function BlogPostForm({ post, onSubmit }: BlogPostFormProps) {
                 accept="image/*"
                 onChange={handleImageUpload}
                 disabled={uploading}
-                className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-orange-600 file:text-white hover:file:bg-orange-700"
+                className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#0E8A50] file:text-white hover:file:bg-[#11A560]"
               />
             </label>
             {uploading && <p className="mt-2 text-sm text-slate-400">Uploading...</p>}
@@ -221,7 +221,7 @@ export default function BlogPostForm({ post, onSubmit }: BlogPostFormProps) {
                   type="text"
                   value={formData.author}
                   onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                   placeholder="Author name"
                   required
                 />
@@ -232,7 +232,7 @@ export default function BlogPostForm({ post, onSubmit }: BlogPostFormProps) {
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                 >
                   {categories.map((cat) => (
                     <option key={cat} value={cat}>{cat}</option>

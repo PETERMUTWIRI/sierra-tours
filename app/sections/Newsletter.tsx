@@ -5,7 +5,7 @@ import { Send, Mail } from "lucide-react";
 
 export default function Newsletter() {
   return (
-    <section className="py-16 md:py-20 bg-orange-500 relative overflow-hidden">
+    <section className="py-16 md:py-20 bg-[#11A560] relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl" />

@@ -49,7 +49,7 @@ export default function EditPost() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0E8A50]"></div>
       </div>
     );
   }
@@ -58,7 +58,7 @@ export default function EditPost() {
     return (
       <div className="text-center py-12">
         <p className="text-slate-400 text-lg">Post not found</p>
-        <Link href="/admin/blog" className="text-orange-500 hover:text-orange-400 mt-2 inline-block">
+        <Link href="/admin/blog" className="text-[#11A560] hover:text-[#B3CE4D] mt-2 inline-block">
           Back to posts
         </Link>
       </div>

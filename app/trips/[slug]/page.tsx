@@ -82,11 +82,11 @@ export default async function TripPage({ params }: TripPageProps) {
       <div className="bg-white border-b border-gray-200 py-4">
         <div className="container mx-auto px-4">
           <nav className="flex items-center gap-2 text-sm text-gray-600">
-            <Link href="/" className="hover:text-orange-500 transition-colors">Home</Link>
+            <Link href="/" className="hover:text-[#11A560] transition-colors">Home</Link>
             <ChevronRight size={16} />
-            <Link href="/safaris" className="hover:text-orange-500 transition-colors">Safaris</Link>
+            <Link href="/safaris" className="hover:text-[#11A560] transition-colors">Safaris</Link>
             <ChevronRight size={16} />
-            <Link href={`/destinations/${safari.destination.slug}`} className="hover:text-orange-500 transition-colors">
+            <Link href={`/destinations/${safari.destination.slug}`} className="hover:text-[#11A560] transition-colors">
               {safari.destination.name}
             </Link>
             <ChevronRight size={16} />
@@ -119,7 +119,7 @@ export default async function TripPage({ params }: TripPageProps) {
                   {safari.destination.name}
                 </Link>
                 {safari.featured && (
-                  <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-orange-500 text-white font-medium rounded-full">
+                  <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#11A560] text-white font-medium rounded-full">
                     <Star size={16} className="fill-white" />
                     Featured Safari
                   </span>
@@ -136,17 +136,17 @@ export default async function TripPage({ params }: TripPageProps) {
               {/* Quick Stats */}
               <div className="flex flex-wrap gap-6 text-white">
                 <div className="flex items-center gap-2">
-                  <Clock size={20} className="text-orange-400" />
+                  <Clock size={20} className="text-[#B3CE4D]" />
                   <span className="font-medium">{safari.duration}</span>
                 </div>
                 {safari.groupSize && (
                   <div className="flex items-center gap-2">
-                    <Users size={20} className="text-orange-400" />
+                    <Users size={20} className="text-[#B3CE4D]" />
                     <span>{safari.groupSize}</span>
                   </div>
                 )}
                 <div className="flex items-center gap-2">
-                  <Shield size={20} className="text-orange-400" />
+                  <Shield size={20} className="text-[#B3CE4D]" />
                   <span>Expert Guides</span>
                 </div>
               </div>
@@ -160,7 +160,7 @@ export default async function TripPage({ params }: TripPageProps) {
             <div className="text-center mb-4">
               <span className="text-gray-500 text-sm">Starting from</span>
               <div className="flex items-baseline justify-center gap-1">
-                <span className="text-3xl font-bold text-orange-600">
+                <span className="text-3xl font-bold text-[#0E8A50]">
                   {safari.currency} {safari.price.toLocaleString()}
                 </span>
               </div>
@@ -168,7 +168,7 @@ export default async function TripPage({ params }: TripPageProps) {
             </div>
             <Link
               href="/contact"
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/25"
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#11A560] text-white font-semibold rounded-xl hover:bg-[#0E8A50] transition-colors shadow-lg shadow-[#11A560]/25"
             >
               Enquire Now
               <ArrowRight size={18} />
@@ -219,7 +219,7 @@ export default async function TripPage({ params }: TripPageProps) {
                     {safari.activities.map((activity) => (
                       <span 
                         key={activity}
-                        className="px-3 py-1.5 bg-orange-50 text-orange-700 text-sm font-medium rounded-full"
+                        className="px-3 py-1.5 bg-[#E8F5EE] text-[#0E8A50] text-sm font-medium rounded-full"
                       >
                         {activity}
                       </span>
@@ -290,7 +290,7 @@ export default async function TripPage({ params }: TripPageProps) {
                         className="bg-gray-50 rounded-2xl p-6 hover:shadow-md transition-shadow"
                       >
                         <div className="flex gap-4">
-                          <div className="flex-shrink-0 w-14 h-14 bg-orange-500 rounded-2xl flex flex-col items-center justify-center text-white">
+                          <div className="flex-shrink-0 w-14 h-14 bg-[#11A560] rounded-2xl flex flex-col items-center justify-center text-white">
                             <span className="text-xs font-medium uppercase">Day</span>
                             <span className="text-xl font-bold">{day.day}</span>
                           </div>
@@ -304,13 +304,13 @@ export default async function TripPage({ params }: TripPageProps) {
                             <div className="flex flex-wrap gap-4 text-sm">
                               {day.meals && day.meals.length > 0 && (
                                 <div className="flex items-center gap-1.5 text-gray-500">
-                                  <Utensils size={14} className="text-orange-500" />
+                                  <Utensils size={14} className="text-[#11A560]" />
                                   <span>{day.meals.join(', ')}</span>
                                 </div>
                               )}
                               {day.accommodation && (
                                 <div className="flex items-center gap-1.5 text-gray-500">
-                                  <Bed size={14} className="text-orange-500" />
+                                  <Bed size={14} className="text-[#11A560]" />
                                   <span>{day.accommodation}</span>
                                 </div>
                               )}
@@ -368,7 +368,7 @@ export default async function TripPage({ params }: TripPageProps) {
                   <div className="text-center mb-6">
                     <span className="text-gray-500 text-sm">Starting from</span>
                     <div className="flex items-baseline justify-center gap-1 mt-1">
-                      <span className="text-4xl font-bold text-orange-600">
+                      <span className="text-4xl font-bold text-[#0E8A50]">
                         {safari.currency} {safari.price.toLocaleString()}
                       </span>
                     </div>
@@ -377,14 +377,14 @@ export default async function TripPage({ params }: TripPageProps) {
                   <div className="space-y-3">
                     <Link
                       href="/contact"
-                      className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/25"
+                      className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#11A560] text-white font-semibold rounded-xl hover:bg-[#0E8A50] transition-colors shadow-lg shadow-[#11A560]/25"
                     >
                       Book This Safari
                       <ArrowRight size={18} />
                     </Link>
                     <Link
                       href="/contact"
-                      className="w-full flex items-center justify-center gap-2 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-orange-500 hover:text-orange-500 transition-colors"
+                      className="w-full flex items-center justify-center gap-2 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-[#11A560] hover:text-[#11A560] transition-colors"
                     >
                       Ask a Question
                     </Link>
@@ -401,7 +401,7 @@ export default async function TripPage({ params }: TripPageProps) {
                   </h3>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
-                      <Clock className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                      <Clock className="w-5 h-5 text-[#11A560] flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="font-medium text-gray-900 block">
                           Duration
@@ -412,7 +412,7 @@ export default async function TripPage({ params }: TripPageProps) {
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Users className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                      <Users className="w-5 h-5 text-[#11A560] flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="font-medium text-gray-900 block">
                           Group Size
@@ -423,7 +423,7 @@ export default async function TripPage({ params }: TripPageProps) {
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Bed className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                      <Bed className="w-5 h-5 text-[#11A560] flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="font-medium text-gray-900 block">
                           Accommodation
@@ -434,14 +434,14 @@ export default async function TripPage({ params }: TripPageProps) {
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <MapPin className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                      <MapPin className="w-5 h-5 text-[#11A560] flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="font-medium text-gray-900 block">
                           Destination
                         </span>
                         <Link 
                           href={`/destinations/${safari.destination.slug}`}
-                          className="text-sm text-orange-600 hover:underline"
+                          className="text-sm text-[#0E8A50] hover:underline"
                         >
                           {safari.destination.name}
                         </Link>
@@ -476,7 +476,7 @@ export default async function TripPage({ params }: TripPageProps) {
                 </div>
 
                 {/* Need Help */}
-                <div className="bg-orange-50 rounded-2xl p-6">
+                <div className="bg-[#E8F5EE] rounded-2xl p-6">
                   <h3 className="font-bold text-gray-900 mb-2">
                     Need Help Planning?
                   </h3>
@@ -485,7 +485,7 @@ export default async function TripPage({ params }: TripPageProps) {
                   </p>
                   <Link
                     href="/contact"
-                    className="text-orange-600 font-semibold hover:text-orange-700 flex items-center gap-1"
+                    className="text-[#0E8A50] font-semibold hover:text-[#0E8A50] flex items-center gap-1"
                   >
                     Contact Us
                     <ArrowRight size={16} />
@@ -540,13 +540,13 @@ async function RelatedSafaris({ currentSafariId, destinationId }: { currentSafar
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute bottom-4 right-4 px-3 py-1 bg-white rounded-lg">
-                  <span className="font-bold text-orange-600">
+                  <span className="font-bold text-[#0E8A50]">
                     {safari.currency} {safari.price.toLocaleString()}
                   </span>
                 </div>
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors line-clamp-2">
+                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-[#0E8A50] transition-colors line-clamp-2">
                   {safari.title}
                 </h3>
                 <div className="flex items-center gap-2 text-sm text-gray-500">

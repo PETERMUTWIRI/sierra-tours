@@ -50,7 +50,7 @@ export default function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors"
+                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#11A560] transition-colors"
                 aria-label="Facebook"
               >
                 <FaFacebookF size={14} />
@@ -59,7 +59,7 @@ export default function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors"
+                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#11A560] transition-colors"
                 aria-label="Instagram"
               >
                 <FaInstagram size={14} />
@@ -68,7 +68,7 @@ export default function Footer() {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors"
+                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#11A560] transition-colors"
                 aria-label="Twitter"
               >
                 <FaTwitter size={14} />
@@ -77,7 +77,7 @@ export default function Footer() {
                 href="https://youtube.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors"
+                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#11A560] transition-colors"
                 aria-label="Youtube"
               >
                 <FaYoutube size={14} />
@@ -93,7 +93,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm hover:text-orange-400 transition-colors"
+                    className="text-sm hover:text-[#11A560] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -110,7 +110,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm hover:text-orange-400 transition-colors"
+                    className="text-sm hover:text-[#11A560] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -124,7 +124,7 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-orange-500 mt-0.5 flex-shrink-0" />
+                <MapPin size={18} className="text-[#11A560] mt-0.5 flex-shrink-0" />
                 <span className="text-sm">
                   123 Safari Road, Nairobi
                   <br />
@@ -132,19 +132,19 @@ export default function Footer() {
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone size={18} className="text-orange-500 flex-shrink-0" />
+                <Phone size={18} className="text-[#11A560] flex-shrink-0" />
                 <a
                   href="tel:+254123456789"
-                  className="text-sm hover:text-orange-400 transition-colors"
+                  className="text-sm hover:text-[#11A560] transition-colors"
                 >
                   +254 123 456 789
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <Mail size={18} className="text-orange-500 flex-shrink-0" />
+                <Mail size={18} className="text-[#11A560] flex-shrink-0" />
                 <a
                   href="mailto:info@sierratours.com"
-                  className="text-sm hover:text-orange-400 transition-colors"
+                  className="text-sm hover:text-[#11A560] transition-colors"
                 >
                   info@sierratours.com
                 </a>
@@ -164,19 +164,19 @@ export default function Footer() {
             <nav className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/privacy"
-                className="text-sm hover:text-orange-400 transition-colors"
+                className="text-sm hover:text-[#11A560] transition-colors"
               >
                 Privacy Policy
               </Link>
               <Link
                 href="/terms"
-                className="text-sm hover:text-orange-400 transition-colors"
+                className="text-sm hover:text-[#11A560] transition-colors"
               >
                 Terms of Service
               </Link>
               <Link
                 href="/sitemap"
-                className="text-sm hover:text-orange-400 transition-colors"
+                className="text-sm hover:text-[#11A560] transition-colors"
               >
                 Sitemap
               </Link>

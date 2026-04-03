@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Menu, X, Phone } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
-import { cn } from "@/app/lib/utils";
 import Logo from "./Logo";
 
 const navItems = [
@@ -31,7 +30,7 @@ export default function Header() {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-orange-400 transition-colors"
+              className="hover:text-[#11A560] transition-colors"
               aria-label="Facebook"
             >
               <FaFacebookF size={16} />
@@ -40,7 +39,7 @@ export default function Header() {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-orange-400 transition-colors"
+              className="hover:text-[#11A560] transition-colors"
               aria-label="Instagram"
             >
               <FaInstagram size={16} />
@@ -49,7 +48,7 @@ export default function Header() {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-orange-400 transition-colors"
+              className="hover:text-[#11A560] transition-colors"
               aria-label="Twitter"
             >
               <FaTwitter size={16} />
@@ -57,7 +56,7 @@ export default function Header() {
           </div>
           <button
             onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className="p-2 hover:text-orange-400 transition-colors"
+            className="p-2 hover:text-[#11A560] transition-colors"
             aria-label="Search"
           >
             <Search size={18} />
@@ -79,11 +78,11 @@ export default function Header() {
                 <input
                   type="text"
                   placeholder="Search for trips, destinations..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#11A560]"
                 />
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                  className="px-6 py-2 bg-[#11A560] text-white rounded-lg hover:bg-[#0E8A50] transition-colors"
                 >
                   Search
                 </button>
@@ -105,7 +104,7 @@ export default function Header() {
               <span className="text-sm text-gray-500">Call us, we are open 24/7</span>
               <a
                 href="tel:+254123456789"
-                className="text-lg font-semibold text-orange-500 hover:text-orange-600 transition-colors flex items-center gap-2"
+                className="text-lg font-semibold text-[#11A560] hover:text-[#0E8A50] transition-colors flex items-center gap-2"
               >
                 <Phone size={18} />
                 +254 123 456 789
@@ -116,13 +115,13 @@ export default function Header() {
       </div>
 
       {/* Navigation */}
-      <nav className="bg-orange-500">
+      <nav className="bg-[#11A560]">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             {/* Home Link */}
             <Link
               href="/"
-              className="hidden md:flex items-center justify-center w-12 h-12 bg-orange-600 text-white hover:bg-orange-700 transition-colors"
+              className="hidden md:flex items-center justify-center w-12 h-12 bg-[#0E8A50] text-white hover:bg-[#0C7845] transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +139,7 @@ export default function Header() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="px-6 py-4 text-white hover:bg-orange-600 transition-colors font-medium"
+                  className="px-6 py-4 text-white hover:bg-[#0E8A50] transition-colors font-medium"
                 >
                   {item.label}
                 </Link>
@@ -172,14 +171,14 @@ export default function Header() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-orange-600 overflow-hidden"
+              className="md:hidden bg-[#0E8A50] overflow-hidden"
             >
               {navItems.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 text-white hover:bg-orange-700 transition-colors border-t border-orange-500"
+                  className="block px-4 py-3 text-white hover:bg-[#0C7845] transition-colors border-t border-[#11A560]"
                 >
                   {item.label}
                 </Link>

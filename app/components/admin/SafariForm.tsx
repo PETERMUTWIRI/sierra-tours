@@ -212,7 +212,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all ${
                 activeTab === tab.id
-                  ? 'bg-orange-600 text-white'
+                  ? 'bg-[#0E8A50] text-white'
                   : 'text-slate-400 hover:text-white hover:bg-slate-800'
               }`}
             >
@@ -232,7 +232,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
             <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
               <div className="px-6 py-4 border-b border-slate-800 bg-slate-800/50">
                 <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <FaMapMarkerAlt className="text-orange-500" />
+                  <FaMapMarkerAlt className="text-[#11A560]" />
                   Basic Information
                 </h3>
               </div>
@@ -245,7 +245,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                     type="text"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560] focus:border-[#11A560] transition-all"
                     placeholder="e.g., 7-Day Kenya Safari Adventure"
                     required
                   />
@@ -258,7 +258,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                   <textarea
                     value={formData.excerpt}
                     onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560] focus:border-[#11A560] transition-all"
                     rows={2}
                     placeholder="Brief summary for safari listings (150-200 characters)"
                     required
@@ -288,7 +288,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
             <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
               <div className="px-6 py-4 border-b border-slate-800 bg-slate-800/50">
                 <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <FaDollarSign className="text-orange-500" />
+                  <FaDollarSign className="text-[#11A560]" />
                   Pricing & Logistics
                 </h3>
               </div>
@@ -301,7 +301,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                     type="text"
                     value={formData.duration}
                     onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                     placeholder="e.g., 7 Days / 6 Nights"
                     required
                   />
@@ -315,7 +315,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                     type="text"
                     value={formData.groupSize}
                     onChange={(e) => setFormData({ ...formData, groupSize: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                     placeholder="e.g., 2-12 people"
                   />
                 </div>
@@ -328,7 +328,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                     type="text"
                     value={formData.accommodation}
                     onChange={(e) => setFormData({ ...formData, accommodation: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                     placeholder="e.g., Luxury lodges and tented camps"
                   />
                 </div>
@@ -349,7 +349,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                     type="checkbox"
                     checked={formData.published}
                     onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-                    className="w-5 h-5 rounded border-slate-600 text-orange-600 focus:ring-orange-500"
+                    className="w-5 h-5 rounded border-slate-600 text-[#0E8A50] focus:ring-[#11A560]"
                   />
                   <div>
                     <span className="text-white font-medium block">Published</span>
@@ -362,7 +362,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                     type="checkbox"
                     checked={formData.featured}
                     onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                    className="w-5 h-5 rounded border-slate-600 text-orange-600 focus:ring-orange-500"
+                    className="w-5 h-5 rounded border-slate-600 text-[#0E8A50] focus:ring-[#11A560]"
                   />
                   <div>
                     <span className="text-white font-medium block flex items-center gap-2">
@@ -376,7 +376,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full mt-4 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-semibold rounded-lg hover:from-orange-500 hover:to-orange-600 disabled:opacity-50 transition-all shadow-lg shadow-orange-900/20"
+                  className="w-full mt-4 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0E8A50] to-[#0C7845] text-white font-semibold rounded-lg hover:from-[#E8F5EE]0 hover:to-[#0E8A50] disabled:opacity-50 transition-all shadow-lg shadow-[#11A560]/20"
                 >
                   {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
                   {safari ? 'Update Safari' : 'Create Safari'}
@@ -414,7 +414,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                     accept="image/*"
                     onChange={handleImageUpload}
                     disabled={uploading}
-                    className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-600 file:text-white hover:file:bg-orange-700 file:cursor-pointer file:transition-colors"
+                    className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0E8A50] file:text-white hover:file:bg-[#0C7845] file:cursor-pointer file:transition-colors"
                   />
                 </label>
                 {uploading && <p className="mt-2 text-sm text-slate-400 flex items-center gap-2"><FaSpinner className="animate-spin" /> Uploading...</p>}
@@ -434,7 +434,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                   <select
                     value={formData.destinationId}
                     onChange={(e) => setFormData({ ...formData, destinationId: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                     required
                   >
                     <option value="">Select destination</option>
@@ -453,7 +453,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                       type="number"
                       value={formData.price}
                       onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
-                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                       placeholder="0"
                       required
                     />
@@ -465,7 +465,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                     <select
                       value={formData.currency}
                       onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
-                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                     >
                       <option value="USD">USD ($)</option>
                       <option value="EUR">EUR (€)</option>
@@ -486,7 +486,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
           <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-800 bg-slate-800/50 flex items-center justify-between">
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                <FaCalendarAlt className="text-orange-500" />
+                <FaCalendarAlt className="text-[#11A560]" />
                 Daily Itinerary
               </h3>
               <div className="flex items-center gap-4">
@@ -508,14 +508,14 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                   {/* Day Header */}
                   <div className="px-4 py-3 bg-slate-750 border-b border-slate-700 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <span className="w-10 h-10 rounded-full bg-orange-600 text-white flex items-center justify-center font-bold">
+                      <span className="w-10 h-10 rounded-full bg-[#0E8A50] text-white flex items-center justify-center font-bold">
                         {day.day}
                       </span>
                       <input
                         type="text"
                         value={day.title}
                         onChange={(e) => updateItineraryDay(index, 'title', e.target.value)}
-                        className="bg-transparent text-white font-semibold text-lg border-b border-slate-600 focus:border-orange-500 outline-none px-1"
+                        className="bg-transparent text-white font-semibold text-lg border-b border-slate-600 focus:border-[#11A560] outline-none px-1"
                         placeholder="Day title"
                         required
                       />
@@ -539,7 +539,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                       <textarea
                         value={day.description}
                         onChange={(e) => updateItineraryDay(index, 'description', e.target.value)}
-                        className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                        className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                         rows={3}
                         placeholder="Describe the activities for this day..."
                         required
@@ -581,7 +581,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
                           type="text"
                           value={day.accommodation}
                           onChange={(e) => updateItineraryDay(index, 'accommodation', e.target.value)}
-                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
                           placeholder="e.g., Mara Serena Lodge"
                         />
                       </div>
@@ -611,7 +611,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-semibold rounded-lg hover:from-orange-500 hover:to-orange-600 disabled:opacity-50 transition-all shadow-lg shadow-orange-900/20"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0E8A50] to-[#0C7845] text-white font-semibold rounded-lg hover:from-[#E8F5EE]0 hover:to-[#0E8A50] disabled:opacity-50 transition-all shadow-lg shadow-[#11A560]/20"
             >
               {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
               {safari ? 'Update Safari' : 'Create Safari'}
@@ -671,7 +671,7 @@ export default function SafariForm({ safari, onSubmit }: SafariFormProps) {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-semibold rounded-lg hover:from-orange-500 hover:to-orange-600 disabled:opacity-50 transition-all shadow-lg shadow-orange-900/20"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0E8A50] to-[#0C7845] text-white font-semibold rounded-lg hover:from-[#E8F5EE]0 hover:to-[#0E8A50] disabled:opacity-50 transition-all shadow-lg shadow-[#11A560]/20"
             >
               {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
               {safari ? 'Update Safari' : 'Create Safari'}
@@ -717,7 +717,7 @@ function ArrayInput({ label, icon: Icon, items, onAdd, onRemove, placeholder, co
             type="text"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            className="flex-1 px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-orange-500"
+            className="flex-1 px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-[#11A560]"
             placeholder={placeholder}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {

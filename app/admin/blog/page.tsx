@@ -71,7 +71,7 @@ export default function BlogManagement() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0E8A50]"></div>
       </div>
     );
   }
@@ -86,7 +86,7 @@ export default function BlogManagement() {
         </div>
         <Link
           href="/admin/blog/new"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0E8A50] text-white font-medium rounded-lg hover:bg-[#0C7845] transition-colors"
         >
           <FaPlus />
           New Post
@@ -106,7 +106,7 @@ export default function BlogManagement() {
             onClick={() => setFilter(stat.filter)}
             className={`p-4 rounded-xl border transition-all text-left ${
               filter === stat.filter
-                ? 'border-orange-500 bg-slate-800'
+                ? 'border-[#11A560] bg-slate-800'
                 : 'border-slate-800 bg-slate-900 hover:border-slate-700'
             }`}
           >
@@ -134,7 +134,7 @@ export default function BlogManagement() {
                 <td colSpan={4} className="px-6 py-12 text-center">
                   <FaNewspaper className="w-12 h-12 text-slate-600 mx-auto mb-3" />
                   <p className="text-slate-400">No posts found</p>
-                  <Link href="/admin/blog/new" className="text-orange-500 hover:text-orange-400 text-sm mt-2 inline-block">
+                  <Link href="/admin/blog/new" className="text-[#11A560] hover:text-[#B3CE4D] text-sm mt-2 inline-block">
                     Create your first post
                   </Link>
                 </td>

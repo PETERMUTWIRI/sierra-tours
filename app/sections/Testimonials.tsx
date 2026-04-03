@@ -56,8 +56,8 @@ export default function Testimonials() {
     <section className="py-16 md:py-24 bg-gray-900 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-orange-500 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-orange-500 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#11A560] rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#11A560] rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -69,7 +69,7 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center max-w-2xl mx-auto mb-12"
         >
-          <span className="text-orange-400 font-medium mb-2 block">Testimonials</span>
+          <span className="text-[#B3CE4D] font-medium mb-2 block">Testimonials</span>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             What Our Travelers Say
           </h2>
@@ -90,10 +90,10 @@ export default function Testimonials() {
             <motion.div
               key={testimonial.id}
               variants={itemVariants}
-              className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-orange-500/50 transition-colors"
+              className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-[#11A560]/50 transition-colors"
             >
               {/* Quote Icon */}
-              <Quote className="w-10 h-10 text-orange-500 mb-4" />
+              <Quote className="w-10 h-10 text-[#11A560] mb-4" />
               
               {/* Rating */}
               <div className="flex gap-1 mb-4">
@@ -108,7 +108,7 @@ export default function Testimonials() {
               </p>
 
               {/* Trip Badge */}
-              <div className="inline-block px-3 py-1 bg-orange-500/20 text-orange-400 text-sm rounded-full mb-6">
+              <div className="inline-block px-3 py-1 bg-[#11A560]/20 text-[#B3CE4D] text-sm rounded-full mb-6">
                 {testimonial.trip}
               </div>
 
@@ -146,7 +146,7 @@ export default function Testimonials() {
             { value: "4.9", label: "Average Rating" },
           ].map((stat) => (
             <div key={stat.label}>
-              <div className="text-3xl md:text-4xl font-bold text-orange-500 mb-2">
+              <div className="text-3xl md:text-4xl font-bold text-[#11A560] mb-2">
                 {stat.value}
               </div>
               <div className="text-gray-400">{stat.label}</div>

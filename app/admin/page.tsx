@@ -117,10 +117,10 @@ export default async function AdminDashboard() {
 
   const colorClasses: Record<string, { bg: string; icon: string; glow: string; border: string }> = {
     orange: { 
-      bg: 'bg-orange-500/10', 
-      icon: 'text-orange-500', 
-      glow: 'shadow-orange-500/20',
-      border: 'border-orange-500/20'
+      bg: 'bg-[#11A560]/10', 
+      icon: 'text-[#11A560]', 
+      glow: 'shadow-[#11A560]/20',
+      border: 'border-[#11A560]/20'
     },
     blue: { 
       bg: 'bg-blue-500/10', 
@@ -162,7 +162,7 @@ export default async function AdminDashboard() {
           </Link>
           <Link 
             href="/admin/blog/new" 
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-orange-600/20"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0E8A50] hover:bg-[#0C7845] text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-[#0E8A50]/20"
           >
             <FaPlus className="w-4 h-4" />
             New Post
@@ -184,7 +184,7 @@ export default async function AdminDashboard() {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-slate-400 text-sm font-medium">{stat.label}</p>
-                  <p className="text-3xl font-bold text-white mt-2 group-hover:text-orange-400 transition-colors">
+                  <p className="text-3xl font-bold text-white mt-2 group-hover:text-[#B3CE4D] transition-colors">
                     {stat.value}
                   </p>
                   <p className="text-slate-500 text-xs mt-1">{stat.subtext}</p>
@@ -207,7 +207,7 @@ export default async function AdminDashboard() {
 
       {/* Featured Safaris Banner */}
       {featuredSafaris.length > 0 && (
-        <div className="bg-gradient-to-r from-amber-600/10 via-orange-600/10 to-yellow-600/10 rounded-2xl p-6 border border-amber-500/20">
+        <div className="bg-gradient-to-r from-amber-600/10 via-[#0E8A50]/10 to-yellow-600/10 rounded-2xl p-6 border border-amber-500/20">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
@@ -220,7 +220,7 @@ export default async function AdminDashboard() {
             </div>
             <Link 
               href="/admin/safaris" 
-              className="text-sm font-medium text-orange-500 hover:text-orange-400 transition-colors"
+              className="text-sm font-medium text-[#11A560] hover:text-[#B3CE4D] transition-colors"
             >
               Manage All →
             </Link>
@@ -238,7 +238,7 @@ export default async function AdminDashboard() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-slate-400">
-                  <FaMapMarkerAlt className="text-orange-500" />
+                  <FaMapMarkerAlt className="text-[#11A560]" />
                   {safari.destination?.name}
                   <span className="text-slate-600">•</span>
                   <FaCalendarAlt className="text-blue-500" />
@@ -256,8 +256,8 @@ export default async function AdminDashboard() {
         <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
           <div className="p-6 border-b border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
-                <FaNewspaper className="w-5 h-5 text-orange-500" />
+              <div className="w-10 h-10 rounded-xl bg-[#11A560]/10 flex items-center justify-center">
+                <FaNewspaper className="w-5 h-5 text-[#11A560]" />
               </div>
               <div>
                 <h2 className="text-lg font-bold text-white">Recent Blog Posts</h2>
@@ -266,7 +266,7 @@ export default async function AdminDashboard() {
             </div>
             <Link 
               href="/admin/blog" 
-              className="text-sm font-medium text-orange-500 hover:text-orange-400 transition-colors"
+              className="text-sm font-medium text-[#11A560] hover:text-[#B3CE4D] transition-colors"
             >
               View All →
             </Link>
@@ -280,7 +280,7 @@ export default async function AdminDashboard() {
                 <p className="text-slate-400">No blog posts yet</p>
                 <Link 
                   href="/admin/blog/new" 
-                  className="inline-flex items-center gap-2 mt-3 text-orange-500 hover:text-orange-400 text-sm font-medium"
+                  className="inline-flex items-center gap-2 mt-3 text-[#11A560] hover:text-[#B3CE4D] text-sm font-medium"
                 >
                   <FaPlus className="w-4 h-4" />
                   Create your first post
@@ -293,7 +293,7 @@ export default async function AdminDashboard() {
                     <FaNewspaper className="w-5 h-5 text-slate-500" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-white font-medium truncate group-hover:text-orange-400 transition-colors">
+                    <p className="text-white font-medium truncate group-hover:text-[#B3CE4D] transition-colors">
                       {post.title}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
@@ -335,7 +335,7 @@ export default async function AdminDashboard() {
             </div>
             <Link 
               href="/admin/safaris" 
-              className="text-sm font-medium text-orange-500 hover:text-orange-400 transition-colors"
+              className="text-sm font-medium text-[#11A560] hover:text-[#B3CE4D] transition-colors"
             >
               View All →
             </Link>
@@ -349,7 +349,7 @@ export default async function AdminDashboard() {
                 <p className="text-slate-400">No safaris yet</p>
                 <Link 
                   href="/admin/safaris/new" 
-                  className="inline-flex items-center gap-2 mt-3 text-orange-500 hover:text-orange-400 text-sm font-medium"
+                  className="inline-flex items-center gap-2 mt-3 text-[#11A560] hover:text-[#B3CE4D] text-sm font-medium"
                 >
                   <FaPlus className="w-4 h-4" />
                   Create your first safari
@@ -362,7 +362,7 @@ export default async function AdminDashboard() {
                     <FaPlane className="w-5 h-5 text-slate-500" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-white font-medium truncate group-hover:text-orange-400 transition-colors">
+                    <p className="text-white font-medium truncate group-hover:text-[#B3CE4D] transition-colors">
                       {safari.title}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
@@ -436,13 +436,13 @@ interface QuickActionCardProps {
 function QuickActionCard({ title, description, icon: Icon, href, color, external }: QuickActionCardProps) {
   const colorClasses = {
     blue: 'from-blue-600/10 to-blue-700/10 hover:border-blue-500/30 group-hover:text-blue-400',
-    orange: 'from-orange-600/10 to-orange-700/10 hover:border-orange-500/30 group-hover:text-orange-400',
+    orange: 'from-[#0E8A50]/10 to-[#0C7845]/10 hover:border-[#11A560]/30 group-hover:text-[#B3CE4D]',
     green: 'from-green-600/10 to-green-700/10 hover:border-green-500/30 group-hover:text-green-400',
   };
 
   const iconColors = {
     blue: 'text-blue-500 bg-blue-500/10',
-    orange: 'text-orange-500 bg-orange-500/10',
+    orange: 'text-[#11A560] bg-[#11A560]/10',
     green: 'text-green-500 bg-green-500/10',
   };
 
@@ -457,7 +457,7 @@ function QuickActionCard({ title, description, icon: Icon, href, color, external
           <Icon className="w-6 h-6" />
         </div>
         <div>
-          <h3 className="font-semibold text-white group-hover:text-orange-400 transition-colors">
+          <h3 className="font-semibold text-white group-hover:text-[#B3CE4D] transition-colors">
             {title}
           </h3>
           <p className="text-slate-400 text-sm mt-1">{description}</p>

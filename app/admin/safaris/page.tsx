@@ -117,7 +117,7 @@ export default function SafariManagement() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#11A560]"></div>
       </div>
     );
   }
@@ -132,7 +132,7 @@ export default function SafariManagement() {
         </div>
         <Link
           href="/admin/safaris/new"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-semibold rounded-lg hover:from-orange-500 hover:to-orange-600 transition-all shadow-lg shadow-orange-900/20"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#0E8A50] to-[#0C7845] text-white font-semibold rounded-lg hover:from-[#E8F5EE]0 hover:to-[#0E8A50] transition-all shadow-lg shadow-[#11A560]/20"
         >
           <FaPlus />
           Create New Safari
@@ -179,7 +179,7 @@ export default function SafariManagement() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search safaris by title, destination, or duration..."
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-[#11A560] focus:border-[#11A560]"
             />
           </div>
           
@@ -196,13 +196,13 @@ export default function SafariManagement() {
                 onClick={() => setFilter(f.id as any)}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
                   filter === f.id
-                    ? 'bg-orange-600 text-white'
+                    ? 'bg-[#0E8A50] text-white'
                     : 'bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700'
                 }`}
               >
                 {f.label}
                 <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
-                  filter === f.id ? 'bg-orange-700 text-white' : 'bg-slate-700 text-slate-400'
+                  filter === f.id ? 'bg-[#0C7845] text-white' : 'bg-slate-700 text-slate-400'
                 }`}>
                   {f.count}
                 </span>
@@ -227,7 +227,7 @@ export default function SafariManagement() {
           {!search && filter === 'all' && (
             <Link
               href="/admin/safaris/new"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0E8A50] text-white font-medium rounded-lg hover:bg-[#0C7845]"
             >
               <FaPlus />
               Create Safari
@@ -245,7 +245,7 @@ export default function SafariManagement() {
                 {/* Safari Info */}
                 <div className="flex-1">
                   <div className="flex items-start gap-3 mb-2">
-                    <h3 className="text-xl font-bold text-white group-hover:text-orange-400 transition-colors">
+                    <h3 className="text-xl font-bold text-white group-hover:text-[#B3CE4D] transition-colors">
                       {safari.title}
                     </h3>
                     {safari.featured && (
@@ -258,7 +258,7 @@ export default function SafariManagement() {
                   
                   <div className="flex flex-wrap items-center gap-4 text-sm text-slate-400">
                     <span className="inline-flex items-center gap-1.5">
-                      <FaMapMarkerAlt className="text-orange-500" />
+                      <FaMapMarkerAlt className="text-[#11A560]" />
                       {safari.destination?.name}
                     </span>
                     <span className="inline-flex items-center gap-1.5">
@@ -341,7 +341,7 @@ function StatCard({ icon: Icon, label, value, color, subtitle }: StatCardProps) 
     blue: 'from-blue-600 to-blue-700 text-blue-400',
     green: 'from-green-600 to-green-700 text-green-400',
     yellow: 'from-yellow-600 to-yellow-700 text-yellow-400',
-    orange: 'from-orange-600 to-orange-700 text-orange-400',
+    orange: 'from-[#0E8A50] to-[#0C7845] text-[#B3CE4D]',
   };
 
   return (

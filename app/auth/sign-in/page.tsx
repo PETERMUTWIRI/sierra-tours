@@ -16,7 +16,7 @@ export default function SignInPage() {
           {/* Logo */}
           <div className="text-center mb-8">
             <Link href="/" className="inline-flex items-center gap-3">
-              <div className="w-14 h-14 rounded-xl bg-orange-600 flex items-center justify-center text-white font-bold text-2xl">
+              <div className="w-14 h-14 rounded-xl bg-[#0E8A50] flex items-center justify-center text-white font-bold text-2xl">
                 S
               </div>
               <div className="text-left">
@@ -31,7 +31,7 @@ export default function SignInPage() {
 
           <p className="text-center mt-6 text-sm text-slate-400">
             Don&apos;t have an account?{' '}
-            <Link href="/auth/sign-up" className="text-orange-500 font-semibold hover:text-orange-400 transition-colors">
+            <Link href="/auth/sign-up" className="text-[#11A560] font-semibold hover:text-[#B3CE4D] transition-colors">
               Sign up
             </Link>
           </p>

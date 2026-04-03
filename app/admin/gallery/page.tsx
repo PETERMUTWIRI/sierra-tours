@@ -23,7 +23,7 @@ export default function GalleryManagement() {
         <div className="flex justify-center gap-4">
           <a
             href="/admin/safaris"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#0E8A50] text-white rounded-lg hover:bg-[#11A560]"
           >
             Manage Safaris
           </a>

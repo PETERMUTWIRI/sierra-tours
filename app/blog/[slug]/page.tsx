@@ -67,7 +67,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="container mx-auto px-4 py-4">
           <Link 
             href="/blog" 
-            className="inline-flex items-center gap-2 text-slate-600 hover:text-orange-600 transition-colors"
+            className="inline-flex items-center gap-2 text-slate-600 hover:text-[#0E8A50] transition-colors"
           >
             <FaArrowLeft size={14} />
             Back to Blog
@@ -103,7 +103,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <header className="py-8 md:py-12 border-b">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className="px-3 py-1 bg-orange-100 text-orange-700 text-sm font-medium rounded-full">
+            <span className="px-3 py-1 bg-[#11A560] text-[#0E8A50] text-sm font-medium rounded-full">
               {post.category}
             </span>
             {post.featured && (
@@ -124,8 +124,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500">
             {post.author && (
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
-                  <FaUser className="text-orange-600" />
+                <div className="w-10 h-10 rounded-full bg-[#11A560] flex items-center justify-center">
+                  <FaUser className="text-[#0E8A50]" />
                 </div>
                 <div>
                   <p className="font-medium text-slate-900">{post.author}</p>
@@ -174,7 +174,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="container mx-auto px-4 max-w-4xl">
           {/* Featured Quote */}
           {post.featuredQuote && (
-            <blockquote className="border-l-4 border-orange-500 pl-6 py-2 mb-8 bg-orange-50/50 rounded-r-lg">
+            <blockquote className="border-l-4 border-[#11A560] pl-6 py-2 mb-8 bg-[#E8F5EE]/50 rounded-r-lg">
               <p className="text-xl md:text-2xl font-medium text-slate-800 italic">
                 &ldquo;{post.featuredQuote}&rdquo;
               </p>
@@ -186,9 +186,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             className="prose prose-lg prose-slate max-w-none
               prose-headings:font-bold prose-headings:text-slate-900
               prose-p:text-slate-600 prose-p:leading-relaxed
-              prose-a:text-orange-600 prose-a:no-underline hover:prose-a:underline
+              prose-a:text-[#0E8A50] prose-a:no-underline hover:prose-a:underline
               prose-img:rounded-xl prose-img:shadow-lg
-              prose-blockquote:border-orange-500 prose-blockquote:bg-orange-50/50 prose-blockquote:py-2 prose-blockquote:rounded-r-lg
+              prose-blockquote:border-[#11A560] prose-blockquote:bg-[#E8F5EE]/50 prose-blockquote:py-2 prose-blockquote:rounded-r-lg
               prose-strong:text-slate-900
               prose-li:text-slate-600"
             dangerouslySetInnerHTML={{ __html: post.content }}
@@ -206,7 +206,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <Link
                     key={index}
                     href={`/blog?tag=${encodeURIComponent(tag)}`}
-                    className="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full hover:bg-orange-100 hover:text-orange-700 transition-colors"
+                    className="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full hover:bg-[#11A560] hover:text-[#0E8A50] transition-colors"
                   >
                     {tag}
                   </Link>
@@ -289,10 +289,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         </div>
                       )}
                     </div>
-                    <span className="text-xs font-medium text-orange-600 uppercase tracking-wider">
+                    <span className="text-xs font-medium text-[#0E8A50] uppercase tracking-wider">
                       {related.category}
                     </span>
-                    <h3 className="text-lg font-bold text-slate-900 mt-1 group-hover:text-orange-600 transition-colors line-clamp-2">
+                    <h3 className="text-lg font-bold text-slate-900 mt-1 group-hover:text-[#0E8A50] transition-colors line-clamp-2">
                       {related.title}
                     </h3>
                     <p className="text-slate-600 text-sm mt-2 line-clamp-2">{related.excerpt}</p>

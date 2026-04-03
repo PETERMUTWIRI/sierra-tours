@@ -45,13 +45,13 @@ export default function TagInput({
         {tags.map((tag, index) => (
           <span
             key={index}
-            className="inline-flex items-center gap-1 px-2 py-1 bg-orange-600/20 text-orange-400 text-sm rounded-full"
+            className="inline-flex items-center gap-1 px-2 py-1 bg-[#0E8A50]/20 text-[#B3CE4D] text-sm rounded-full"
           >
             {tag}
             <button
               type="button"
               onClick={() => removeTag(index)}
-              className="hover:text-orange-300"
+              className="hover:text-[#11A560]"
             >
               <FaTimes size={12} />
             </button>
