@@ -1,7 +1,7 @@
 'use client';
 
 import '@neondatabase/auth/ui/css';
-import { AuthView, NeonAuthUIProvider } from '@neondatabase/auth/react/ui';
+import { SignUpForm, NeonAuthUIProvider } from '@neondatabase/auth/react/ui';
 import { authClient } from '@/lib/auth/client';
 import Link from 'next/link';
 
@@ -26,11 +26,8 @@ export default function SignUpPage() {
             </Link>
           </div>
 
-          {/* Auth Form - Single Component */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8">
-            <h1 className="text-2xl font-bold text-white text-center mb-6">Sign Up</h1>
-            <AuthView path="sign-up" />
-          </div>
+          {/* Sign Up Form - Just the form, no extra wrapper */}
+          <SignUpForm localization={{}} />
 
           <p className="text-center mt-6 text-sm text-slate-400">
             Already have an account?{' '}
