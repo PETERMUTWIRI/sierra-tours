@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String
+  content     String   @db.Text
+  image       String
+  author      String
+  category    String
+  published   Boolean  @default(false)
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  publishedAt DateTime?
+
+  @@index([slug])
+  @@index([published])
+  @@index([category])
+  @@map("blog_posts")
+}
+
+model Destination {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  tagline     String
+  description String   @db.Text
+  image       String
+  heroImage   String
+  highlights  String[] @default([])
+  bestTimeToVisit String
+  languages   String[] @default([])
+  currency    String
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  safaris     Safari[]
+  popularParks PopularPark[]
+  gallery     GalleryImage[]
+
+  @@index([slug])
+  @@map("destinations")
+}
+
+model PopularPark {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @db.Text
+  image       String
+  destinationId String
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+
+  @@index([destinationId])
+  @@map("popular_parks")
+}
+
+model Safari {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  destinationId String
+  destination   Destination @relation(fields: [destinationId], references: [id])
+  duration      String
+  price         Float
+  currency      String   @default("USD")
+  excerpt       String
+  description   String   @db.Text
+  image         String
+  groupSize     String
+  accommodation String
+  activities    String[] @default([])
+  includes      String[] @default([])
+  excludes      String[] @default([])
+  highlights    String[] @default([])
+  published     Boolean  @default(true)
+  featured      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  itinerary     ItineraryDay[]
+  gallery       GalleryImage[]
+
+  @@index([slug])
+  @@index([destinationId])
+  @@index([published])
+  @@index([featured])
+  @@map("safaris")
+}
+
+model ItineraryDay {
+  id          String   @id @default(cuid())
+  day         Int
+  title       String
+  description String   @db.Text
+  safariId    String
+  safari      Safari   @relation(fields: [safariId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([safariId, day])
+  @@index([safariId])
+  @@map("itinerary_days")
+}
+
+model GalleryImage {
+  id            String   @id @default(cuid())
+  url           String
+  alt           String   @default("")
+  safariId      String?
+  safari        Safari?  @relation(fields: [safariId], references: [id], onDelete: Cascade)
+  destinationId String?
+  destination   Destination? @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+
+  @@index([safariId])
+  @@index([destinationId])
+  @@map("gallery_images")
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
