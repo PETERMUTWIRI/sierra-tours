@@ -11,16 +11,6 @@ import {
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import Logo from "./Logo";
 
-// Brand colors
-const COLORS = {
-  green: "#11A560",
-  darkGreen: "#0E8A50",
-  lime: "#B3CE4D",
-  sun: "#F5A623",
-  black: "#1A1A1A",
-  red: "#D32F2F",
-};
-
 // Icon mapping for dynamic package types
 const iconMap: Record<string, React.ElementType> = {
   Heart,
@@ -44,7 +34,6 @@ interface DestinationItem {
   id: string;
   name: string;
   slug: string;
-  _count?: { safaris: number };
 }
 
 interface PackageTypeItem {
@@ -54,7 +43,6 @@ interface PackageTypeItem {
   description?: string | null;
   icon?: string | null;
   category: string;
-  _count?: { safaris: number };
 }
 
 // Local Packages Data (static)
@@ -310,31 +298,22 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 w-[700px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
+                      className="absolute top-full left-1/2 -translate-x-1/2 w-[640px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
                     >
                       <div className="p-6">
                         <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
                           <Globe className="w-5 h-5 text-[#D32F2F]" />
                           <h3 className="text-lg font-bold text-[#1A1A1A]">Explore Destinations</h3>
                         </div>
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-3 gap-x-4 gap-y-2">
                           {destinations.map((dest) => (
                             <Link
                               key={dest.id}
                               href={`/destinations/${dest.slug}`}
-                              className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-[#1A1A1A] font-medium hover:text-[#D32F2F]"
                             >
-                              <div className="w-10 h-10 rounded-lg bg-[#11A560]/10 flex items-center justify-center group-hover:bg-[#11A560] transition-colors">
-                                <MapPin className="w-5 h-5 text-[#11A560] group-hover:text-white transition-colors" />
-                              </div>
-                              <div className="flex-1">
-                                <h4 className="font-semibold text-[#1A1A1A] group-hover:text-[#D32F2F] transition-colors">
-                                  {dest.name}
-                                </h4>
-                                <p className="text-xs text-gray-500">
-                                  {dest._count?.safaris || 0} Safari{dest._count?.safaris !== 1 ? 's' : ''}
-                                </p>
-                              </div>
+                              <span className="w-1.5 h-1.5 bg-[#11A560] rounded-full" />
+                              {dest.name}
                             </Link>
                           ))}
                         </div>
@@ -357,36 +336,44 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 w-[700px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
+                      className="absolute top-full left-1/2 -translate-x-1/2 w-[640px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
                     >
                       <div className="p-6">
                         <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
                           <Compass className="w-5 h-5 text-[#D32F2F]" />
                           <h3 className="text-lg font-bold text-[#1A1A1A]">Safari Experiences</h3>
                         </div>
-                        <div className="grid grid-cols-3 gap-4">
-                          {safariTypes.map((safariType) => {
-                            const IconComponent = safariType.icon ? iconMap[safariType.icon] || Compass : Compass;
-                            return (
-                              <Link
-                                key={safariType.id}
-                                href={`/packages/${safariType.slug}`}
-                                className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
-                              >
-                                <div className="w-10 h-10 rounded-lg bg-[#11A560]/10 flex items-center justify-center group-hover:bg-[#11A560] transition-colors">
-                                  <IconComponent className="w-5 h-5 text-[#11A560] group-hover:text-white transition-colors" />
-                                </div>
-                                <div className="flex-1">
-                                  <h4 className="font-semibold text-[#1A1A1A] group-hover:text-[#D32F2F] transition-colors">
-                                    {safariType.name}
-                                  </h4>
-                                  <p className="text-xs text-gray-500">
-                                    {safariType._count?.safaris || 0} Packages
-                                  </p>
-                                </div>
-                              </Link>
-                            );
-                          })}
+                        <div className="grid grid-cols-2 gap-4">
+                          {safariTypes.length > 0 ? (
+                            safariTypes.map((safariType) => {
+                              const IconComponent = safariType.icon ? iconMap[safariType.icon] || Compass : Compass;
+                              return (
+                                <Link
+                                  key={safariType.id}
+                                  href={`/packages/${safariType.slug}`}
+                                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group border border-gray-100"
+                                >
+                                  <div className="w-10 h-10 rounded-lg bg-[#11A560]/10 flex items-center justify-center group-hover:bg-[#11A560] transition-colors flex-shrink-0">
+                                    <IconComponent className="w-5 h-5 text-[#11A560] group-hover:text-white transition-colors" />
+                                  </div>
+                                  <div className="min-w-0">
+                                    <h4 className="font-semibold text-[#1A1A1A] group-hover:text-[#D32F2F] transition-colors truncate">
+                                      {safariType.name}
+                                    </h4>
+                                    {safariType.description ? (
+                                      <p className="text-xs text-gray-500 line-clamp-1">{safariType.description}</p>
+                                    ) : (
+                                      <p className="text-xs text-gray-500">View packages</p>
+                                    )}
+                                  </div>
+                                </Link>
+                              );
+                            })
+                          ) : (
+                            <div className="col-span-2 text-center py-6 text-gray-500 text-sm">
+                              No safari categories available yet.
+                            </div>
+                          )}
                         </div>
                         <div className="mt-4 pt-4 border-t border-gray-100">
                           <Link
@@ -407,7 +394,7 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 w-[700px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
+                      className="absolute top-full left-1/2 -translate-x-1/2 w-[640px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
                     >
                       <div className="p-6">
                         <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
@@ -415,28 +402,36 @@ export default function Header() {
                           <h3 className="text-lg font-bold text-[#1A1A1A]">Themed Holidays</h3>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
-                          {themedHolidays.map((holiday) => {
-                            const IconComponent = holiday.icon ? iconMap[holiday.icon] || Star : Star;
-                            return (
-                              <Link
-                                key={holiday.id}
-                                href={`/packages/${holiday.slug}`}
-                                className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
-                              >
-                                <div className="w-12 h-12 rounded-lg bg-[#11A560]/10 flex items-center justify-center group-hover:bg-[#11A560] transition-colors">
-                                  <IconComponent className="w-6 h-6 text-[#11A560] group-hover:text-white transition-colors" />
-                                </div>
-                                <div>
-                                  <h4 className="font-semibold text-[#1A1A1A] group-hover:text-[#D32F2F] transition-colors">
-                                    {holiday.name}
-                                  </h4>
-                                  <p className="text-sm text-gray-500">
-                                    {holiday.description || `${holiday._count?.safaris || 0} packages available`}
-                                  </p>
-                                </div>
-                              </Link>
-                            );
-                          })}
+                          {themedHolidays.length > 0 ? (
+                            themedHolidays.map((holiday) => {
+                              const IconComponent = holiday.icon ? iconMap[holiday.icon] || Star : Star;
+                              return (
+                                <Link
+                                  key={holiday.id}
+                                  href={`/packages/${holiday.slug}`}
+                                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group border border-gray-100"
+                                >
+                                  <div className="w-10 h-10 rounded-lg bg-[#11A560]/10 flex items-center justify-center group-hover:bg-[#11A560] transition-colors flex-shrink-0">
+                                    <IconComponent className="w-5 h-5 text-[#11A560] group-hover:text-white transition-colors" />
+                                  </div>
+                                  <div className="min-w-0">
+                                    <h4 className="font-semibold text-[#1A1A1A] group-hover:text-[#D32F2F] transition-colors truncate">
+                                      {holiday.name}
+                                    </h4>
+                                    {holiday.description ? (
+                                      <p className="text-xs text-gray-500 line-clamp-1">{holiday.description}</p>
+                                    ) : (
+                                      <p className="text-xs text-gray-500">View packages</p>
+                                    )}
+                                  </div>
+                                </Link>
+                              );
+                            })
+                          ) : (
+                            <div className="col-span-2 text-center py-6 text-gray-500 text-sm">
+                              No themed holiday categories available yet.
+                            </div>
+                          )}
                         </div>
                         <div className="mt-4 pt-4 border-t border-gray-100">
                           <Link
@@ -457,7 +452,7 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 w-[750px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
+                      className="absolute top-full left-1/2 -translate-x-1/2 w-[680px] bg-white shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623]"
                     >
                       <div className="p-6">
                         <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
@@ -624,32 +619,40 @@ export default function Header() {
                   {/* Mobile Submenu for Safaris */}
                   {item.megaMenuType === "safaris" && (
                     <div className="bg-[#0A6B3D] px-4 py-2">
-                      {safariTypes.map((type) => (
-                        <Link
-                          key={type.id}
-                          href={`/packages/${type.slug}`}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className="block py-2 pl-4 text-white/90 hover:text-[#F5A623] transition-colors text-sm"
-                        >
-                          {type.name}
-                        </Link>
-                      ))}
+                      {safariTypes.length > 0 ? (
+                        safariTypes.map((type) => (
+                          <Link
+                            key={type.id}
+                            href={`/packages/${type.slug}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block py-2 pl-4 text-white/90 hover:text-[#F5A623] transition-colors text-sm"
+                          >
+                            {type.name}
+                          </Link>
+                        ))
+                      ) : (
+                        <p className="py-2 pl-4 text-white/60 text-sm">No safari categories yet</p>
+                      )}
                     </div>
                   )}
 
                   {/* Mobile Submenu for Themed Holidays */}
                   {item.megaMenuType === "themed" && (
                     <div className="bg-[#0A6B3D] px-4 py-2">
-                      {themedHolidays.map((holiday) => (
-                        <Link
-                          key={holiday.id}
-                          href={`/packages/${holiday.slug}`}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className="block py-2 pl-4 text-white/90 hover:text-[#F5A623] transition-colors text-sm"
-                        >
-                          {holiday.name}
-                        </Link>
-                      ))}
+                      {themedHolidays.length > 0 ? (
+                        themedHolidays.map((holiday) => (
+                          <Link
+                            key={holiday.id}
+                            href={`/packages/${holiday.slug}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block py-2 pl-4 text-white/90 hover:text-[#F5A623] transition-colors text-sm"
+                          >
+                            {holiday.name}
+                          </Link>
+                        ))
+                      ) : (
+                        <p className="py-2 pl-4 text-white/60 text-sm">No themed holidays yet</p>
+                      )}
                     </div>
                   )}
 
