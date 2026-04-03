@@ -159,3 +159,95 @@ model Setting {
 
   @@map("settings")
 }
+
+// Package Types for Themed Holidays and Local Packages
+model PackageType {
+  id          String          @id @default(cuid())
+  name        String          @unique
+  slug        String          @unique
+  description String?
+  category    PackageCategory // THEMED or LOCAL
+  icon        String?         // Lucide icon name
+  image       String?         // Cover image
+  order       Int             @default(0)
+  published   Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  safaris     PackageSafari[]
+
+  @@index([slug])
+  @@index([category])
+  @@index([published])
+  @@map("package_types")
+}
+
+enum PackageCategory {
+  THEMED
+  LOCAL
+}
+
+// Individual Safaris within Package Types
+model PackageSafari {
+  id              String              @id @default(cuid())
+  title           String
+  slug            String              @unique
+  packageTypeId   String
+  duration        String              // e.g., "5 Days / 4 Nights"
+  price           Float
+  priceFrom       Boolean             @default(true) // Display as "From $X"
+  currency        String              @default("USD")
+  excerpt         String              // Short description
+  description     String              // Full description
+  location        String              // Where it takes place
+  image           String              // Main image
+  groupSize       String?             // e.g., "2-6 people"
+  accommodation   String?             // Type of accommodation
+  published       Boolean             @default(true)
+  featured        Boolean             @default(false)
+  order           Int                 @default(0)
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  highlights      String[]            @default([])
+  includes        String[]            @default([])
+  excludes        String[]            @default([])
+  gallery         PackageGalleryImage[]
+  itinerary       PackageItineraryDay[]
+  packageType     PackageType         @relation(fields: [packageTypeId], references: [id], onDelete: Cascade)
+
+  @@index([slug])
+  @@index([packageTypeId])
+  @@index([published])
+  @@index([featured])
+  @@map("package_safaris")
+}
+
+model PackageItineraryDay {
+  id              String        @id @default(cuid())
+  day             Int
+  title           String
+  description     String
+  accommodation   String        @default("")
+  meals           String[]      @default([])
+  activities      String[]      @default([])
+  safariId        String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  safari          PackageSafari @relation(fields: [safariId], references: [id], onDelete: Cascade)
+
+  @@unique([safariId, day])
+  @@index([safariId])
+  @@map("package_itinerary_days")
+}
+
+model PackageGalleryImage {
+  id        String        @id @default(cuid())
+  url       String
+  alt       String        @default("")
+  order     Int           @default(0)
+  safariId  String
+  createdAt DateTime      @default(now())
+  safari    PackageSafari @relation(fields: [safariId], references: [id], onDelete: Cascade)
+
+  @@index([safariId])
+  @@map("package_gallery_images")
+}
