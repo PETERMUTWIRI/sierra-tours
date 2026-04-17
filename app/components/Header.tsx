@@ -298,14 +298,14 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 w-[640px] shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623] relative"
+                      className="absolute top-full left-1/2 -translate-x-1/2 w-[640px] shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623] z-50"
                       style={{
                         backgroundImage: "url('/images/hero/sierra-tours-and-travel-luxury-safaris.jpg')",
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                       }}
                     >
-                      <div className="absolute inset-0 bg-white/97" />
+                      <div className="absolute inset-0 bg-white/80" />
                       <div className="p-6 relative z-10">
                         <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
                           <Globe className="w-5 h-5 text-[#D32F2F]" />
@@ -342,14 +342,14 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 w-[640px] shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623] relative"
+                      className="absolute top-full left-1/2 -translate-x-1/2 w-[640px] shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623] z-50"
                       style={{
                         backgroundImage: "url('/images/general/sierra-tours-and-safaris-south-africa-safaris-image01.jpg')",
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                       }}
                     >
-                      <div className="absolute inset-0 bg-white/97" />
+                      <div className="absolute inset-0 bg-white/80" />
                       <div className="p-6 relative z-10">
                         <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
                           <Compass className="w-5 h-5 text-[#D32F2F]" />
@@ -406,14 +406,14 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 w-[640px] shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623] relative"
+                      className="absolute top-full left-1/2 -translate-x-1/2 w-[640px] shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623] z-50"
                       style={{
                         backgroundImage: "url('/images/hero/sierra-tours-and-travel-valentine-safaris.jpg')",
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                       }}
                     >
-                      <div className="absolute inset-0 bg-white/97" />
+                      <div className="absolute inset-0 bg-white/80" />
                       <div className="p-6 relative z-10">
                         <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
                           <Gift className="w-5 h-5 text-[#D32F2F]" />
@@ -470,14 +470,14 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 w-[680px] shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623] relative"
+                      className="absolute top-full left-1/2 -translate-x-1/2 w-[680px] shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623] z-50"
                       style={{
                         backgroundImage: "url('/images/general/Aerial-View-of-a-Tropical-Beach.webp')",
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                       }}
                     >
-                      <div className="absolute inset-0 bg-white/97" />
+                      <div className="absolute inset-0 bg-white/80" />
                       <div className="p-6 relative z-10">
                         <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
                           <Home className="w-5 h-5 text-[#D32F2F]" />
