@@ -45,38 +45,7 @@ interface PackageTypeItem {
   category: string;
 }
 
-// Local Packages Data (static)
-const localPackages = {
-  beach: {
-    title: "Beach Packages",
-    icon: Palmtree,
-    items: [
-      { name: "Mombasa North Coast", href: "/packages/beach/mombasa-north-coast" },
-      { name: "Diani/Ukunda", href: "/packages/beach/diani" },
-      { name: "Malindi/Watamu", href: "/packages/beach/malindi-watamu" },
-      { name: "Lamu", href: "/packages/beach/lamu" },
-    ],
-  },
-  bush: {
-    title: "Bush Packages",
-    icon: Trees,
-    items: [
-      { name: "Samburu", href: "/packages/bush/samburu" },
-      { name: "Maasai Mara", href: "/packages/bush/maasai-mara" },
-      { name: "Amboseli", href: "/packages/bush/amboseli" },
-      { name: "Tsavo", href: "/packages/bush/tsavo" },
-    ],
-  },
-  weekend: {
-    title: "Weekend Getaways",
-    icon: Calendar,
-    items: [
-      { name: "Naivasha", href: "/packages/weekend/naivasha" },
-      { name: "Nakuru", href: "/packages/weekend/nakuru" },
-      { name: "Mt. Kenya", href: "/packages/weekend/mt-kenya" },
-    ],
-  },
-};
+
 
 // Main Nav Items
 const mainNavItems = [
@@ -117,6 +86,7 @@ export default function Header() {
   const [destinations, setDestinations] = useState<DestinationItem[]>([]);
   const [themedHolidays, setThemedHolidays] = useState<PackageTypeItem[]>([]);
   const [safariTypes, setSafariTypes] = useState<PackageTypeItem[]>([]);
+  const [localTypes, setLocalTypes] = useState<PackageTypeItem[]>([]);
 
   useEffect(() => {
     fetchDestinations();
@@ -137,9 +107,10 @@ export default function Header() {
 
   const fetchPackageTypes = async () => {
     try {
-      const [themedRes, safariRes] = await Promise.all([
+      const [themedRes, safariRes, localRes] = await Promise.all([
         fetch("/api/package-types?category=THEMED"),
         fetch("/api/package-types?category=SAFARI"),
+        fetch("/api/package-types?category=LOCAL"),
       ]);
       if (themedRes.ok) {
         const data = await themedRes.json();
@@ -148,6 +119,10 @@ export default function Header() {
       if (safariRes.ok) {
         const data = await safariRes.json();
         setSafariTypes(data);
+      }
+      if (localRes.ok) {
+        const data = await localRes.json();
+        setLocalTypes(data);
       }
     } catch (error) {
       console.error("Error fetching package types:", error);
@@ -470,7 +445,7 @@ export default function Header() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 w-[680px] shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623] z-50"
+                      className="absolute top-full left-1/2 -translate-x-1/2 w-[640px] shadow-2xl rounded-b-xl overflow-hidden border-t-4 border-[#F5A623] z-50"
                       style={{
                         backgroundImage: "url('/images/general/Aerial-View-of-a-Tropical-Beach.webp')",
                         backgroundSize: "cover",
@@ -483,73 +458,41 @@ export default function Header() {
                           <Home className="w-5 h-5 text-[#D32F2F]" />
                           <h3 className="text-lg font-bold text-[#1A1A1A]">Local Packages</h3>
                         </div>
-                        <div className="grid grid-cols-3 gap-6">
-                          {/* Beach Packages */}
-                          <div>
-                            <div className="flex items-center gap-2 mb-3">
-                              <Palmtree className="w-5 h-5 text-[#11A560]" />
-                              <h4 className="font-semibold text-[#1A1A1A]">Beach Packages</h4>
+                        <div className="grid grid-cols-2 gap-4">
+                          {localTypes.length > 0 ? (
+                            localTypes.map((localType) => {
+                              const IconComponent = localType.icon ? iconMap[localType.icon] || Home : Home;
+                              return (
+                                <Link
+                                  key={localType.id}
+                                  href={`/packages/${localType.slug}`}
+                                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group border border-gray-100"
+                                >
+                                  <div className="w-10 h-10 rounded-lg bg-[#11A560]/10 flex items-center justify-center group-hover:bg-[#11A560] transition-colors flex-shrink-0">
+                                    <IconComponent className="w-5 h-5 text-[#11A560] group-hover:text-white transition-colors" />
+                                  </div>
+                                  <div className="min-w-0">
+                                    <h4 className="font-semibold text-[#1A1A1A] group-hover:text-[#D32F2F] transition-colors truncate">
+                                      {localType.name}
+                                    </h4>
+                                    {localType.description ? (
+                                      <p className="text-xs text-gray-500 line-clamp-1">{localType.description}</p>
+                                    ) : (
+                                      <p className="text-xs text-gray-500">View packages</p>
+                                    )}
+                                  </div>
+                                </Link>
+                              );
+                            })
+                          ) : (
+                            <div className="col-span-2 text-center py-6 text-gray-500 text-sm">
+                              No local package categories available yet.
                             </div>
-                            <ul className="space-y-2">
-                              {localPackages.beach.items.map((item) => (
-                                <li key={item.name}>
-                                  <Link
-                                    href={item.href}
-                                    className="text-sm text-gray-600 hover:text-[#D32F2F] transition-colors flex items-center gap-2"
-                                  >
-                                    <span className="w-1.5 h-1.5 bg-[#11A560] rounded-full"></span>
-                                    {item.name}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          {/* Bush Packages */}
-                          <div>
-                            <div className="flex items-center gap-2 mb-3">
-                              <Trees className="w-5 h-5 text-[#11A560]" />
-                              <h4 className="font-semibold text-[#1A1A1A]">Bush Packages</h4>
-                            </div>
-                            <ul className="space-y-2">
-                              {localPackages.bush.items.map((item) => (
-                                <li key={item.name}>
-                                  <Link
-                                    href={item.href}
-                                    className="text-sm text-gray-600 hover:text-[#D32F2F] transition-colors flex items-center gap-2"
-                                  >
-                                    <span className="w-1.5 h-1.5 bg-[#11A560] rounded-full"></span>
-                                    {item.name}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          {/* Weekend Getaways */}
-                          <div>
-                            <div className="flex items-center gap-2 mb-3">
-                              <Calendar className="w-5 h-5 text-[#11A560]" />
-                              <h4 className="font-semibold text-[#1A1A1A]">Weekend Getaways</h4>
-                            </div>
-                            <ul className="space-y-2">
-                              {localPackages.weekend.items.map((item) => (
-                                <li key={item.name}>
-                                  <Link
-                                    href={item.href}
-                                    className="text-sm text-gray-600 hover:text-[#D32F2F] transition-colors flex items-center gap-2"
-                                  >
-                                    <span className="w-1.5 h-1.5 bg-[#11A560] rounded-full"></span>
-                                    {item.name}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+                          )}
                         </div>
                         <div className="mt-4 pt-4 border-t border-gray-100">
                           <Link
-                            href="/packages/local"
+                            href="/packages"
                             className="inline-flex items-center gap-2 text-[#11A560] font-medium hover:text-[#D32F2F] transition-colors"
                           >
                             View All Local Packages
@@ -683,39 +626,20 @@ export default function Header() {
                   {/* Mobile Submenu for Local Packages */}
                   {item.megaMenuType === "local" && (
                     <div className="bg-[#0A6B3D] px-4 py-2">
-                      <p className="text-[#F5A623] text-xs font-semibold uppercase tracking-wider py-2">Beach Packages</p>
-                      {localPackages.beach.items.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className="block py-1.5 pl-4 text-white/90 hover:text-[#F5A623] transition-colors text-sm"
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                      <p className="text-[#F5A623] text-xs font-semibold uppercase tracking-wider py-2 mt-2">Bush Packages</p>
-                      {localPackages.bush.items.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className="block py-1.5 pl-4 text-white/90 hover:text-[#F5A623] transition-colors text-sm"
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                      <p className="text-[#F5A623] text-xs font-semibold uppercase tracking-wider py-2 mt-2">Weekend Getaways</p>
-                      {localPackages.weekend.items.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className="block py-1.5 pl-4 text-white/90 hover:text-[#F5A623] transition-colors text-sm"
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
+                      {localTypes.length > 0 ? (
+                        localTypes.map((type) => (
+                          <Link
+                            key={type.id}
+                            href={`/packages/${type.slug}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block py-2 pl-4 text-white/90 hover:text-[#F5A623] transition-colors text-sm"
+                          >
+                            {type.name}
+                          </Link>
+                        ))
+                      ) : (
+                        <p className="py-2 pl-4 text-white/60 text-sm">No local packages yet</p>
+                      )}
                     </div>
                   )}
                 </div>

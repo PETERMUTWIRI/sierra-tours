@@ -44,6 +44,15 @@ async function getDestinationWithSafaris(slug: string) {
         where: { published: true },
         orderBy: { price: 'asc' },
       },
+      packageSafaris: {
+        where: { published: true },
+        orderBy: { price: 'asc' },
+        include: {
+          packageType: {
+            select: { slug: true, name: true },
+          },
+        },
+      },
       popularParks: true,
       gallery: true,
     },
@@ -57,6 +66,18 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
   if (!destination) {
     notFound();
   }
+
+  // Combine core safaris and package safaris for unified display
+  const coreSafaris = destination.safaris;
+  const packageSafaris = destination.packageSafaris;
+  const allTours = [
+    ...coreSafaris.map((s) => ({ ...s, kind: 'core' as const })),
+    ...packageSafaris.map((s) => ({ ...s, kind: 'package' as const })),
+  ].sort((a, b) => {
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+    return a.price - b.price;
+  });
 
   // Get mapped hero image
   const heroImageUrl = getDestinationHeroImage(destination);
@@ -91,7 +112,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                   href={`/safaris?destination=${destination.slug}`}
                   className="inline-flex items-center gap-2 px-8 py-3 bg-[#11A560] text-white font-semibold rounded-lg hover:bg-[#0E8A50] transition-colors shadow-lg shadow-[#11A560]/25"
                 >
-                  View {destination.safaris.length} Safari{destination.safaris.length !== 1 ? 's' : ''}
+                  View {allTours.length} Tour{allTours.length !== 1 ? 's' : ''}
                   <ArrowRight size={20} />
                 </Link>
                 <Link
@@ -172,64 +193,78 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                 </>
               )}
 
-              {/* Available Safaris */}
-              {destination.safaris.length > 0 && (
+              {/* Available Safaris & Packages */}
+              {allTours.length > 0 && (
                 <div className="mt-12">
                   <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                    Available Safaris in {destination.name}
+                    Available Tours in {destination.name}
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {destination.safaris.slice(0, 4).map((safari) => {
-                      const safariImage = getSafariImage({ ...safari, destination });
+                    {allTours.slice(0, 4).map((tour) => {
+                      const isCore = tour.kind === 'core';
+                      const safariImage = isCore
+                        ? getSafariImage({ ...tour, destination })
+                        : tour.image;
+                      const tourHref = isCore
+                        ? `/trips/${tour.slug}`
+                        : `/packages/${tour.packageType.slug}/${tour.slug}`;
+                      const badgeLabel = isCore ? 'Classic Safari' : tour.packageType.name;
+                      const badgeColor = isCore ? 'bg-[#11A560]' : 'bg-[#F5A623]';
+
                       return (
-                      <Link
-                        key={safari.id}
-                        href={`/trips/${safari.slug}`}
-                        className="bg-white border border-gray-200 rounded-xl p-4 hover:border-[#11A560] hover:shadow-md transition-all group"
-                      >
-                        <div className="relative h-32 rounded-lg overflow-hidden mb-3">
-                          <Image
-                            src={safariImage}
-                            alt={safari.title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                          />
-                        </div>
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-semibold text-gray-900 group-hover:text-[#0E8A50] transition-colors">
-                            {safari.title}
-                          </h4>
-                          <span className="text-[#0E8A50] font-bold">
-                            {safari.currency} {safari.price.toLocaleString()}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-                          {safari.excerpt}
-                        </p>
-                        <div className="flex items-center gap-4 text-xs text-gray-500">
-                          <span className="flex items-center gap-1">
-                            <Calendar size={12} />
-                            {safari.duration}
-                          </span>
-                          {safari.groupSize && (
-                            <span className="flex items-center gap-1">
-                              <Compass size={12} />
-                              {safari.groupSize}
+                        <Link
+                          key={`${tour.kind}-${tour.id}`}
+                          href={tourHref}
+                          className="bg-white border border-gray-200 rounded-xl p-4 hover:border-[#11A560] hover:shadow-md transition-all group"
+                        >
+                          <div className="relative h-32 rounded-lg overflow-hidden mb-3">
+                            <Image
+                              src={safariImage}
+                              alt={tour.title}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                            <div className="absolute top-2 left-2">
+                              <span className={`px-2 py-1 ${badgeColor} text-white text-xs font-semibold rounded-full shadow-sm`}>
+                                {badgeLabel}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex justify-between items-start mb-2">
+                            <h4 className="font-semibold text-gray-900 group-hover:text-[#0E8A50] transition-colors">
+                              {tour.title}
+                            </h4>
+                            <span className="text-[#0E8A50] font-bold">
+                              {tour.currency} {tour.price.toLocaleString()}
                             </span>
-                          )}
-                        </div>
-                      </Link>
+                          </div>
+                          <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+                            {tour.excerpt}
+                          </p>
+                          <div className="flex items-center gap-4 text-xs text-gray-500">
+                            <span className="flex items-center gap-1">
+                              <Calendar size={12} />
+                              {tour.duration}
+                            </span>
+                            {'groupSize' in tour && tour.groupSize && (
+                              <span className="flex items-center gap-1">
+                                <Compass size={12} />
+                                {tour.groupSize}
+                              </span>
+                            )}
+                          </div>
+                        </Link>
                       );
                     })}
                   </div>
-                  {destination.safaris.length > 4 && (
+                  {allTours.length > 4 && (
                     <div className="mt-6 text-center">
                       <Link
                         href={`/safaris?destination=${destination.slug}`}
                         className="inline-flex items-center gap-2 px-6 py-3 bg-[#E8F5EE] text-[#0E8A50] font-semibold rounded-lg hover:bg-[#11A560] transition-colors"
                       >
-                        View All {destination.safaris.length} Safaris
+                        View All {allTours.length} Tours
                         <ArrowRight size={18} />
                       </Link>
                     </div>
@@ -289,7 +324,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                         Safari Packages
                       </span>
                       <span className="text-sm text-gray-600">
-                        {destination.safaris.length} available tours
+                        {allTours.length} available tours
                       </span>
                     </div>
                   </div>

@@ -10,27 +10,93 @@ export const metadata = {
     "Browse our collection of handpicked African safari tours. From Kenya to Botswana, find your perfect safari adventure.",
 };
 
-async function getSafaris(destinationFilter?: string) {
-  return prisma.safari.findMany({
-    where: {
-      published: true,
-      ...(destinationFilter && {
-        destination: { slug: destinationFilter }
-      }),
-    },
-    include: {
-      destination: true,
-    },
-    orderBy: [
-      { featured: 'desc' },
-      { price: 'asc' },
-    ],
+type UnifiedTour = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  image: string;
+  price: number;
+  currency: string;
+  duration: string;
+  groupSize: string | null;
+  destinationName: string;
+  destinationSlug: string;
+  featured: boolean;
+  kind: "core" | "package";
+  packageTypeSlug?: string;
+};
+
+async function getTours(destinationFilter?: string): Promise<UnifiedTour[]> {
+  const [coreSafaris, packageSafaris] = await Promise.all([
+    prisma.safari.findMany({
+      where: {
+        published: true,
+        ...(destinationFilter && {
+          destination: { slug: destinationFilter },
+        }),
+      },
+      include: { destination: true },
+      orderBy: [{ featured: "desc" }, { price: "asc" }],
+    }),
+    prisma.packageSafari.findMany({
+      where: {
+        published: true,
+        ...(destinationFilter && {
+          destination: { slug: destinationFilter },
+        }),
+      },
+      include: {
+        destination: true,
+        packageType: { select: { slug: true } },
+      },
+      orderBy: [{ featured: "desc" }, { price: "asc" }],
+    }),
+  ]);
+
+  const coreTours: UnifiedTour[] = coreSafaris.map((s) => ({
+    id: s.id,
+    slug: s.slug,
+    title: s.title,
+    excerpt: s.excerpt,
+    image: getSafariImage(s),
+    price: s.price,
+    currency: s.currency,
+    duration: s.duration,
+    groupSize: s.groupSize,
+    destinationName: s.destination.name,
+    destinationSlug: s.destination.slug,
+    featured: s.featured,
+    kind: "core",
+  }));
+
+  const packageTours: UnifiedTour[] = packageSafaris.map((s) => ({
+    id: s.id,
+    slug: s.slug,
+    title: s.title,
+    excerpt: s.excerpt,
+    image: getSafariImage(s),
+    price: s.price,
+    currency: s.currency,
+    duration: s.duration,
+    groupSize: s.groupSize ?? null,
+    destinationName: s.destination?.name ?? "Multiple Destinations",
+    destinationSlug: s.destination?.slug ?? "",
+    featured: s.featured,
+    kind: "package",
+    packageTypeSlug: s.packageType.slug,
+  }));
+
+  return [...coreTours, ...packageTours].sort((a, b) => {
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+    return a.price - b.price;
   });
 }
 
 async function getDestinations() {
   return prisma.destination.findMany({
-    orderBy: { name: 'asc' },
+    orderBy: { name: "asc" },
   });
 }
 
@@ -43,14 +109,14 @@ interface SafarisPageProps {
 export default async function SafarisPage({ searchParams }: SafarisPageProps) {
   const params = await searchParams;
   const destinationFilter = params.destination;
-  
-  const [safaris, destinations] = await Promise.all([
-    getSafaris(destinationFilter),
+
+  const [tours, destinations] = await Promise.all([
+    getTours(destinationFilter),
     getDestinations(),
   ]);
 
-  const featuredSafaris = safaris.filter(s => s.featured);
-  const regularSafaris = safaris.filter(s => !s.featured);
+  const featuredTours = tours.filter((s) => s.featured);
+  const regularTours = tours.filter((s) => !s.featured);
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -71,7 +137,7 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
               Safari Tours
             </h1>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
-              Discover our handpicked collection of African safari experiences. 
+              Discover our handpicked collection of African safari experiences.
               From the Serengeti to Victoria Falls, your adventure awaits.
             </p>
           </div>
@@ -83,8 +149,8 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-8 md:gap-16">
             <div className="text-center">
-              <p className="text-3xl font-bold text-[#11A560]">{safaris.length}+</p>
-              <p className="text-gray-600 text-sm">Safari Packages</p>
+              <p className="text-3xl font-bold text-[#11A560]">{tours.length}+</p>
+              <p className="text-gray-600 text-sm">Tour Packages</p>
             </div>
             <div className="text-center">
               <p className="text-3xl font-bold text-[#11A560]">{destinations.length}</p>
@@ -139,8 +205,8 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
         </div>
       </section>
 
-      {/* Featured Safaris */}
-      {featuredSafaris.length > 0 && !destinationFilter && (
+      {/* Featured Tours */}
+      {featuredTours.length > 0 && !destinationFilter && (
         <section className="py-16 bg-gradient-to-b from-[#E8F5EE] to-white">
           <div className="container mx-auto px-4">
             <div className="flex items-center gap-3 mb-8">
@@ -148,30 +214,29 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
               <h2 className="text-2xl font-bold text-gray-900">Featured Safaris</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredSafaris.map((safari) => (
-                <SafariCard key={safari.id} safari={safari} featured />
+              {featuredTours.map((tour) => (
+                <SafariCard key={`${tour.kind}-${tour.id}`} safari={tour} featured />
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* All Safaris Grid */}
+      {/* All Tours Grid */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-gray-900">
-              {destinationFilter 
-                ? `${destinations.find(d => d.slug === destinationFilter)?.name || ''} Safaris`
-                : 'All Safari Packages'
-              }
+              {destinationFilter
+                ? `${destinations.find((d) => d.slug === destinationFilter)?.name || ""} Safaris`
+                : "All Safari Packages"}
             </h2>
             <span className="text-gray-500">
-              Showing {safaris.length} {safaris.length === 1 ? 'package' : 'packages'}
+              Showing {tours.length} {tours.length === 1 ? "package" : "packages"}
             </span>
           </div>
 
-          {safaris.length === 0 ? (
+          {tours.length === 0 ? (
             <div className="text-center py-16 bg-gray-50 rounded-2xl">
               <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MapPin className="w-10 h-10 text-gray-400" />
@@ -189,8 +254,8 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {(destinationFilter ? safaris : regularSafaris).map((safari) => (
-                <SafariCard key={safari.id} safari={safari} />
+              {(destinationFilter ? tours : regularTours).map((tour) => (
+                <SafariCard key={`${tour.kind}-${tour.id}`} safari={tour} />
               ))}
             </div>
           )}
@@ -212,7 +277,7 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
             Can&apos;t Find Your Perfect Safari?
           </h2>
           <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
-            We create custom safari itineraries tailored to your preferences, 
+            We create custom safari itineraries tailored to your preferences,
             budget, and schedule. Let us design your dream African adventure.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -238,48 +303,44 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
 
 // Safari Card Component
 interface SafariCardProps {
-  safari: {
-    id: string;
-    slug: string;
-    title: string;
-    excerpt: string;
-    image: string;
-    price: number;
-    currency: string;
-    duration: string;
-    groupSize: string | null;
-    destination: { name: string; slug: string };
-  };
+  safari: UnifiedTour;
   featured?: boolean;
 }
 
 function SafariCard({ safari, featured }: SafariCardProps) {
-  // Get mapped image from local files
-  const imageUrl = getSafariImage(safari);
-  
+  const href =
+    safari.kind === "core"
+      ? `/trips/${safari.slug}`
+      : `/packages/${safari.packageTypeSlug}/${safari.slug}`;
+
   return (
     <article
       className={`bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group ${
-        featured ? 'ring-2 ring-[#11A560] ring-offset-2' : ''
+        featured ? "ring-2 ring-[#11A560] ring-offset-2" : ""
       }`}
     >
       {/* Image */}
-      <Link href={`/trips/${safari.slug}`} className="block relative">
+      <Link href={href} className="block relative">
         <div className="relative h-64 overflow-hidden">
           <Image
-            src={imageUrl}
+            src={safari.image}
             alt={safari.title}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-110"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          
+
           {/* Badges */}
           <div className="absolute top-4 left-4 flex flex-wrap gap-2">
             <span className="px-3 py-1.5 bg-white/95 backdrop-blur text-gray-800 text-sm font-semibold rounded-full shadow-sm">
-              {safari.destination.name}
+              {safari.destinationName}
             </span>
+            {safari.kind === "package" && (
+              <span className="px-3 py-1.5 bg-[#F5A623] text-white text-sm font-semibold rounded-full shadow-sm">
+                Package
+              </span>
+            )}
             {featured && (
               <span className="px-3 py-1.5 bg-[#11A560] text-white text-sm font-semibold rounded-full shadow-sm flex items-center gap-1">
                 <Star size={14} className="fill-white" />
@@ -287,7 +348,7 @@ function SafariCard({ safari, featured }: SafariCardProps) {
               </span>
             )}
           </div>
-          
+
           {/* Price Badge */}
           <div className="absolute bottom-4 right-4 px-4 py-2 bg-white rounded-xl shadow-lg">
             <span className="text-xs text-gray-500 block">From</span>
@@ -314,7 +375,7 @@ function SafariCard({ safari, featured }: SafariCardProps) {
         </div>
 
         <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#11A560] transition-colors line-clamp-2">
-          <Link href={`/trips/${safari.slug}`}>{safari.title}</Link>
+          <Link href={href}>{safari.title}</Link>
         </h2>
 
         <p className="text-gray-600 text-sm mb-5 line-clamp-2">
@@ -322,7 +383,7 @@ function SafariCard({ safari, featured }: SafariCardProps) {
         </p>
 
         <Link
-          href={`/trips/${safari.slug}`}
+          href={href}
           className="inline-flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#E8F5EE] text-[#11A560] font-semibold rounded-xl hover:bg-[#11A560] hover:text-white transition-all duration-300"
         >
           View Details

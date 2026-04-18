@@ -7,7 +7,7 @@ import Link from 'next/link';
 import {
   FaHome, FaNewspaper, FaPlane, FaMapMarkerAlt, FaImages,
   FaSignOutAlt, FaBars, FaTimes, FaGlobeAfrica, FaChevronRight,
-  FaBox, FaList, FaGift,
+  FaBox, FaList, FaGift, FaBook,
 } from 'react-icons/fa';
 
 const adminNavLinks = [
@@ -18,6 +18,7 @@ const adminNavLinks = [
   { name: 'Gallery', href: '/admin/gallery', icon: FaImages },
   { name: 'Package Types', href: '/admin/packages/types', icon: FaGift },
   { name: 'Package Safaris', href: '/admin/packages/safaris', icon: FaBox },
+  { name: 'Guide', href: '/admin/guide', icon: FaBook },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

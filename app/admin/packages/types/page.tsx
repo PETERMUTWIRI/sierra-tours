@@ -207,6 +207,81 @@ export default function PackageTypesAdmin() {
           )}
         </div>
 
+        {/* Safari Experiences Section */}
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-[#1A1A1A] mb-4 flex items-center gap-2">
+            <span className="w-1 h-6 bg-[#F5A623] rounded-full"></span>
+            Safari Experiences
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {safariTypes.map((type) => {
+              const IconComponent = type.icon ? iconMap[type.icon] || Package : Package;
+              return (
+                <div
+                  key={type.id}
+                  className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-12 h-12 bg-[#F5A623]/10 rounded-lg flex items-center justify-center">
+                      <IconComponent className="w-6 h-6 text-[#F5A623]" />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`px-2 py-1 text-xs font-medium rounded-full ${
+                          type.published
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-100 text-gray-600"
+                        }`}
+                      >
+                        {type.published ? "Published" : "Draft"}
+                      </span>
+                    </div>
+                  </div>
+                  <h3 className="font-semibold text-[#1A1A1A] text-lg mb-1">{type.name}</h3>
+                  <p className="text-sm text-gray-500 mb-2">/{type.slug}</p>
+                  {type.description && (
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">{type.description}</p>
+                  )}
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <span className="text-sm text-gray-500">
+                      {type._count.safaris} safari{type._count.safaris !== 1 ? "s" : ""}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <Link
+                        href={`/admin/packages/types/${type.id}/edit`}
+                        className="p-2 text-gray-600 hover:text-[#11A560] hover:bg-[#11A560]/10 rounded-lg transition-colors"
+                        title="Edit"
+                      >
+                        <Edit2 size={18} />
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(type.id)}
+                        disabled={deleteLoading === type.id}
+                        className="p-2 text-gray-600 hover:text-[#D32F2F] hover:bg-[#D32F2F]/10 rounded-lg transition-colors disabled:opacity-50"
+                        title="Delete"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          {safariTypes.length === 0 && (
+            <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
+              <Package className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500">No safari experience packages yet</p>
+              <Link
+                href="/admin/packages/types/new"
+                className="text-[#11A560] hover:underline mt-2 inline-block"
+              >
+                Create your first safari experience
+              </Link>
+            </div>
+          )}
+        </div>
+
         {/* Local Packages Section */}
         <div>
           <h2 className="text-xl font-bold text-[#1A1A1A] mb-4 flex items-center gap-2">
