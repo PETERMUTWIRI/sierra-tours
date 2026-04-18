@@ -18,7 +18,6 @@ const adminNavLinks = [
   { name: 'Gallery', href: '/admin/gallery', icon: FaImages },
   { name: 'Package Types', href: '/admin/packages/types', icon: FaGift },
   { name: 'Package Safaris', href: '/admin/packages/safaris', icon: FaBox },
-  { name: 'Guide', href: '/admin/guide', icon: FaBook },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -128,6 +127,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   Manage your safari business
                 </p>
               </div>
+
+              {/* Guide Link */}
+              <Link
+                href="/admin/guide"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium transition-all border border-slate-700 hover:border-slate-600"
+              >
+                <FaBook className="w-3.5 h-3.5" />
+                Guide
+              </Link>
             </div>
 
             {/* Quick Actions */}
