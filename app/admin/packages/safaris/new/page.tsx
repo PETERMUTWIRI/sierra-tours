@@ -17,6 +17,33 @@ interface Destination {
   name: string;
 }
 
+interface CoreSafari {
+  id: string;
+  title: string;
+  slug: string;
+  destinationId: string;
+  duration: string;
+  price: number;
+  currency: string;
+  excerpt: string;
+  description: string;
+  image: string;
+  groupSize: string;
+  accommodation: string;
+  activities: string[];
+  includes: string[];
+  excludes: string[];
+  highlights: string[];
+  itinerary: {
+    day: number;
+    title: string;
+    description: string;
+    accommodation: string;
+    meals: string[];
+    activities: string[];
+  }[];
+}
+
 interface ItineraryDay {
   day: number;
   title: string;
@@ -31,6 +58,8 @@ export default function NewPackageSafari() {
   const [loading, setLoading] = useState(false);
   const [packageTypes, setPackageTypes] = useState<PackageType[]>([]);
   const [destinations, setDestinations] = useState<Destination[]>([]);
+  const [coreSafaris, setCoreSafaris] = useState<CoreSafari[]>([]);
+  const [selectedCoreSafariId, setSelectedCoreSafariId] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -59,6 +88,7 @@ export default function NewPackageSafari() {
   useEffect(() => {
     fetchPackageTypes();
     fetchDestinations();
+    fetchCoreSafaris();
   }, []);
 
   const fetchPackageTypes = async () => {
@@ -85,6 +115,63 @@ export default function NewPackageSafari() {
       }
     } catch (error) {
       console.error("Error fetching destinations:", error);
+    }
+  };
+
+  const fetchCoreSafaris = async () => {
+    try {
+      const response = await fetch("/api/safaris?published=true");
+      if (response.ok) {
+        const data = await response.json();
+        setCoreSafaris(data);
+      }
+    } catch (error) {
+      console.error("Error fetching core safaris:", error);
+    }
+  };
+
+  const handleCoreSafariSelect = async (safariId: string) => {
+    setSelectedCoreSafariId(safariId);
+    if (!safariId) return;
+
+    try {
+      const response = await fetch(`/api/safaris/${safariId}`);
+      if (!response.ok) return;
+
+      const safari: CoreSafari = await response.json();
+      const dest = destinations.find((d) => d.id === safari.destinationId);
+
+      setFormData((prev) => ({
+        ...prev,
+        title: safari.title || "",
+        slug: safari.slug || "",
+        destinationId: safari.destinationId || "",
+        duration: safari.duration || "",
+        price: safari.price || 0,
+        currency: safari.currency || "USD",
+        excerpt: safari.excerpt || "",
+        description: safari.description || "",
+        location: dest?.name || "",
+        image: safari.image?.startsWith("http") ? safari.image : "",
+        groupSize: safari.groupSize || "",
+        accommodation: safari.accommodation || "",
+        highlights: [
+          ...(safari.highlights || []),
+          ...(safari.activities || []),
+        ],
+        includes: safari.includes || [],
+        excludes: safari.excludes || [],
+        itinerary: (safari.itinerary || []).map((day) => ({
+          day: day.day,
+          title: day.title || "",
+          description: day.description || "",
+          accommodation: day.accommodation || "",
+          meals: day.meals || [],
+          activities: day.activities || [],
+        })),
+      }));
+    } catch (error) {
+      console.error("Error loading core safari:", error);
     }
   };
 
@@ -216,6 +303,33 @@ export default function NewPackageSafari() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Clone from Existing Safari */}
+          <div className="bg-amber-50 rounded-xl shadow-sm border border-amber-200 p-6">
+            <h2 className="text-lg font-semibold text-amber-800 mb-2">Create from Existing Safari</h2>
+            <p className="text-sm text-amber-700 mb-4">
+              Select a core safari to auto-fill all fields below. You can still edit everything before saving.
+            </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Existing Safari
+                </label>
+                <select
+                  value={selectedCoreSafariId}
+                  onChange={(e) => handleCoreSafariSelect(e.target.value)}
+                  className="w-full px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white"
+                >
+                  <option value="">-- Start fresh (no auto-fill) --</option>
+                  {coreSafaris.map((safari) => (
+                    <option key={safari.id} value={safari.id}>
+                      {safari.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
           {/* Basic Info */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h2 className="text-lg font-semibold text-[#1A1A1A] mb-4">Basic Information</h2>
