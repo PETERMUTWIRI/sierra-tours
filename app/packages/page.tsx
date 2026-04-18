@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db";
 import { ArrowRight, Package } from "lucide-react";
 import { Heart, Ship, Gift, Star, Palmtree, Trees, Calendar, Mountain, Bike, Footprints, Bird, Waves, Compass } from "lucide-react";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Themed Holiday Packages | Sierra Tours & Safaris",
   description: "Discover our specially curated themed holiday packages - Honeymoon, Valentine's Day, Luxury Safaris, Christmas packages and more.",

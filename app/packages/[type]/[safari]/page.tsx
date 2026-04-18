@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { ArrowLeft, Clock, MapPin, Users, Check, X, Calendar, Utensils, Bed } from "lucide-react";
 
+export const revalidate = 60;
+
 interface PageProps {
   params: Promise<{ type: string; safari: string }>;
 }

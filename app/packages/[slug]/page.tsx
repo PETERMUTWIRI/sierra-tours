@@ -18,6 +18,8 @@ const iconMap: Record<string, React.ElementType> = {
   Package,
 };
 
+export const revalidate = 60;
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
