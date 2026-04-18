@@ -2,87 +2,42 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Heart, ArrowRight, Clock, Users, MapPin, Check } from "lucide-react";
+import { prisma } from "@/lib/db";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Honeymoon Packages | Sierra Tours & Safaris",
   description: "Begin your forever with unforgettable romantic adventures. Luxury honeymoon safari packages in Kenya and East Africa.",
 };
 
-const honeymoonPackages = [
-  {
-    id: 1,
-    title: "Romantic Mara Retreat",
-    duration: "4 Days / 3 Nights",
-    price: "From $2,850 per person",
-    image: "/images/destinations/maasai-mara.jpg",
-    description: "Experience the magic of the Maasai Mara with your loved one. Private game drives, luxury tented camp, and intimate bush dinners.",
-    highlights: [
-      "Private game drives",
-      "Luxury tented accommodation",
-      "Sunset champagne experience",
-      "Private bush dinner",
-      "Couples spa treatment",
-    ],
-    location: "Maasai Mara",
-  },
-  {
-    id: 2,
-    title: "Coastal Love Escape",
-    duration: "5 Days / 4 Nights",
-    price: "From $1,950 per person",
-    image: "/images/destinations/diani-beach.jpg",
-    description: "Relax on the pristine beaches of Diani. Beachfront villa, romantic dhow cruise, and candlelit dinners by the ocean.",
-    highlights: [
-      "Beachfront villa",
-      "Romantic dhow cruise",
-      "Candlelit beach dinners",
-      "Couples massage",
-      "Snorkeling excursion",
-    ],
-    location: "Diani Beach",
-  },
-  {
-    id: 3,
-    title: "Luxury Bush & Beach",
-    duration: "7 Days / 6 Nights",
-    price: "From $4,200 per person",
-    image: "/images/destinations/amboseli-elephants.jpg",
-    description: "The perfect combination - thrilling safari in Amboseli followed by beach relaxation. Best of both worlds for your honeymoon.",
-    highlights: [
-      "Amboseli safari",
-      "Mt. Kilimanjaro views",
-      "Beach resort stay",
-      "Private transfers",
-      "All meals included",
-    ],
-    location: "Amboseli & Coast",
-  },
-  {
-    id: 4,
-    title: "Private Island Romance",
-    duration: "6 Days / 5 Nights",
-    price: "From $3,800 per person",
-    image: "/images/destinations/lamu.jpg",
-    description: "Escape to the historic Lamu archipelago. Private island experience, Swahili culture, and ultimate privacy.",
-    highlights: [
-      "Private island stay",
-      "Traditional dhow sailing",
-      "Swahili cooking class",
-      "Historical town tour",
-      "Sunset cruises",
-    ],
-    location: "Lamu Archipelago",
-  },
-];
+async function getHoneymoonPackages() {
+  return prisma.packageSafari.findMany({
+    where: {
+      packageType: {
+        slug: "honeymoon",
+      },
+      published: true,
+    },
+    orderBy: { order: "asc" },
+    include: {
+      packageType: {
+        select: { name: true },
+      },
+    },
+  });
+}
 
-export default function HoneymoonPackagesPage() {
+export default async function HoneymoonPackagesPage() {
+  const packagesData = await getHoneymoonPackages();
+
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/destinations/maasai-mara-sunset.jpg"
+            src="/images/honeymoon.jpg"
             alt="Honeymoon Safari"
             fill
             className="object-cover"
@@ -130,65 +85,71 @@ export default function HoneymoonPackagesPage() {
       {/* Packages Grid */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8">
-            {honeymoonPackages.map((pkg) => (
-              <div
-                key={pkg.id}
-                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100"
-              >
-                <div className="relative h-64 overflow-hidden">
-                  <Image
-                    src={pkg.image}
-                    alt={pkg.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1 bg-[#D32F2F] text-white text-sm font-medium rounded-full">
-                      {pkg.price}
-                    </span>
+          {packagesData.length > 0 ? (
+            <div className="grid md:grid-cols-2 gap-8">
+              {packagesData.map((pkg) => (
+                <div
+                  key={pkg.id}
+                  className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100"
+                >
+                  <div className="relative h-64 overflow-hidden">
+                    <Image
+                      src={pkg.image || "/images/destinations/default.jpg"}
+                      alt={pkg.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute top-4 right-4">
+                      <span className="px-3 py-1 bg-[#D32F2F] text-white text-sm font-medium rounded-full">
+                        {pkg.priceFrom && "From "}{pkg.currency} {pkg.price}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-4 left-4">
+                      <h3 className="text-2xl font-bold text-white">{pkg.title}</h3>
+                    </div>
                   </div>
-                  <div className="absolute bottom-4 left-4">
-                    <h3 className="text-2xl font-bold text-white">{pkg.title}</h3>
+                  <div className="p-6">
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-4">
+                      <span className="flex items-center gap-1">
+                        <Clock size={14} />
+                        {pkg.duration}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <MapPin size={14} />
+                        {pkg.location}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Users size={14} />
+                        {pkg.groupSize || "2 People"}
+                      </span>
+                    </div>
+                    <p className="text-gray-600 mb-4">{pkg.excerpt}</p>
+                    <div className="space-y-2 mb-6">
+                      {pkg.highlights.slice(0, 5).map((highlight, i) => (
+                        <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                          <Check size={14} className="text-[#11A560]" />
+                          {highlight}
+                        </div>
+                      ))}
+                    </div>
+                    <Link
+                      href={`/packages/${pkg.packageType.slug}/${pkg.slug}`}
+                      className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-[#D32F2F] text-white font-semibold rounded-lg hover:bg-[#B71C1C] transition-colors"
+                    >
+                      View Package Details
+                      <ArrowRight size={18} />
+                    </Link>
                   </div>
                 </div>
-                <div className="p-6">
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-4">
-                    <span className="flex items-center gap-1">
-                      <Clock size={14} />
-                      {pkg.duration}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <MapPin size={14} />
-                      {pkg.location}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Users size={14} />
-                      2 People
-                    </span>
-                  </div>
-                  <p className="text-gray-600 mb-4">{pkg.description}</p>
-                  <div className="space-y-2 mb-6">
-                    {pkg.highlights.map((highlight, i) => (
-                      <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
-                        <Check size={14} className="text-[#11A560]" />
-                        {highlight}
-                      </div>
-                    ))}
-                  </div>
-                  <Link
-                    href={`/packages/honeymoon/${pkg.id}`}
-                    className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-[#D32F2F] text-white font-semibold rounded-lg hover:bg-[#B71C1C] transition-colors"
-                  >
-                    View Package Details
-                    <ArrowRight size={18} />
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-600 text-lg">No honeymoon packages available at the moment. Check back soon!</p>
+            </div>
+          )}
         </div>
       </section>
 

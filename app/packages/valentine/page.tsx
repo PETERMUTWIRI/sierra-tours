@@ -2,71 +2,42 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Heart, ArrowRight, Clock, Users, MapPin, Check, Sparkles } from "lucide-react";
+import { prisma } from "@/lib/db";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Valentine's Day Packages | Sierra Tours & Safaris",
   description: "Celebrate love in the heart of Africa. Special Valentine's packages with sunset champagne, candlelit dinners, and couples spa treatments.",
 };
 
-const valentinePackages = [
-  {
-    id: 1,
-    title: "Lovers in the Mara",
-    duration: "3 Days / 2 Nights",
-    price: "From $1,850 per couple",
-    image: "/images/destinations/maasai-mara-sunset.jpg",
-    description: "Romantic safari escape in the world-famous Maasai Mara. Perfect for Valentine's celebration.",
-    highlights: [
-      "Private hot air balloon ride",
-      "Champagne breakfast in the bush",
-      "Romantic sundowners",
-      "Couples massage",
-      "Private candlelit dinner",
-    ],
-    location: "Maasai Mara",
-  },
-  {
-    id: 2,
-    title: "Sunset Romance Safari",
-    duration: "4 Days / 3 Nights",
-    price: "From $2,400 per couple",
-    image: "/images/destinations/amboseli-elephants.jpg",
-    description: "Witness magical sunsets over Mount Kilimanjaro with your loved one.",
-    highlights: [
-      "Amboseli elephant viewing",
-      "Mt. Kilimanjaro backdrop",
-      "Luxury lodge accommodation",
-      "Private photography session",
-      "Rose petal turndown service",
-    ],
-    location: "Amboseli",
-  },
-  {
-    id: 3,
-    title: "Valentine Beach Escape",
-    duration: "5 Days / 4 Nights",
-    price: "From $1,650 per couple",
-    image: "/images/destinations/diani-beach.jpg",
-    description: "Relax and reconnect on the pristine beaches of the Kenyan coast.",
-    highlights: [
-      "Beachfront resort",
-      "Romantic dhow dinner cruise",
-      "Couples spa day",
-      "Private beach dinner",
-      "Sunset yoga session",
-    ],
-    location: "Diani Beach",
-  },
-];
+async function getValentinePackages() {
+  return prisma.packageSafari.findMany({
+    where: {
+      packageType: {
+        slug: "valentine",
+      },
+      published: true,
+    },
+    orderBy: { order: "asc" },
+    include: {
+      packageType: {
+        select: { name: true },
+      },
+    },
+  });
+}
 
-export default function ValentinePackagesPage() {
+export default async function ValentinePackagesPage() {
+  const packagesData = await getValentinePackages();
+
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/destinations/maasai-mara-sunset.jpg"
+            src="/images/valentines.jpg"
             alt="Valentine Safari"
             fill
             className="object-cover"
@@ -118,65 +89,71 @@ export default function ValentinePackagesPage() {
       {/* Packages Grid */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
-            {valentinePackages.map((pkg) => (
-              <div
-                key={pkg.id}
-                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100"
-              >
-                <div className="relative h-56 overflow-hidden">
-                  <Image
-                    src={pkg.image}
-                    alt={pkg.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1 bg-[#D32F2F] text-white text-sm font-medium rounded-full">
-                      {pkg.price}
-                    </span>
+          {packagesData.length > 0 ? (
+            <div className="grid md:grid-cols-3 gap-8">
+              {packagesData.map((pkg) => (
+                <div
+                  key={pkg.id}
+                  className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100"
+                >
+                  <div className="relative h-56 overflow-hidden">
+                    <Image
+                      src={pkg.image || "/images/destinations/default.jpg"}
+                      alt={pkg.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute top-4 right-4">
+                      <span className="px-3 py-1 bg-[#D32F2F] text-white text-sm font-medium rounded-full">
+                        {pkg.priceFrom && "From "}{pkg.currency} {pkg.price}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-4 left-4">
+                      <h3 className="text-xl font-bold text-white">{pkg.title}</h3>
+                    </div>
                   </div>
-                  <div className="absolute bottom-4 left-4">
-                    <h3 className="text-xl font-bold text-white">{pkg.title}</h3>
+                  <div className="p-6">
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-4">
+                      <span className="flex items-center gap-1">
+                        <Clock size={14} />
+                        {pkg.duration}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <MapPin size={14} />
+                        {pkg.location}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Users size={14} />
+                        {pkg.groupSize || "Couple"}
+                      </span>
+                    </div>
+                    <p className="text-gray-600 mb-4 text-sm">{pkg.excerpt}</p>
+                    <div className="space-y-2 mb-6">
+                      {pkg.highlights.slice(0, 5).map((highlight, i) => (
+                        <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                          <Check size={14} className="text-[#D32F2F]" />
+                          {highlight}
+                        </div>
+                      ))}
+                    </div>
+                    <Link
+                      href={`/packages/${pkg.packageType.slug}/${pkg.slug}`}
+                      className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-[#D32F2F] text-white font-semibold rounded-lg hover:bg-[#B71C1C] transition-colors"
+                    >
+                      Book This Package
+                      <ArrowRight size={18} />
+                    </Link>
                   </div>
                 </div>
-                <div className="p-6">
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-4">
-                    <span className="flex items-center gap-1">
-                      <Clock size={14} />
-                      {pkg.duration}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <MapPin size={14} />
-                      {pkg.location}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Users size={14} />
-                      Couple
-                    </span>
-                  </div>
-                  <p className="text-gray-600 mb-4 text-sm">{pkg.description}</p>
-                  <div className="space-y-2 mb-6">
-                    {pkg.highlights.map((highlight, i) => (
-                      <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
-                        <Check size={14} className="text-[#D32F2F]" />
-                        {highlight}
-                      </div>
-                    ))}
-                  </div>
-                  <Link
-                    href={`/packages/valentine/${pkg.id}`}
-                    className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-[#D32F2F] text-white font-semibold rounded-lg hover:bg-[#B71C1C] transition-colors"
-                  >
-                    Book This Package
-                    <ArrowRight size={18} />
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-600 text-lg">No Valentine's packages available at the moment. Check back soon!</p>
+            </div>
+          )}
         </div>
       </section>
 
