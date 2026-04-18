@@ -44,9 +44,18 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#1A1A1A] text-gray-300">
-      {/* Main Footer */}
-      <div className="container mx-auto px-4 py-12">
+    <footer className="relative text-gray-300">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/images/footer.jpg')" }}
+      />
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-[#1A1A1A]/85" />
+
+      <div className="relative z-10">
+        {/* Main Footer */}
+        <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Column */}
           <div>
@@ -174,33 +183,34 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Footer */}
-      <div className="border-t border-gray-800">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-center md:text-left text-gray-500">
-              &copy; {currentYear} Sierra Tours & Safaris. All rights reserved.
-            </p>
-            <nav className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/privacy"
-                className="text-sm text-gray-500 hover:text-[#11A560] transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="/terms"
-                className="text-sm text-gray-500 hover:text-[#11A560] transition-colors"
-              >
-                Terms of Service
-              </Link>
-              <Link
-                href="/sitemap"
-                className="text-sm text-gray-500 hover:text-[#11A560] transition-colors"
-              >
-                Sitemap
-              </Link>
-            </nav>
+        {/* Bottom Footer */}
+        <div className="border-t border-white/10">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-sm text-center md:text-left text-gray-400">
+                &copy; {currentYear} Sierra Tours & Safaris. All rights reserved.
+              </p>
+              <nav className="flex flex-wrap justify-center gap-4">
+                <Link
+                  href="/privacy"
+                  className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  href="/terms"
+                  className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
+                >
+                  Terms of Service
+                </Link>
+                <Link
+                  href="/sitemap"
+                  className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
+                >
+                  Sitemap
+                </Link>
+              </nav>
+            </div>
           </div>
         </div>
       </div>

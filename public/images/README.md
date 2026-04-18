@@ -88,3 +88,7 @@ wordpress files/uploads_extracted/uploads/
 ```
 
 Original WordPress date-based structure has been reorganized by content type for easier management.
+hey man  have adde some photos on the image folder each named after the packages and safaris so i tant you to m
+ake them as the cover photos on tha packeges page and also as hero section background on the herosection of those 
+pageges when opend that now show the available pakages on that page  also  the laxary ,valentines and honeymoon pa
+ckes make them shaw the dynamically added packages from the admin side not the current static once please
