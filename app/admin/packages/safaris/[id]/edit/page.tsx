@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, Plus, Trash2, GripVertical } from "lucide-react";
+import ImageUpload from "@/app/components/admin/ImageUpload";
 
 interface PackageType {
   id: string;
@@ -442,19 +443,13 @@ export default function EditPackageSafari() {
           {/* Images */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h2 className="text-lg font-semibold text-[#1A1A1A] mb-4">Images</h2>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Main Image URL <span className="text-[#D32F2F]">*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.image}
-                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                placeholder="/images/destinations/example.jpg"
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#11A560]"
-              />
-              {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
-            </div>
+            <ImageUpload
+              label="Main Image"
+              required
+              value={formData.image}
+              onChange={(url) => setFormData({ ...formData, image: url })}
+            />
+            {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
           </div>
 
           {/* Description */}

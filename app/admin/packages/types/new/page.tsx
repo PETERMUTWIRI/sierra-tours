@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, Heart, Ship, Gift, Star, Palmtree, Trees, Calendar, Package } from "lucide-react";
+import ImageUpload from "@/app/components/admin/ImageUpload";
 
 const iconOptions = [
   { value: "Heart", label: "Heart", Icon: Heart },
@@ -211,17 +212,14 @@ export default function NewPackageType() {
               </div>
             </div>
 
-            {/* Image URL */}
+            {/* Image Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Cover Image URL</label>
-              <input
-                type="text"
+              <ImageUpload
+                label="Cover Image"
                 value={formData.image}
-                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                placeholder="/images/destinations/example.jpg"
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#11A560] focus:border-transparent"
+                onChange={(url) => setFormData({ ...formData, image: url })}
               />
-              <p className="text-sm text-gray-500 mt-1">Path to the cover image for this package type</p>
+              <p className="text-sm text-gray-500 mt-1">Upload a cover image for this package type</p>
             </div>
 
             {/* Order */}
