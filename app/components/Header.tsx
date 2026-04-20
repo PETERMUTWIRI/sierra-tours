@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import Logo from "./Logo";
+import { getGenericBookingLink } from "@/lib/whatsapp";
 
 // Icon mapping for dynamic package types
 const iconMap: Record<string, React.ElementType> = {
@@ -537,12 +538,14 @@ export default function Header() {
             </div>
 
             {/* CTA Button */}
-            <Link
-              href="/contact"
+            <a
+              href={getGenericBookingLink()}
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden md:flex items-center gap-2 px-5 py-2 bg-[#D32F2F] text-white font-semibold rounded-full hover:bg-[#B71C1C] transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               Book Now
-            </Link>
+            </a>
 
             {/* Mobile: Social Icons Row */}
             <div className="md:hidden flex items-center gap-2 py-2">
@@ -675,12 +678,14 @@ export default function Header() {
                 </div>
               ))}
               <div className="p-4 border-t border-[#11A560]/50">
-                <Link
-                  href="/contact"
+                <a
+                  href={getGenericBookingLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block w-full text-center px-4 py-3 bg-[#D32F2F] text-white font-semibold rounded-lg"
                 >
                   Book Now
-                </Link>
+                </a>
               </div>
             </motion.div>
           )}

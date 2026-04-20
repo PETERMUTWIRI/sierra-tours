@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { getSafariImage, getDestinationHeroImage } from "@/lib/imageMapping";
+import { getPackageBookingLink, getGenericBookingLink } from "@/lib/whatsapp";
 import { 
   Clock, 
   MapPin, 
@@ -166,13 +167,22 @@ export default async function TripPage({ params }: TripPageProps) {
               </div>
               <span className="text-gray-500 text-sm">per person</span>
             </div>
-            <Link
-              href="/contact"
+            <a
+              href={getPackageBookingLink({
+                name: safari.title,
+                price: safari.price,
+                currency: safari.currency,
+                duration: safari.duration,
+                location: safari.destination.name,
+                groupSize: safari.groupSize,
+              })}
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#11A560] text-white font-semibold rounded-xl hover:bg-[#0E8A50] transition-colors shadow-lg shadow-[#11A560]/25"
             >
-              Enquire Now
+              Book on WhatsApp
               <ArrowRight size={18} />
-            </Link>
+            </a>
             <p className="text-center text-xs text-gray-500 mt-3">
               Based on double occupancy
             </p>
@@ -375,19 +385,37 @@ export default async function TripPage({ params }: TripPageProps) {
                     <span className="text-gray-500 text-sm">per person</span>
                   </div>
                   <div className="space-y-3">
-                    <Link
-                      href="/contact"
+                    <a
+                      href={getPackageBookingLink({
+                        name: safari.title,
+                        price: safari.price,
+                        currency: safari.currency,
+                        duration: safari.duration,
+                        location: safari.destination.name,
+                        groupSize: safari.groupSize,
+                      })}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#11A560] text-white font-semibold rounded-xl hover:bg-[#0E8A50] transition-colors shadow-lg shadow-[#11A560]/25"
                     >
-                      Book This Safari
+                      Book on WhatsApp
                       <ArrowRight size={18} />
-                    </Link>
-                    <Link
-                      href="/contact"
+                    </a>
+                    <a
+                      href={getPackageBookingLink({
+                        name: safari.title,
+                        price: safari.price,
+                        currency: safari.currency,
+                        duration: safari.duration,
+                        location: safari.destination.name,
+                        groupSize: safari.groupSize,
+                      })}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-2 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-[#11A560] hover:text-[#11A560] transition-colors"
                     >
-                      Ask a Question
-                    </Link>
+                      Ask on WhatsApp
+                    </a>
                   </div>
                   <p className="text-center text-xs text-gray-500 mt-4">
                     No commitment required. Get a detailed itinerary & quote.
@@ -483,13 +511,15 @@ export default async function TripPage({ params }: TripPageProps) {
                   <p className="text-sm text-gray-600 mb-4">
                     Our safari experts can customize this trip to your preferences.
                   </p>
-                  <Link
-                    href="/contact"
+                  <a
+                    href={getGenericBookingLink()}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-[#0E8A50] font-semibold hover:text-[#0E8A50] flex items-center gap-1"
                   >
-                    Contact Us
+                    Contact Us on WhatsApp
                     <ArrowRight size={16} />
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>

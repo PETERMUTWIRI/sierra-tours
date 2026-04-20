@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Heart, ArrowRight, Clock, Users, MapPin, Check } from "lucide-react";
 import { prisma } from "@/lib/db";
+import { getCategoryBookingLink } from "@/lib/whatsapp";
 
 export const revalidate = 60;
 
@@ -188,19 +189,21 @@ export default async function HoneymoonPackagesPage() {
             Contact us to customize your perfect honeymoon package.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/contact"
+            <a
+              href={getCategoryBookingLink("Honeymoon")}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 bg-[#D32F2F] text-white font-semibold rounded-full hover:bg-[#B71C1C] transition-all duration-300 shadow-lg"
             >
-              Enquire Now
+              Book on WhatsApp
               <ArrowRight size={20} />
-            </Link>
-            <Link
-              href="tel:+254123456789"
+            </a>
+            <a
+              href="tel:+254725162916"
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#11A560] font-semibold rounded-full hover:bg-gray-100 transition-all duration-300"
             >
               Call Us
-            </Link>
+            </a>
           </div>
         </div>
       </section>

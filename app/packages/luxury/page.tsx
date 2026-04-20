@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Star, ArrowRight, Clock, Users, MapPin, Check, Crown } from "lucide-react";
 import { prisma } from "@/lib/db";
+import { getCategoryBookingLink } from "@/lib/whatsapp";
 
 export const revalidate = 60;
 
@@ -209,13 +210,15 @@ export default async function LuxuryPackagesPage() {
           <p className="text-[#1A1A1A]/80 text-lg mb-8 max-w-2xl mx-auto">
             Let us craft your perfect luxury safari experience.
           </p>
-          <Link
-            href="/contact"
+          <a
+            href={getCategoryBookingLink("Luxury Safari")}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#1A1A1A] text-white font-semibold rounded-full hover:bg-[#333] transition-all duration-300 shadow-lg"
           >
-            Request Consultation
+            Book on WhatsApp
             <ArrowRight size={20} />
-          </Link>
+          </a>
         </div>
       </section>
     </main>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { getGenericBookingLink } from "@/lib/whatsapp";
 import { getPackageTypeImage } from "@/lib/imageMapping";
 import { ArrowRight, Clock, MapPin, Check, ArrowLeft } from "lucide-react";
 import { Heart, Ship, Gift, Star, Palmtree, Trees, Calendar, Package } from "lucide-react";
@@ -238,13 +239,15 @@ export default async function PackageTypePage({ params }: PageProps) {
           <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
             We can create a personalized safari package just for you.
           </p>
-          <Link
-            href="/contact"
+          <a
+            href={getGenericBookingLink()}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#D32F2F] text-white font-semibold rounded-full hover:bg-[#B71C1C] transition-all duration-300 shadow-lg"
           >
-            Get in Touch
+            Enquire on WhatsApp
             <ArrowRight size={20} />
-          </Link>
+          </a>
         </div>
       </section>
     </main>

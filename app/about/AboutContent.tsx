@@ -376,11 +376,13 @@ export default function AboutContent() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="/contact"
+              href="https://wa.me/254725162916?text=Hello%20Sierra%20Tours%20%26%20Safaris,%20I%20would%20like%20to%20enquire%20about%20your%20safari%20packages.%20Please%20provide%20me%20with%20more%20information.%20Thank%20you!"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 bg-[#D32F2F] text-white font-semibold rounded-lg hover:bg-[#B71C1C] transition-all shadow-lg"
             >
               <Mail className="w-5 h-5" />
-              Get in Touch
+              Enquire on WhatsApp
             </a>
             <a
               href="tel:+254725162916"

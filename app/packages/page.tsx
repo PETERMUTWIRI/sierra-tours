@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/db";
+import { getGenericBookingLink } from "@/lib/whatsapp";
 import { getPackageTypeImage } from "@/lib/imageMapping";
 import { ArrowRight, Package } from "lucide-react";
 import { Heart, Ship, Gift, Star, Palmtree, Trees, Calendar, Mountain, Bike, Footprints, Bird, Waves, Compass } from "lucide-react";
@@ -340,13 +341,15 @@ export default async function PackagesPage() {
           <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
             Let us create a custom package tailored to your specific needs and preferences.
           </p>
-          <Link
-            href="/contact"
+          <a
+            href={getGenericBookingLink()}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#D32F2F] text-white font-semibold rounded-full hover:bg-[#B71C1C] transition-all duration-300 shadow-lg hover:shadow-xl"
           >
-            Request Custom Package
+            Enquire on WhatsApp
             <ArrowRight size={20} />
-          </Link>
+          </a>
         </div>
       </section>
     </main>

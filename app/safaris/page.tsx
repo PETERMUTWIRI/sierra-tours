@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { getSafariImage } from "@/lib/imageMapping";
+import { getGenericBookingLink } from "@/lib/whatsapp";
 import { Clock, MapPin, ArrowRight, Filter, Star, Calendar, Users } from "lucide-react";
 
 export const metadata = {
@@ -281,13 +282,15 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
             budget, and schedule. Let us design your dream African adventure.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/contact"
+            <a
+              href={getGenericBookingLink()}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 bg-[#11A560] text-white font-semibold rounded-lg hover:bg-[#0E8A50] transition-all shadow-lg shadow-[#11A560]/25"
             >
-              Request Custom Safari
+              Enquire on WhatsApp
               <ArrowRight size={20} />
-            </Link>
+            </a>
             <Link
               href="/destinations"
               className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all backdrop-blur"

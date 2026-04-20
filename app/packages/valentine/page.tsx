@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Heart, ArrowRight, Clock, Users, MapPin, Check, Sparkles } from "lucide-react";
 import { prisma } from "@/lib/db";
+import { getPackageBookingLink, getCategoryBookingLink } from "@/lib/whatsapp";
 
 export const revalidate = 60;
 
@@ -138,13 +139,23 @@ export default async function ValentinePackagesPage() {
                         </div>
                       ))}
                     </div>
-                    <Link
-                      href={`/packages/${pkg.packageType.slug}/${pkg.slug}`}
+                    <a
+                      href={getPackageBookingLink({
+                        name: pkg.title,
+                        price: pkg.price,
+                        currency: pkg.currency,
+                        priceFrom: pkg.priceFrom,
+                        duration: pkg.duration,
+                        location: pkg.location,
+                        groupSize: pkg.groupSize,
+                      })}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-[#D32F2F] text-white font-semibold rounded-lg hover:bg-[#B71C1C] transition-colors"
                     >
-                      Book This Package
+                      Book on WhatsApp
                       <ArrowRight size={18} />
-                    </Link>
+                    </a>
                   </div>
                 </div>
               ))}
@@ -192,13 +203,15 @@ export default async function ValentinePackagesPage() {
           <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
             Valentine's packages fill up quickly. Secure your romantic getaway today.
           </p>
-          <Link
-            href="/contact"
+          <a
+            href={getCategoryBookingLink("Valentine's Day")}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#D32F2F] font-semibold rounded-full hover:bg-gray-100 transition-all duration-300 shadow-lg"
           >
-            Reserve Your Spot
+            Book on WhatsApp
             <ArrowRight size={20} />
-          </Link>
+          </a>
         </div>
       </section>
     </main>

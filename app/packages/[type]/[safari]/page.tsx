@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { getPackageBookingLink } from "@/lib/whatsapp";
 import { ArrowLeft, Clock, MapPin, Users, Check, X, Calendar, Utensils, Bed } from "lucide-react";
 
 export const revalidate = 60;
@@ -229,18 +230,38 @@ export default async function SafariDetailPage({ params }: PageProps) {
                     <p className="text-gray-400 text-sm">per person</p>
                   </div>
                   
-                  <Link
-                    href={`/contact?package=${safariData.slug}`}
+                  <a
+                    href={getPackageBookingLink({
+                      name: safariData.title,
+                      price: safariData.price,
+                      currency: safariData.currency,
+                      priceFrom: safariData.priceFrom,
+                      duration: safariData.duration,
+                      location: safariData.location,
+                      groupSize: safariData.groupSize,
+                    })}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="block w-full text-center px-6 py-4 bg-[#D32F2F] text-white font-semibold rounded-xl hover:bg-[#B71C1C] transition-colors mb-3"
                   >
                     Book Now
-                  </Link>
-                  <Link
-                    href="/contact"
+                  </a>
+                  <a
+                    href={getPackageBookingLink({
+                      name: safariData.title,
+                      price: safariData.price,
+                      currency: safariData.currency,
+                      priceFrom: safariData.priceFrom,
+                      duration: safariData.duration,
+                      location: safariData.location,
+                      groupSize: safariData.groupSize,
+                    })}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="block w-full text-center px-6 py-3 border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors"
                   >
-                    Enquire
-                  </Link>
+                    Enquire on WhatsApp
+                  </a>
                 </div>
 
                 {/* Quick Info */}
