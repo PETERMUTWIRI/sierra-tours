@@ -312,10 +312,10 @@ export function getDestinationCardImage(destination: {
 }
 
 // ============================================================================
-// PACKAGE TYPE IMAGES
-// Maps package type slugs to local hero/cover images
+// PACKAGE TYPE COVER IMAGES
+// Used on the /packages listing page cards
 // ============================================================================
-const PACKAGE_TYPE_IMAGES: Record<string, string> = {
+const PACKAGE_TYPE_COVERS: Record<string, string> = {
   honeymoon: '/images/honeymoon.jpg',
   valentine: '/images/valentines.jpg',
   luxury: '/images/laxery.jpg',
@@ -333,46 +333,87 @@ const PACKAGE_TYPE_IMAGES: Record<string, string> = {
   'best-of-cruise': '/images/best-of cruise.jpg',
 };
 
+// ============================================================================
+// PACKAGE TYPE HERO IMAGES
+// Used on individual package type pages (/packages/[slug])
+// Overrides covers where a different hero is desired
+// ============================================================================
+const PACKAGE_TYPE_HEROES: Record<string, string> = {
+  ...PACKAGE_TYPE_COVERS,
+  'best-of-cruise': '/images/beach-safaris.jpeg',
+};
+
+function getMappedPackageImage(
+  slug: string,
+  mapping: Record<string, string>
+): string | null {
+  // Direct slug match
+  if (mapping[slug]) {
+    return mapping[slug];
+  }
+
+  // Fuzzy matching
+  const lower = slug.toLowerCase();
+  if (lower.includes('honeymoon')) return mapping.honeymoon;
+  if (lower.includes('valentine')) return mapping.valentine;
+  if (lower.includes('luxury')) return mapping.luxury;
+  if (lower.includes('christmas')) return mapping.christmas;
+  if (lower.includes('cultural')) return mapping.cultural;
+  if (lower.includes('cycling')) return mapping['cycling-safaris'];
+  if (lower.includes('beach') && lower.includes('safari')) return mapping['beach-safaris'];
+  if (lower.includes('beach')) return mapping['beach-packages'];
+  if (lower.includes('bush')) return mapping['bush-packages'];
+  if (lower.includes('mountain')) return mapping['mountain-climbing'];
+  if (lower.includes('walk')) return mapping['walkin-safaris'];
+  if (lower.includes('weekend')) return mapping['weekend-getaways'];
+  if (lower.includes('wildlife')) return mapping['wildlife-safaris'];
+  if (lower.includes('cruise')) return mapping.cruise;
+
+  return null;
+}
+
 /**
- * Get the best cover/hero image for a package type
+ * Get the cover image for a package type card (used on /packages listing)
  */
 export function getPackageTypeImage(packageType: {
   slug: string;
   name: string;
   image?: string | null;
 }): string {
-  // If package type already has an external image URL (imgbb), use it
-  if (packageType.image?.startsWith('http')) {
+  // Prioritize known local mappings for these slugs
+  const mapped = getMappedPackageImage(packageType.slug, PACKAGE_TYPE_COVERS);
+  if (mapped) {
+    return mapped;
+  }
+
+  // Fall back to database image if set
+  if (packageType.image?.startsWith('http') || packageType.image?.startsWith('/')) {
     return packageType.image;
   }
-  
-  // If package type has a local image path, use it
-  if (packageType.image?.startsWith('/')) {
+
+  // Default fallback
+  return '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg';
+}
+
+/**
+ * Get the hero image for a package type page (used on /packages/[slug])
+ */
+export function getPackageTypeHeroImage(packageType: {
+  slug: string;
+  name: string;
+  image?: string | null;
+}): string {
+  // Prioritize known local mappings for these slugs
+  const mapped = getMappedPackageImage(packageType.slug, PACKAGE_TYPE_HEROES);
+  if (mapped) {
+    return mapped;
+  }
+
+  // Fall back to database image if set
+  if (packageType.image?.startsWith('http') || packageType.image?.startsWith('/')) {
     return packageType.image;
   }
-  
-  // Check direct slug mapping
-  if (PACKAGE_TYPE_IMAGES[packageType.slug]) {
-    return PACKAGE_TYPE_IMAGES[packageType.slug];
-  }
-  
-  // Try fuzzy matching based on slug
-  const slug = packageType.slug.toLowerCase();
-  if (slug.includes('honeymoon')) return PACKAGE_TYPE_IMAGES.honeymoon;
-  if (slug.includes('valentine')) return PACKAGE_TYPE_IMAGES.valentine;
-  if (slug.includes('luxury')) return PACKAGE_TYPE_IMAGES.luxury;
-  if (slug.includes('christmas')) return PACKAGE_TYPE_IMAGES.christmas;
-  if (slug.includes('cultural')) return PACKAGE_TYPE_IMAGES.cultural;
-  if (slug.includes('cycling')) return PACKAGE_TYPE_IMAGES['cycling-safaris'];
-  if (slug.includes('beach')) return PACKAGE_TYPE_IMAGES['beach-packages'];
-  if (slug.includes('bush')) return PACKAGE_TYPE_IMAGES['bush-packages'];
-  if (slug.includes('mountain')) return PACKAGE_TYPE_IMAGES['mountain-climbing'];
-  if (slug.includes('walk')) return PACKAGE_TYPE_IMAGES['walkin-safaris'];
-  if (slug.includes('weekend')) return PACKAGE_TYPE_IMAGES['weekend-getaways'];
-  if (slug.includes('wildlife')) return PACKAGE_TYPE_IMAGES['wildlife-safaris'];
-  if (slug.includes('beach') && slug.includes('safari')) return PACKAGE_TYPE_IMAGES['beach-safaris'];
-  if (slug.includes('cruise')) return PACKAGE_TYPE_IMAGES.cruise;
-  
+
   // Default fallback
   return '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg';
 }
