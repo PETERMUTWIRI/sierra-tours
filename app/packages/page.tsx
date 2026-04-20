@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/db";
+import { getPackageTypeImage } from "@/lib/imageMapping";
 import { ArrowRight, Package } from "lucide-react";
 import { Heart, Ship, Gift, Star, Palmtree, Trees, Calendar, Mountain, Bike, Footprints, Bird, Waves, Compass } from "lucide-react";
 
@@ -121,7 +122,7 @@ export default async function PackagesPage() {
                   >
                     <div className="relative h-56 overflow-hidden">
                       <Image
-                        src={type.image || "/images/destinations/default.jpg"}
+                        src={getPackageTypeImage(type)}
                         alt={type.name}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -178,7 +179,7 @@ export default async function PackagesPage() {
                   >
                     <div className="relative h-48 overflow-hidden">
                       <Image
-                        src={type.image || "/images/destinations/default.jpg"}
+                        src={getPackageTypeImage(type)}
                         alt={type.name}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -235,7 +236,7 @@ export default async function PackagesPage() {
                   >
                     <div className="relative h-48 overflow-hidden">
                       <Image
-                        src={type.image || "/images/destinations/default.jpg"}
+                        src={getPackageTypeImage(type)}
                         alt={type.name}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"

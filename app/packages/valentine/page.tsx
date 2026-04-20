@@ -22,7 +22,7 @@ async function getValentinePackages() {
     orderBy: { order: "asc" },
     include: {
       packageType: {
-        select: { name: true },
+        select: { name: true, slug: true },
       },
     },
   });

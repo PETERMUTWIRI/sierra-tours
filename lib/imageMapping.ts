@@ -311,6 +311,67 @@ export function getDestinationCardImage(destination: {
   return getDestinationHeroImage(destination);
 }
 
+// ============================================================================
+// PACKAGE TYPE IMAGES
+// Maps package type slugs to local hero/cover images
+// ============================================================================
+const PACKAGE_TYPE_IMAGES: Record<string, string> = {
+  honeymoon: '/images/honeymoon.jpg',
+  valentine: '/images/valentines.jpg',
+  luxury: '/images/laxery.jpg',
+  christmas: '/images/christmas.jpeg',
+  cultural: '/images/cultural.jpg',
+  'cycling-safaris': '/images/cycling-safaris.jpg',
+  'beach-packages': '/images/beach-packages .webp',
+  'bush-packages': '/images/bush packages.jpg',
+  'mountain-climbing': '/images/mountain climbing.jpg',
+  'walkin-safaris': '/images/walkin-safaris.jpg',
+  'weekend-getaways': '/images/weekend-gate-aways.jpg',
+  'wildlife-safaris': '/images/wildlife-safaris.jpg',
+};
+
+/**
+ * Get the best cover/hero image for a package type
+ */
+export function getPackageTypeImage(packageType: {
+  slug: string;
+  name: string;
+  image?: string | null;
+}): string {
+  // If package type already has an external image URL (imgbb), use it
+  if (packageType.image?.startsWith('http')) {
+    return packageType.image;
+  }
+  
+  // If package type has a local image path, use it
+  if (packageType.image?.startsWith('/')) {
+    return packageType.image;
+  }
+  
+  // Check direct slug mapping
+  if (PACKAGE_TYPE_IMAGES[packageType.slug]) {
+    return PACKAGE_TYPE_IMAGES[packageType.slug];
+  }
+  
+  // Try fuzzy matching based on slug
+  const slug = packageType.slug.toLowerCase();
+  if (slug.includes('honeymoon')) return PACKAGE_TYPE_IMAGES.honeymoon;
+  if (slug.includes('valentine')) return PACKAGE_TYPE_IMAGES.valentine;
+  if (slug.includes('luxury')) return PACKAGE_TYPE_IMAGES.luxury;
+  if (slug.includes('christmas')) return PACKAGE_TYPE_IMAGES.christmas;
+  if (slug.includes('cultural')) return PACKAGE_TYPE_IMAGES.cultural;
+  if (slug.includes('cycling')) return PACKAGE_TYPE_IMAGES['cycling-safaris'];
+  if (slug.includes('beach')) return PACKAGE_TYPE_IMAGES['beach-packages'];
+  if (slug.includes('bush')) return PACKAGE_TYPE_IMAGES['bush-packages'];
+  if (slug.includes('mountain')) return PACKAGE_TYPE_IMAGES['mountain-climbing'];
+  if (slug.includes('walk')) return PACKAGE_TYPE_IMAGES['walkin-safaris'];
+  if (slug.includes('weekend')) return PACKAGE_TYPE_IMAGES['weekend-getaways'];
+  if (slug.includes('wildlife')) return PACKAGE_TYPE_IMAGES['wildlife-safaris'];
+  
+  // Default fallback
+  return '/images/destinations/default.jpg';
+}
+
 /**
  * Check if an image path is valid
  */

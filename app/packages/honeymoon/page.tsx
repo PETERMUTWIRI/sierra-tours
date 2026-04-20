@@ -22,7 +22,7 @@ async function getHoneymoonPackages() {
     orderBy: { order: "asc" },
     include: {
       packageType: {
-        select: { name: true },
+        select: { name: true, slug: true },
       },
     },
   });

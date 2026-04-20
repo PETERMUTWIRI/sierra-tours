@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { getPackageTypeImage } from "@/lib/imageMapping";
 import { ArrowRight, Clock, MapPin, Check, ArrowLeft } from "lucide-react";
 import { Heart, Ship, Gift, Star, Palmtree, Trees, Calendar, Package } from "lucide-react";
 
@@ -78,7 +79,7 @@ export default async function PackageTypePage({ params }: PageProps) {
       <section className="relative py-16 md:py-24 overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src={packageType.image || "/images/destinations/maasai-mara-sunset.jpg"}
+            src={getPackageTypeImage(packageType)}
             alt={packageType.name}
             fill
             className="object-cover"
