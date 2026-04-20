@@ -73,7 +73,7 @@ export default function FeaturedTrips({
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/safaris/kenya/sierra-tours-and-safaris-kenya-safaris-image01.jpg"
+          src="/images/safaris/other/sierra-tours-and-safaris-kenya-safaris-image01.jpg"
           alt=""
           fill
           className="object-cover"

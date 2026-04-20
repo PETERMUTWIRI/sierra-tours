@@ -94,7 +94,7 @@ export default async function HoneymoonPackagesPage() {
                 >
                   <div className="relative h-64 overflow-hidden">
                     <Image
-                      src={pkg.image || "/images/destinations/default.jpg"}
+                      src={pkg.image || "/images/hero/sierra-tours-and-travel-luxury-safaris.jpg"}
                       alt={pkg.title}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-110"

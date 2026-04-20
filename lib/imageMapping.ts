@@ -328,6 +328,9 @@ const PACKAGE_TYPE_IMAGES: Record<string, string> = {
   'walkin-safaris': '/images/walkin-safaris.jpg',
   'weekend-getaways': '/images/weekend-gate-aways.jpg',
   'wildlife-safaris': '/images/wildlife-safaris.jpg',
+  'beach-safaris': '/images/beach-safaris.jpeg',
+  'cruise': '/images/best-of cruise.jpg',
+  'best-of-cruise': '/images/best-of cruise.jpg',
 };
 
 /**
@@ -367,9 +370,11 @@ export function getPackageTypeImage(packageType: {
   if (slug.includes('walk')) return PACKAGE_TYPE_IMAGES['walkin-safaris'];
   if (slug.includes('weekend')) return PACKAGE_TYPE_IMAGES['weekend-getaways'];
   if (slug.includes('wildlife')) return PACKAGE_TYPE_IMAGES['wildlife-safaris'];
+  if (slug.includes('beach') && slug.includes('safari')) return PACKAGE_TYPE_IMAGES['beach-safaris'];
+  if (slug.includes('cruise')) return PACKAGE_TYPE_IMAGES.cruise;
   
   // Default fallback
-  return '/images/destinations/default.jpg';
+  return '/images/hero/sierra-tours-and-travel-luxury-safaris.jpg';
 }
 
 /**

@@ -18,7 +18,7 @@ const testimonials = [
     id: 2,
     name: "Michael Chen",
     location: "Singapore",
-    image: "/images/testimonials/testimonials-266x300.jpg",
+    image: "/images/testimonials/testimonials.jpg",
     rating: 5,
     text: "The Tanzania experience exceeded all expectations. Witnessing the Great Migration in Serengeti was a bucket list moment. Highly recommend Sierra Tours for their professionalism.",
     trip: "9-Day Tanzania Adventure",
@@ -27,7 +27,7 @@ const testimonials = [
     id: 3,
     name: "Emma & David Miller",
     location: "Australia",
-    image: "/images/testimonials/testimonials-410x250.jpg",
+    image: "/images/testimonials/testimonials.jpg",
     rating: 5,
     text: "Our honeymoon in Botswana was magical. The Okavango Delta is paradise on earth. Thank you Sierra Tours for creating unforgettable memories!",
     trip: "Botswana Luxury Safari",
@@ -68,7 +68,7 @@ export default function Testimonials() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/safaris/kenya/sierra-tours-and-safaris-kenya-safaris-image01.jpg"
+          src="/images/safaris/other/sierra-tours-and-safaris-kenya-safaris-image01.jpg"
           alt=""
           fill
           className="object-cover"

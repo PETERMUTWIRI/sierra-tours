@@ -172,7 +172,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
                       >
                         <div className="relative h-48">
                           <Image
-                            src={park.image || '/images/placeholder-park.jpg'}
+                            src={park.image || '/images/safaris/other/sierra-tours-and-safaris-maasai-mara-safaris-image01.jpeg'}
                             alt={park.name}
                             fill
                             className="object-cover transition-transform duration-500 group-hover:scale-110"

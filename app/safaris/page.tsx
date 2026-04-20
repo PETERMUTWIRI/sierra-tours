@@ -123,7 +123,7 @@ export default async function SafarisPage({ searchParams }: SafarisPageProps) {
       {/* Hero Section */}
       <section className="relative h-[50vh] min-h-[400px]">
         <Image
-          src="/images/hero/sierra-tours-and-travel-luxury-safaris-scaled.jpg"
+          src="/images/hero/sierra-tours-and-travel-luxury-safaris.jpg"
           alt="Safari Tours"
           fill
           className="object-cover"

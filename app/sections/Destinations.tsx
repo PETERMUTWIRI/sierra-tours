@@ -46,7 +46,7 @@ export default function Destinations({ destinations = [] }: DestinationsProps) {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/destinations/tanzania/sierra-tours-and-safaris-tanzania-safaris-image01.jpg"
+          src="/images/safaris/other/sierra-tours-and-safaris-tanzania-safaris-image01.jpg"
           alt=""
           fill
           className="object-cover"

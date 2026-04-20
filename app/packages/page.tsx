@@ -72,7 +72,7 @@ export default async function PackagesPage() {
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/destinations/maasai-mara-sunset.jpg"
+            src="/images/safaris/other/sierra-tours-and-safaris-maasai-mara-safaris-image01.jpeg"
             alt="Themed Holiday Packages"
             fill
             className="object-cover"
