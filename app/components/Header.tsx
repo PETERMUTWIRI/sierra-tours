@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -90,6 +90,7 @@ export default function Header() {
   const [localTypes, setLocalTypes] = useState<PackageTypeItem[]>([]);
   const [isTopBarVisible, setIsTopBarVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     fetchDestinations();
@@ -119,6 +120,22 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+
+  // Update CSS variable for header height so LayoutWrapper can add correct padding
+  useEffect(() => {
+    const updateHeight = () => {
+      if (headerRef.current) {
+        document.documentElement.style.setProperty(
+          "--header-height",
+          `${headerRef.current.offsetHeight}px`
+        );
+      }
+    };
+    updateHeight();
+    // Update on resize as well
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, [isTopBarVisible, isMobileMenuOpen, isSearchOpen]);
 
   const fetchDestinations = async () => {
     try {
@@ -157,11 +174,11 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50">
+    <header ref={headerRef} className="fixed top-0 left-0 right-0 z-50 w-full">
       {/* Main Header - Top bar with logo, socials, phone */}
       <div
-        className={`bg-white shadow-md transition-transform duration-300 ease-out will-change-transform ${
-          isTopBarVisible ? "translate-y-0" : "-translate-y-full"
+        className={`bg-white shadow-md transition-all duration-300 ease-out overflow-hidden ${
+          isTopBarVisible ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <div className="container mx-auto px-4 py-3">

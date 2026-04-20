@@ -19,7 +19,9 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
   return (
     <>
       {!hidePublicLayout && <Header />}
-      <div className="flex-1">{children}</div>
+      <div className="flex-1" style={{ paddingTop: "var(--header-height, 0px)" }}>
+        {children}
+      </div>
       {!hidePublicLayout && <Footer />}
     </>
   );
