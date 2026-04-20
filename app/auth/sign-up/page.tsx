@@ -26,8 +26,20 @@ export default function SignUpPage() {
             </Link>
           </div>
 
-          {/* Sign Up Form - Just the form, no extra wrapper */}
-          <SignUpForm localization={{}} />
+          {/* Sign Up Form */}
+          <div className="auth-form-wrapper">
+            <SignUpForm localization={{}} />
+          </div>
+
+          <style>{`
+            .auth-form-wrapper input,
+            .auth-form-wrapper input:focus {
+              color: white !important;
+            }
+            .auth-form-wrapper input::placeholder {
+              color: rgb(203, 213, 225) !important;
+            }
+          `}</style>
 
           <p className="text-center mt-6 text-sm text-slate-400">
             Already have an account?{' '}

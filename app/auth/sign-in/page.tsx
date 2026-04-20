@@ -26,8 +26,20 @@ export default function SignInPage() {
             </Link>
           </div>
 
-          {/* Sign In Form - Just the form, no extra wrapper */}
-          <SignInForm localization={{}} />
+          {/* Sign In Form */}
+          <div className="auth-form-wrapper">
+            <SignInForm localization={{}} />
+          </div>
+
+          <style>{`
+            .auth-form-wrapper input,
+            .auth-form-wrapper input:focus {
+              color: white !important;
+            }
+            .auth-form-wrapper input::placeholder {
+              color: rgb(203, 213, 225) !important;
+            }
+          `}</style>
 
           <p className="text-center mt-6 text-sm text-slate-400">
             Don&apos;t have an account?{' '}
