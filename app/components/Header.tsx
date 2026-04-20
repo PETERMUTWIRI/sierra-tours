@@ -87,11 +87,37 @@ export default function Header() {
   const [themedHolidays, setThemedHolidays] = useState<PackageTypeItem[]>([]);
   const [safariTypes, setSafariTypes] = useState<PackageTypeItem[]>([]);
   const [localTypes, setLocalTypes] = useState<PackageTypeItem[]>([]);
+  const [isTopBarVisible, setIsTopBarVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     fetchDestinations();
     fetchPackageTypes();
   }, []);
+
+  // Smart header: hide white top bar on scroll down, show on scroll up
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const threshold = 10;
+
+      if (currentScrollY < 50) {
+        // Always show when near top
+        setIsTopBarVisible(true);
+      } else if (currentScrollY > lastScrollY + threshold) {
+        // Scrolling down → hide
+        setIsTopBarVisible(false);
+      } else if (currentScrollY < lastScrollY - threshold) {
+        // Scrolling up → show
+        setIsTopBarVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const fetchDestinations = async () => {
     try {
@@ -130,9 +156,13 @@ export default function Header() {
   };
 
   return (
-    <header className="relative z-50">
+    <header className="sticky top-0 z-50">
       {/* Main Header - Top bar with logo, socials, phone */}
-      <div className="bg-white shadow-md">
+      <div
+        className={`bg-white shadow-md transition-transform duration-300 ease-out will-change-transform ${
+          isTopBarVisible ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}

@@ -60,7 +60,7 @@ export default function Footer() {
           {/* About Column */}
           <div>
             <Logo variant="light" size="md" showTagline={true} className="mb-4" />
-            <p className="text-sm mb-4 text-gray-400">
+            <p className="text-base mb-4 text-gray-400 leading-relaxed">
               Discover the magic of Africa with our expertly curated safari
               experiences. From the Serengeti to Victoria Falls, we create
               unforgettable adventures.
@@ -107,7 +107,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
+            <h4 className="text-white font-semibold text-lg mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-[#D32F2F] rounded-full"></span>
               Quick Links
             </h4>
@@ -116,7 +116,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
+                    className="text-base text-gray-400 hover:text-[#11A560] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -127,7 +127,7 @@ export default function Footer() {
 
           {/* Destinations */}
           <div>
-            <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
+            <h4 className="text-white font-semibold text-lg mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-[#F5A623] rounded-full"></span>
               Destinations
             </h4>
@@ -136,7 +136,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
+                    className="text-base text-gray-400 hover:text-[#11A560] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -147,14 +147,14 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
+            <h4 className="text-white font-semibold text-lg mb-4 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-[#11A560] rounded-full"></span>
               Contact Us
             </h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-[#D32F2F] mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-gray-400">
+                <span className="text-base text-gray-400 leading-relaxed">
                   123 Safari Road, Nairobi
                   <br />
                   Kenya, East Africa
@@ -164,7 +164,7 @@ export default function Footer() {
                 <Phone size={18} className="text-[#11A560] flex-shrink-0" />
                 <a
                   href="tel:+254123456789"
-                  className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
+                  className="text-base text-gray-400 hover:text-[#11A560] transition-colors"
                 >
                   +254 123 456 789
                 </a>
@@ -173,7 +173,7 @@ export default function Footer() {
                 <Mail size={18} className="text-[#F5A623] flex-shrink-0" />
                 <a
                   href="mailto:info@sierratours.com"
-                  className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
+                  className="text-base text-gray-400 hover:text-[#11A560] transition-colors"
                 >
                   info@sierratours.com
                 </a>
@@ -187,25 +187,25 @@ export default function Footer() {
         <div className="border-t border-white/10">
           <div className="container mx-auto px-4 py-4">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-sm text-center md:text-left text-gray-400">
+              <p className="text-base text-center md:text-left text-gray-400">
                 &copy; {currentYear} Sierra Tours & Safaris. All rights reserved.
               </p>
               <nav className="flex flex-wrap justify-center gap-4">
                 <Link
                   href="/privacy"
-                  className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
+                  className="text-base text-gray-400 hover:text-[#11A560] transition-colors"
                 >
                   Privacy Policy
                 </Link>
                 <Link
                   href="/terms"
-                  className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
+                  className="text-base text-gray-400 hover:text-[#11A560] transition-colors"
                 >
                   Terms of Service
                 </Link>
                 <Link
                   href="/sitemap"
-                  className="text-sm text-gray-400 hover:text-[#11A560] transition-colors"
+                  className="text-base text-gray-400 hover:text-[#11A560] transition-colors"
                 >
                   Sitemap
                 </Link>
